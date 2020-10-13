@@ -15,7 +15,7 @@ type Sample = {
 function App() {
   const [updateReady, setUpdateReady] = useState(false);
 
-  ipcRenderer.on('updateReady', (event, text) => {
+  ipcRenderer.on('updateReady', () => {
     setUpdateReady(true);
   });
 
@@ -23,9 +23,7 @@ function App() {
     <div className='App'>
       <header className='App-header'>
         <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        <p>Autoreload is enabled</p>
         {updateReady ? (
           <>
             <h5>UPDATE READY!</h5>

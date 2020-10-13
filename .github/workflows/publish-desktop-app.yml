@@ -1,0 +1,29 @@
+# Creates KDL Desktop App installers for Linux, macOS and Windows.
+
+name: Publish Desktop App
+on: workflow_dispatch
+
+jobs:
+  release-desktop-app:
+    name: Release 🚀
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Build/release Electron app 💽
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          package_root: kdl-client
+          github_token: ${{ secrets.github_token }}
+          release: true

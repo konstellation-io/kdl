@@ -27,7 +27,9 @@ function showSplashScreen() {
   });
 
   splashScreen.loadURL(
-    `file://${path.join(__dirname, '../public/splash_screen.html')}`
+    isDev
+      ? `file://${path.join(__dirname, '../public/splash_screen.html')}`
+      : `file://${path.join(__dirname, '../build/splash_screen.html')}`
   );
 }
 

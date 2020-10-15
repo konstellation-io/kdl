@@ -1,0 +1,46 @@
+@import 'Styles/colors';
+@import 'Styles/variables';
+@import 'Styles/mixins';
+
+.bg {
+  position: absolute;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+
+  &.active:hover {
+    cursor: pointer;
+  }
+}
+
+.container {
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  background-color: palette(base, 800);
+  padding: 8 * $grid-unit 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 80 * $grid-unit;
+
+  .subtitle {
+    @include font-body;
+    color: font-color(lowlight);
+
+    margin-top: 2 * $grid-unit;
+  }
+
+  .content {
+    padding: 4 * $grid-unit;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    width: 100%;
+  }
+}

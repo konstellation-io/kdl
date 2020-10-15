@@ -23,7 +23,7 @@ function showSplashScreen() {
   splashScreen = new BrowserWindow({
     ...SPLASH_SCREEN_SIZE,
     frame: false,
-    backgroundColor: '#060b15',
+    backgroundColor: '#060606',
   });
 
   splashScreen.loadURL(
@@ -46,9 +46,10 @@ function createMainWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true
     },
     transparent: true,
-    // frame: false,   // TODO: set this to true after creating a custom title bar
+    frame: false,
     titleBarStyle: 'hidden',
   });
 

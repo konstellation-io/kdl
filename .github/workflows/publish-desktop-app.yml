@@ -27,3 +27,5 @@ jobs:
           package_root: kdl-client
           github_token: ${{ secrets.github_token }}
           release: true
+        env:
+          SASS_PATH: src

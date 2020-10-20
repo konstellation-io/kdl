@@ -102,7 +102,7 @@ function ClusterLogin() {
           <p className={cx(styles.confirmation, { [styles.show]: linkSent })}>
             LINK SENT. CHECK YOUR INBOX.
           </p>
-          <Button label="CANCEL" to={ROUTE.NEW_CLUSTER} />
+          <Button label="CANCEL" to={ROUTE.HOME} />
         </div>
       </div>
     </ColumnPage>

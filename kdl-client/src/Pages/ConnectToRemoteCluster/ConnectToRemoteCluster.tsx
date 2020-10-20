@@ -1,11 +1,13 @@
 import { Button, CHECK, TextInput } from 'kwc';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import useClusters, { ClusterType } from 'Hooks/useClusters';
 
 import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
 import ROUTE from 'Constants/routes';
 import { ipcRenderer } from 'electron';
 import styles from './ConnectToRemoteCluster.module.scss';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
 type ConnectToRemoteClusterResponse = {
   success: boolean;
@@ -18,20 +20,14 @@ enum ConnectionState {
   ERROR = 'ERROR',
 }
 
-// TODO: Add CHECK.isFieldDuplicated check
-function validateUrl(value: string) {
-  return CHECK.getValidationError([
-    CHECK.isFieldNotEmpty(value),
-    CHECK.isDomainValid(value),
-  ]);
-}
-
 type FormData = {
   clusterUrl: string;
 };
 
 function ConnectToRemoteCluster() {
   const [connectionState, setConnectionState] = useState<ConnectionState>();
+  const { clusters, saveCluster } = useClusters();
+  const history = useHistory();
 
   const {
     handleSubmit,
@@ -40,12 +36,26 @@ function ConnectToRemoteCluster() {
     register,
     errors,
     setError,
+    getValues,
   } = useForm<FormData>({ defaultValues: { clusterUrl: '' } });
+
+  const validateUrl = useCallback(
+    (value: string) => {
+      const clusterUrls = clusters.map((cluster) => cluster.url || '');
+
+      return CHECK.getValidationError([
+        CHECK.isFieldNotEmpty(value),
+        CHECK.isDomainValid(value),
+        CHECK.isItemDuplicated(value, clusterUrls, 'cluster URL'),
+      ]);
+    },
+    [clusters]
+  );
 
   useEffect(() => {
     register('clusterUrl', { validate: validateUrl });
     return () => unregister('clusterUrl');
-  }, [register, unregister, setValue]);
+  }, [register, unregister, setValue, validateUrl]);
 
   useEffect(() => {
     const onConnectToRemoteClusterReply = (
@@ -74,6 +84,13 @@ function ConnectToRemoteCluster() {
     // We want to execute this on on component mount/unmount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (connectionState === ConnectionState.OK) {
+      saveCluster({ type: ClusterType.REMOTE, url: getValues().clusterUrl });
+      history.push(ROUTE.CLUSTER_LOGIN);
+    }
+  }, [connectionState, getValues, history, saveCluster]);
 
   function onSubmit(data: FormData) {
     ipcRenderer.send('connectToRemoteCluster', data.clusterUrl);

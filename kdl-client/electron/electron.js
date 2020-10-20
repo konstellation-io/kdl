@@ -20,6 +20,7 @@ const WINDOW_SIZE = {
 require('./check_requirements.js');
 require('./install_local_cluster.js');
 require('./connect_to_remote_cluster.js');
+require('./store.js');
 
 let mainWindow;
 let splashScreen;

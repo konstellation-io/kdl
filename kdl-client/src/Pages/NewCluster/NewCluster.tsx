@@ -33,7 +33,7 @@ function NewCluster() {
           />
         </div>
         <div className={styles.cancel}>
-          <Button label="CANCEL" to="/" />
+          <Button label="CANCEL" to={ROUTE.HOME} />
         </div>
       </div>
     </BGPage>

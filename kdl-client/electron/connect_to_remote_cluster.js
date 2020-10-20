@@ -18,12 +18,14 @@ function connectToRemoteCluster(event, email) {
       });
     });
 
-    cmd.on('close', code => {
-      const success = code === 0;
+    cmd.on('close', __ => {
+      // const success = code === 0;
 
       event.sender.send('connectToRemoteClusterReply', {
-        success,
-        error: success && `child process exited with code ${code}`
+        // FIXME: set this to 'success'
+        success: true,
+        // FIXME: set this to uncomment next line
+        // error: success && `child process exited with code ${code}`
       });
     });
   });

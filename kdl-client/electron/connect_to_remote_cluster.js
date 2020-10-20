@@ -1,29 +1,26 @@
 const electron = require('electron');
 const { spawn } = require('child_process');
 
-function connectToRemoteCluster(event, clusterUrl) {
+function connectToRemoteCluster(event, email) {
   return new Promise(_ => {
     const cmd = spawn('ls');
 
-    cmd.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
+    cmd.stdout.on('data', __ => {
       event.sender.send('connectToRemoteClusterReply', {
         success: true
       });
     });
 
-    cmd.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
+    cmd.stderr.on('data', data => {
       event.sender.send('connectToRemoteClusterReply', {
         success: false,
-        errorMsg: String(data),
+        error: String(data),
       });
     });
 
-    cmd.on('close', (code) => {
+    cmd.on('close', code => {
       const success = code === 0;
 
-      console.log(`child process exited with code ${code}`);
       event.sender.send('connectToRemoteClusterReply', {
         success,
         error: success && `child process exited with code ${code}`
@@ -34,17 +31,15 @@ function connectToRemoteCluster(event, clusterUrl) {
 
 function clusterLogin(event, email) {
   return new Promise(_ => {
-    const cmd = spawn('ls');
+    const cmd = spawn('cd .');
 
-    cmd.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
+    cmd.stdout.on('data', __ => {
       event.sender.send('clusterLoginReply', {
         success: true
       });
     });
 
-    cmd.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
+    cmd.stderr.on('data', data => {
       event.sender.send('clusterLoginReply', {
         success: false,
         errorMsg: String(data),
@@ -52,11 +47,11 @@ function clusterLogin(event, email) {
     });
 
     cmd.on('close', (code) => {
-      const success = code === 0;
+      const ok = code === 0;
 
       console.log(`child process exited with code ${code}`);
       event.sender.send('clusterLoginReply', {
-        success,
+        success: ok,
         // TODO: uncomment this
         // error: success && `child process exited with code ${code}`
       });

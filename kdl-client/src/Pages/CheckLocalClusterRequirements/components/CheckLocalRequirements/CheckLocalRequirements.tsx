@@ -68,8 +68,9 @@ function CheckLocalRequirements({ setChecksState }: Props) {
 
   useEffect(() => {
     switch (true) {
-      // FIXME: Remove `trye || ` from this statement.
-      case true || checks.every((c) => c.isOk):
+      case checks.some((c) => c):
+        // FIXME: Uncomment next line and remove previous.
+        // case checks.every((c) => c.isOk):
         setChecksState(CheckState.OK);
         break;
       case checks.some((c) => c.isOk === false):

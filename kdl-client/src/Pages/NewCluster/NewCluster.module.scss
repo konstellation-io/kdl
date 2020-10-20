@@ -1,0 +1,10 @@
+@import 'Styles/variables';
+
+.clusters {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel {
+  margin-top: 7.5 * $grid-unit;
+}

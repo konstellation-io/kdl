@@ -1,0 +1,51 @@
+@import 'Styles/colors';
+
+$triangle-side: 147px;
+$small-triangle-side: 37px;
+$triangle-color: palette(highlight, 800);
+$small-triangle-color: palette(base, 900);
+
+.triangle {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-left: $triangle-side / 2 solid transparent;
+  border-right: $triangle-side / 2 solid transparent;
+
+  transition: border-color ease 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: -$small-triangle-side / 2;
+
+    border-left: $small-triangle-side / 2 solid transparent;
+    border-right: $small-triangle-side / 2 solid transparent;
+  }
+
+  &.up {
+    border-bottom: $triangle-side solid $triangle-color;
+
+    &::after {
+      top: $triangle-side / 2;
+      border-bottom: $small-triangle-side solid $small-triangle-color;
+    }
+
+    &:hover {
+      border-bottom-color: palette(highlight);
+    }
+  }
+
+  &.down {
+    border-top: $triangle-side solid $triangle-color;
+
+    &::after {
+      top: -$triangle-side / 2 - $small-triangle-side;
+      border-top: $small-triangle-side solid $small-triangle-color;
+    }
+
+    &:hover {
+      border-top-color: palette(highlight);
+    }
+  }
+}

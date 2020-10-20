@@ -1,0 +1,98 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+$circle-diameter: $grid-unit;
+$circle-top: 11px;
+$circle-left: 0px;
+
+.container {
+  margin-bottom: 6 * $grid-unit;
+}
+
+.checkList ul {
+  @include font-small;
+  color: font-color(lowlight);
+
+  padding: 0;
+
+  li {
+    transition: color ease 0.6s;
+  }
+}
+
+@mixin status-circle($color) {
+  color: $color;
+
+  &:after {
+    background-color: $color;
+  }
+
+  &:before {
+    background-color: $color;
+  }
+}
+
+.circle {
+  @include circle(transparent);
+
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+}
+
+.requirement {
+  list-style: none;
+  position: relative;
+  padding: $grid-unit 0 $grid-unit 2 * $grid-unit;
+
+  &:before {
+    @extend .circle;
+  }
+
+  &:after {
+    @extend .circle;
+  }
+
+  &.pending {
+    @include status-circle(palette(highlight));
+
+    &:before {
+      animation: loading-anim 2s ease 0s infinite;
+    }
+  }
+
+  &.fail:before,
+  &.ok:before {
+    animation: loading-anim 0s ease, loading-anim 1s ease;
+  }
+  &.fail {
+    @include status-circle(palette(error));
+  }
+  &.ok {
+    @include status-circle(palette(success));
+  }
+}
+
+@mixin set-anim-state($diameter, $offset, $opacity) {
+  width: $diameter;
+  height: $diameter;
+  top: $circle-top - $offset;
+  left: $circle-left - $offset;
+  opacity: $opacity;
+}
+
+$circle-increase: 1.8 * $grid-unit;
+$circle-diameter-end: $circle-diameter + $circle-increase;
+@keyframes loading-anim {
+  0% {
+    @include set-anim-state($circle-diameter, 0px, 0.6);
+  }
+  60% {
+    @include set-anim-state($circle-diameter-end, $circle-increase / 2, 0);
+  }
+  100% {
+    @include set-anim-state($circle-diameter-end, $circle-increase / 2, 0);
+  }
+}

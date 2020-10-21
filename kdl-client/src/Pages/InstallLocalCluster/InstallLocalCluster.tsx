@@ -92,7 +92,8 @@ function InstallLocalCluster() {
     case InstallationState.OK:
       buttons = (
         <>
-          <Button label="CONNECT NOW" to={'/'} primary />
+          {/* TODO: redirect to cluster */}
+          <Button label="CONNECT NOW" to={ROUTE.HOME} primary />
           <Button label="MAYBE LATER" to={ROUTE.HOME} />
         </>
       );

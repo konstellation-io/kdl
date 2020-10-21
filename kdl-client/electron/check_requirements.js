@@ -2,7 +2,7 @@ const electron = require('electron');
 const { exec } = require('child_process');
 
 const commands = {
-  k8s: 'kubectl get nodes',
+  k8s: "kubectl get nodes -o jsonpath='{.items[*].status.conditions[*].type}'",
   minikube: 'minikube status',
   helm: 'helm ls'
 };

@@ -32,7 +32,7 @@ function onClose(code, event) {
   return success;
 }
 
-function createNameSpace(event) {
+function createNamespace(event) {
   return new Promise(resolve => {
     const cmd = spawn('kubectl', ['create', 'ns', 'kst-local']);
 
@@ -47,9 +47,9 @@ function installComponents(event) {
     const cmd = spawn('helm', [
       'upgrade',
       '--install',
-      'konstellation-local',
+      'kdl',
       '--namespace',
-      'kdl-local',
+      'kdl',
       '--wait',
       settings.chartUrl,
     ]);
@@ -62,7 +62,7 @@ function installComponents(event) {
 
 console.log('Add installLocalCluster listener...');
 electron.ipcMain.on('installLocalCluster', event => {
-  createNameSpace(event).then(sucess => {
+  createNamespace(event).then(sucess => {
     if (sucess) {
       return installComponents(event);
     }

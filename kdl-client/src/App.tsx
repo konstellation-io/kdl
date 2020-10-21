@@ -17,6 +17,7 @@ function App() {
       <Router history={history}>
         <Switch>
           {/* <Route default component={InstallLocalCluster} /> */}
+          <Route exact path={ROUTE.HOME} component={NewCluster} />
           <Route exact path={ROUTE.NEW_CLUSTER} component={NewCluster} />
           <Route
             exact

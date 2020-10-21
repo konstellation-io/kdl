@@ -12,9 +12,14 @@ const SPLASH_SCREEN_SIZE = {
   height: 400,
 };
 const WINDOW_SIZE = {
-  width: 900,
-  height: 680,
+  width: 1400,
+  height: 900,
 };
+
+// Add IPC listeners
+require('./check_requirements.js');
+require('./install_local_cluster.js');
+require('./connect_to_remote_cluster.js');
 
 let mainWindow;
 let splashScreen;

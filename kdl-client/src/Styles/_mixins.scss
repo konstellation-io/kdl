@@ -1,2 +1,22 @@
 @import '~kwc/styles/borders';
 @import '~kwc/styles/mixins';
+
+@mixin circle($color) {
+  width: $grid-unit;
+  height: $grid-unit;
+  border-radius: 50%;
+  background-color: $color;
+}
+
+@mixin circle-before($color) {
+  position: relative;
+
+  &:before {
+    @include circle($color);
+
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+  }
+}

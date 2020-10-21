@@ -1,0 +1,68 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.container {
+  width: 100%;
+  padding: 0 11 * $grid-unit;
+
+  .header {
+    @include font-caption;
+    text-align: center;
+
+    margin-bottom: 8 * $grid-unit;
+
+    .title {
+      color: font-color(regular);
+    }
+
+    .content {
+      display: flex;
+      justify-content: center;
+
+      .circle {
+        @include circle(palette(success));
+        margin: 2px 2 * $grid-unit 0 0;
+        flex-shrink: 0;
+      }
+
+      p {
+        text-transform: uppercase;
+        color: font-color(light);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: 0;
+      }
+    }
+  }
+
+  .formEmail {
+    width: 38 * $grid-unit;
+    margin: 4 * $grid-unit auto 0 auto;
+  }
+
+  .buttons {
+    width: 38 * $grid-unit;
+    margin: 4 * $grid-unit auto 0 auto;
+
+    & > div:first-child {
+      margin-bottom: $grid-unit;
+    }
+  }
+
+  .confirmation {
+    @include font-caption;
+    color: palette(highlight);
+
+    margin: 0;
+    height: 0;
+    overflow: hidden;
+
+    transition: margin ease 0.3s, height ease 0.4s;
+
+    &.show {
+      margin: 2 * $grid-unit 0 3 * $grid-unit 0;
+      height: 2.5 * $grid-unit;
+    }
+  }
+}

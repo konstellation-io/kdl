@@ -2,30 +2,38 @@
 @import 'Styles/variables';
 @import 'Styles/mixins';
 
-.bg {
+.bg,
+.container {
   position: absolute;
-  background-color: black;
   width: 100%;
   height: 100%;
+}
 
-  &.active:hover {
-    cursor: pointer;
+.bg {
+  background-color: black;
+  overflow: hidden;
+
+  video {
+    opacity: 0.5;
+    width: auto;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
 .container {
+  height: 100%;
+  width: 58 * $grid-unit;
+  padding: 8 * $grid-unit 0;
   position: absolute;
   left: 50%;
-  height: 100%;
   transform: translateX(-50%);
-  background-color: palette(base, 800);
-  padding: 8 * $grid-unit 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  width: 80 * $grid-unit;
 
   .subtitle {
     margin-top: 2 * $grid-unit;
@@ -34,16 +42,7 @@
   }
 
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 4 * $grid-unit;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .container {
+    padding: 4 * $grid-unit 0;
     width: 100%;
   }
 }

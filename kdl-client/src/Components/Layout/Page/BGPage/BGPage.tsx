@@ -1,21 +1,22 @@
 import React, { FC } from 'react';
 
-import cx from 'classnames';
-import styles from './ColumnPage.module.scss';
+import styles from './BGPage.module.scss';
 
 type Props = {
   title: string;
   subtitle?: string;
-  onBgClick?: Function;
+  bgFile: string;
   children: JSX.Element;
 };
-const ColumnPage: FC<Props> = ({ title, subtitle, onBgClick, children }) => {
+
+const BGPage: FC<Props> = ({ title, subtitle, bgFile, children }) => {
   return (
     <>
-      <div
-        className={cx(styles.bg, { [styles.active]: !!onBgClick })}
-        onClick={() => onBgClick && onBgClick()}
-      />
+      <div className={styles.bg}>
+        <video autoPlay loop muted>
+          <source src={bgFile} type="video/mp4" />
+        </video>
+      </div>
       <div className={styles.container}>
         <h1>{title}</h1>
         {subtitle && <h3 className={styles.subtitle}>{subtitle}</h3>}
@@ -25,4 +26,4 @@ const ColumnPage: FC<Props> = ({ title, subtitle, onBgClick, children }) => {
   );
 };
 
-export default ColumnPage;
+export default BGPage;

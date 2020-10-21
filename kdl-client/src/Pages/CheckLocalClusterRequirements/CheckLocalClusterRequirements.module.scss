@@ -1,0 +1,14 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.checkTitle {
+  @include font-caption;
+  color: font-color(regular);
+
+  margin-bottom: 4 * $grid-unit;
+}
+
+.buttons > div:first-child {
+  margin-bottom: $grid-unit;
+}

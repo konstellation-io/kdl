@@ -17,9 +17,9 @@ const WINDOW_SIZE = {
 };
 
 // Add IPC listeners
-require('./check_requirements.js');
-require('./install_local_cluster.js');
-require('./connect_to_remote_cluster.js');
+require('./local_cluster_installation.js');
+require('./remote_cluster_actions.js');
+require('./local_cluster_actions.js');
 require('./store.js');
 
 let mainWindow;

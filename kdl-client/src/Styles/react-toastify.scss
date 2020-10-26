@@ -1,0 +1,39 @@
+@import './variables';
+@import './colors';
+@import './mixins';
+@import './shadows';
+
+.Toastify__toast {
+  &--info {
+    @include shadow(4);
+    @include font-small;
+    color: font-color(light);
+
+    background-color: palette(base, 400);
+    text-align: left;
+    min-height: 6 * $grid-unit;
+    padding-left: 5 * $grid-unit;
+    border-radius: 0;
+
+    &:after {
+      position: absolute;
+      top: 50%;
+      left: 1.5 * $grid-unit;
+      transform: translateY(-50%);
+      content: '';
+      width: 1.5 * $grid-unit;
+      height: 1.5 * $grid-unit;
+      border-radius: 50%;
+      background-color: palette(highlight);
+    }
+  }
+
+  .Toastify__close-button {
+    position: absolute;
+    top: 50%;
+    right: 2 * $grid-unit;
+    line-height: $grid-unit;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+}

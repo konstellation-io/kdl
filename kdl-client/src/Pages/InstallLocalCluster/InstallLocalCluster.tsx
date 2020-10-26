@@ -4,13 +4,12 @@ import React, { useEffect, useState } from 'react';
 import StatusCircle, {
   States,
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
-import useClusters, { ClusterType } from 'Hooks/useClusters';
 
 import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
+import IconBack from '@material-ui/icons/ArrowBack';
 import ROUTE from 'Constants/routes';
 import { ipcRenderer } from 'electron';
 import styles from './InstallLocalCluster.module.scss';
-import { useHistory } from 'react-router-dom';
 
 const INITIAL_LOG: Log = { text: 'Starting installation...' };
 
@@ -42,8 +41,6 @@ function InstallLocalCluster() {
     InstallationState
   >();
   const [logs, setLogs] = useState<Log[]>([]);
-  const history = useHistory();
-  const { saveCluster } = useClusters();
 
   function startInstallation() {
     setInstallationState(InstallationState.INSTALLING);
@@ -80,13 +77,6 @@ function InstallLocalCluster() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function DEVCreateLocalCluster() {
-    saveCluster({ type: ClusterType.LOCAL });
-    setInstallationState(InstallationState.OK);
-
-    setTimeout(() => history.push(ROUTE.HOME), 2000);
-  }
-
   let buttons;
   switch (installationState) {
     case InstallationState.OK:
@@ -100,20 +90,15 @@ function InstallLocalCluster() {
       break;
     case InstallationState.ERR:
       buttons = (
-        <>
+        <div className={styles.retry}>
+          <Button label="" Icon={IconBack} to={ROUTE.HOME} />
           <Button
-            label="RETRY INSTALLATION"
+            label="RETRY"
             onClick={startInstallation}
-            primary
-          />
-          <Button
-            label="DEV - CREATE"
-            onClick={DEVCreateLocalCluster}
             theme={BUTTON_THEMES.WARN}
             primary
           />
-          <Button label="CANCEL" to={ROUTE.HOME} />
-        </>
+        </div>
       );
       break;
     default:

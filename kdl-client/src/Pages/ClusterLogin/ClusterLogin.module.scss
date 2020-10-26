@@ -6,39 +6,30 @@
   width: 100%;
   padding: 0 11 * $grid-unit;
 
-  .header {
+  .title {
     @include font-caption;
-    text-align: center;
+    color: font-color(regular);
+  }
 
-    margin-bottom: 8 * $grid-unit;
+  .name .value {
+    @include font-subheader;
+    color: font-color(light);
+    text-transform: uppercase;
 
-    .title {
-      color: font-color(regular);
-    }
+    margin: 0 0 4 * $grid-unit 0;
+  }
 
-    .content {
-      display: flex;
-      justify-content: center;
+  .url .value {
+    @include font-body;
+    color: font-color(lowlight);
 
-      .circle {
-        @include circle(palette(success));
-        margin: 2px 2 * $grid-unit 0 0;
-        flex-shrink: 0;
-      }
-
-      p {
-        text-transform: uppercase;
-        color: font-color(light);
-        text-overflow: ellipsis;
-        overflow: hidden;
-        margin: 0;
-      }
-    }
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0;
   }
 
   .formEmail {
-    width: 38 * $grid-unit;
-    margin: 4 * $grid-unit auto 0 auto;
+    margin: 12 * $grid-unit auto 0 auto;
   }
 
   .buttons {
@@ -53,7 +44,10 @@
   .confirmation {
     @include font-caption;
     color: palette(highlight);
+    text-transform: uppercase;
 
+    display: flex;
+    align-items: center;
     margin: 0;
     height: 0;
     overflow: hidden;
@@ -62,7 +56,12 @@
 
     &.show {
       margin: 2 * $grid-unit 0 3 * $grid-unit 0;
-      height: 2.5 * $grid-unit;
+      height: 6 * $grid-unit;
+    }
+
+    .icon {
+      width: 4 * $grid-unit;
+      flex-shrink: 0;
     }
   }
 }

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { CheckState } from 'Pages/CheckLocalClusterRequirements/CheckLocalClusterRequirements';
+import ErrorBox from 'Components/ErrorBox/ErrorBox';
 import { cloneDeep } from 'lodash';
 import cx from 'classnames';
 import { ipcRenderer } from 'electron';
@@ -18,12 +19,14 @@ type Check = {
   id: CheckId;
   label: string;
   isOk: boolean | null;
+  open: boolean;
 };
 
 const generateInitialCheck = (id: CheckId, label: string) => ({
   id,
   label,
   isOk: null,
+  open: false,
 });
 
 const initialCheckStatus: Check[] = [
@@ -38,6 +41,19 @@ type Props = {
 
 function CheckLocalRequirements({ setChecksState }: Props) {
   const [checks, setChecks] = useState(initialCheckStatus);
+
+  function resetCheck(checkId: string) {
+    const newChecks = cloneDeep(checks);
+    const target = newChecks.find((c) => c.id === checkId);
+    if (target) target.isOk = null;
+
+    setChecks(newChecks);
+  }
+
+  function checkRequirement(checkId: string) {
+    resetCheck(checkId);
+    ipcRenderer.send('checkRequirement', checkId);
+  }
 
   useEffect(() => {
     const onRequirementReply = (
@@ -56,7 +72,7 @@ function CheckLocalRequirements({ setChecksState }: Props) {
     ipcRenderer.on('checkRequirementReply', onRequirementReply);
 
     checks.forEach((check) => {
-      ipcRenderer.send('runCheckRequirement', check.id);
+      checkRequirement(check.id);
     });
 
     return () => {
@@ -79,17 +95,43 @@ function CheckLocalRequirements({ setChecksState }: Props) {
     }
   }, [checks, setChecksState]);
 
-  const requirements = checks.map((check) => (
-    <li
-      key={check.id}
-      className={cx(styles.requirement, {
-        [styles.pending]: check.isOk === null,
-        [styles.ok]: check.isOk,
-        [styles.fail]: check.isOk === false,
-      })}
-    >
-      {check.label}
-    </li>
+  function toggleCheckOpen(idx: number, isOpening: boolean) {
+    const newChecks = cloneDeep(checks);
+
+    // Close all checks but opened
+    newChecks.forEach((check) => (check.open = false));
+    if (isOpening) newChecks[idx].open = true;
+
+    setChecks(newChecks);
+  }
+
+  const requirements = checks.map((check, idx) => (
+    <Fragment key={check.id}>
+      <li
+        className={cx(styles.requirement, {
+          [styles.pending]: check.isOk === null,
+          [styles.ok]: check.isOk,
+          [styles.fail]: check.isOk === false,
+        })}
+      >
+        {check.label}
+      </li>
+      {check.isOk === false && (
+        <div className={styles.errorBox}>
+          <ErrorBox
+            title="To add a Resource Startud"
+            message="Nam porttitor blandit accumsan. Ut vel dictum sem, a pretium dui. In malesuada enim in dolor at vestibulum nisi. Nullam vehicula nisi velit. Mauris turpis nisl, molestie ut vehicula."
+            docUrl="https://github.com/konstellation-io/kdl"
+            onChange={() => toggleCheckOpen(idx, !check.open)}
+            openController={check.open}
+            action={{
+              label: 'RETRY',
+              onClick: () => checkRequirement(check.id),
+            }}
+          />
+        </div>
+      )}
+    </Fragment>
   ));
 
   return (

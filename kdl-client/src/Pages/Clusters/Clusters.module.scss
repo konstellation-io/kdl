@@ -4,4 +4,15 @@
 
 .container {
   position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  position: relative;
+  padding: 3 * $grid-unit 11 * $grid-unit;
+  height: 100%;
+  width: 100%;
+  background-color: palette(base, 800);
+  overflow: auto;
 }

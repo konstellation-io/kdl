@@ -1,14 +1,22 @@
 const cluster = {
   type: 'object',
-  required: ['type'],
+  required: ['id', 'type', 'name'],
   properties: {
+    id: {
+      type: 'string'
+    },
+    name: {
+      type: 'string'
+    },
     type: {
       type: 'string',
       enum: ['local', 'remote']
     },
+    state: {
+      type: 'string',
+    },
     url: {
       type: 'string',
-      format: 'hostname'
     }
   }
 };

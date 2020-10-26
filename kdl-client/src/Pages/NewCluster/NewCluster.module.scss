@@ -3,8 +3,19 @@
 .clusters {
   display: flex;
   justify-content: space-between;
-}
+  pointer-events: none;
+  height: 100%;
 
-.cancel {
-  margin-top: 7.5 * $grid-unit;
+  .cluster {
+    pointer-events: auto;
+  }
+
+  &:hover > .cluster:hover {
+    transform: scale(1.05);
+  }
+
+  &:hover > .cluster:not(:hover) {
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
 }

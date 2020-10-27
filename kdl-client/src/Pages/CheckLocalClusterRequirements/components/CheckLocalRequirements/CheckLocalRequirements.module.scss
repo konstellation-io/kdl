@@ -75,6 +75,37 @@ $circle-left: 0px;
   }
 }
 
+.errorBox {
+  position: relative;
+  margin: 1.5 * $grid-unit 0 0 4 * $grid-unit;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+  }
+
+  &:before {
+    top: -24px;
+    left: -28px;
+    width: 14px;
+    height: 43px;
+    border: dashed 1px palette(error);
+    border-right-color: transparent;
+    border-top-color: transparent;
+  }
+  &:after {
+    width: 10px;
+    height: 10px;
+    border: 1px solid palette(error);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    top: 13px;
+    left: -21px;
+    transform: rotate(-33deg) skew(25deg);
+  }
+}
+
 @mixin set-anim-state($diameter, $offset, $opacity) {
   width: $diameter;
   height: $diameter;
@@ -89,9 +120,7 @@ $circle-diameter-end: $circle-diameter + $circle-increase;
   0% {
     @include set-anim-state($circle-diameter, 0px, 0.6);
   }
-  60% {
-    @include set-anim-state($circle-diameter-end, $circle-increase / 2, 0);
-  }
+  60%,
   100% {
     @include set-anim-state($circle-diameter-end, $circle-increase / 2, 0);
   }

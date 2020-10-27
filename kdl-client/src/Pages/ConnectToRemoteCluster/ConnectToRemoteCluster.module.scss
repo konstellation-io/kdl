@@ -6,17 +6,17 @@
   width: 100%;
   padding: 0 11 * $grid-unit;
 
-  .formClusterUrl {
-    width: 100%;
+  .formClusterName {
     margin-top: 4 * $grid-unit;
   }
 
-  .buttons {
-    width: 38 * $grid-unit;
-    margin: 4 * $grid-unit auto 0 auto;
-
-    & > div:first-child {
-      margin-bottom: $grid-unit;
-    }
+  .formClusterUrl {
+    width: 100%;
+    margin-top: 2 * $grid-unit;
   }
+}
+
+.loader {
+  margin: auto;
+  width: fit-content;
 }

@@ -5,10 +5,15 @@
 .checkTitle {
   @include font-caption;
   color: font-color(regular);
+  text-align: center;
 
   margin-bottom: 4 * $grid-unit;
 }
 
-.buttons > div:first-child {
-  margin-bottom: $grid-unit;
+.installButton {
+  width: 29 * $grid-unit;
+}
+
+.cancelButton {
+  width: 17 * $grid-unit;
 }

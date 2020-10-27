@@ -3,11 +3,16 @@
 @import 'Styles/colors';
 
 .container {
-  width: 21 * $grid-unit;
+  width: 27 * $grid-unit;
+  height: 100%;
+  padding: 0 3 * $grid-unit;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 1;
+
+  transition: transform ease 0.2s, opacity ease 0.2s;
 
   .title {
     @include font-body;

@@ -2,16 +2,20 @@
 @import 'Styles/variables';
 @import 'Styles/mixins';
 
-.bg,
 .container {
-  position: absolute;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
 .bg {
+  position: absolute;
   background-color: black;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 
   video {
     opacity: 0.5;
@@ -23,13 +27,11 @@
   }
 }
 
-.container {
+.content {
   height: 100%;
   width: 58 * $grid-unit;
-  padding: 8 * $grid-unit 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  padding: 8 * $grid-unit 0 2 * $grid-unit 0;
+  margin: auto;
 
   display: flex;
   flex-direction: column;
@@ -41,8 +43,9 @@
     text-align: center;
   }
 
-  .content {
+  .children {
     padding: 4 * $grid-unit 0;
     width: 100%;
+    height: 100%;
   }
 }

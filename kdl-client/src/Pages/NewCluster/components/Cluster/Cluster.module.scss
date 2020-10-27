@@ -1,51 +1,88 @@
 @import 'Styles/colors';
+@import 'Styles/mixins';
+@import 'Styles/variables';
 
-$triangle-side: 147px;
-$small-triangle-side: 37px;
-$triangle-color: palette(highlight, 800);
-$small-triangle-color: palette(base, 900);
+@function get-triangle-center($triangle-size, $inner-triangle-size) {
+  @return (4 * $triangle-size - $inner-triangle-size) / 6;
+}
 
+$size-t1: 24px;
+$size-t2: 172px;
+$size-t3: 216px;
+$size-t4: 250px;
+$size-tot: 151px;
 .triangle {
   position: relative;
-  width: 0;
-  height: 0;
-  border-left: $triangle-side / 2 solid transparent;
-  border-right: $triangle-side / 2 solid transparent;
+  cursor: pointer;
 
-  transition: border-color ease 0.2s;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: -$small-triangle-side / 2;
-
-    border-left: $small-triangle-side / 2 solid transparent;
-    border-right: $small-triangle-side / 2 solid transparent;
-  }
-
-  &.up {
-    border-bottom: $triangle-side solid $triangle-color;
-
-    &::after {
-      top: $triangle-side / 2;
-      border-bottom: $small-triangle-side solid $small-triangle-color;
-    }
-
-    &:hover {
-      border-bottom-color: palette(highlight);
-    }
-  }
+  user-select: none;
+  height: $size-tot;
+  width: $size-tot;
 
   &.down {
-    border-top: $triangle-side solid $triangle-color;
+    transform: rotateX(180deg);
+  }
 
-    &::after {
-      top: -$triangle-side / 2 - $small-triangle-side;
-      border-top: $small-triangle-side solid $small-triangle-color;
-    }
+  div {
+    @include center;
+    pointer-events: none;
+  }
 
-    &:hover {
-      border-top-color: palette(highlight);
-    }
+  .t3,
+  .t4 {
+    transition: font-size ease 0.3s, text-shadow ease 0.3s;
+  }
+
+  .t1 {
+    font-size: $size-t1;
+    top: get-triangle-center($size-tot, $size-t1);
+    color: palette(base);
+    -webkit-text-stroke: 1px palette(highlight);
+    text-shadow: 0 0 10px palette(highlight, 800);
+
+    transition: font-size ease 0.3s, text-shadow ease 0.3s;
+  }
+
+  .t2 {
+    font-size: $size-t2;
+    top: get-triangle-center($size-tot, $size-t2);
+    color: transparent;
+    background-color: palette(base, 900);
+    background-clip: text;
+    text-shadow: 0 0 4px palette(base, 700);
+
+    transition: font-size ease 0.2s, background-color ease 0.3s;
+  }
+  .t3 {
+    font-size: $size-t3;
+    top: get-triangle-center($size-tot, $size-t3);
+    color: transparent;
+    -webkit-text-stroke: 1px palette(highlight);
+    filter: drop-shadow(0px 0px 2px palette(highlight));
+  }
+  .t4 {
+    font-size: $size-t4;
+    top: get-triangle-center($size-tot, $size-t4);
+    color: transparent;
+    -webkit-text-stroke: 1px palette(feedback, 700);
+    filter: drop-shadow(0px 0px 4px palette(highlight));
+  }
+}
+
+.triangle:hover,
+.hoverContainer:hover {
+  .t4 {
+    font-size: $size-t4 * 1.1;
+  }
+  .t3 {
+    font-size: $size-t3 * 1.05;
+  }
+  .t2 {
+    font-size: $size-t2 * 0.98;
+    background-color: palette(highlight);
+  }
+  .t1 {
+    text-shadow: 0 0 10px #fff, 0 0 20px palette(highlight),
+      0 0 30px palette(highlight);
   }
 }

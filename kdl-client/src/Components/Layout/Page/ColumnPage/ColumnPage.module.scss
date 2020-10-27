@@ -14,18 +14,25 @@
 }
 
 .container {
-  position: absolute;
-  left: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   height: 100%;
-  transform: translateX(-50%);
+}
+
+.content {
+  margin: auto;
+  height: 100%;
   background-color: palette(base, 800);
-  padding: 8 * $grid-unit 0;
+  padding: 8 * $grid-unit 0 0 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  width: 80 * $grid-unit;
+  width: $column-page-content-width;
+  overflow: auto;
 
   .subtitle {
     margin-top: 2 * $grid-unit;
@@ -33,12 +40,12 @@
     text-align: center;
   }
 
-  .content {
+  .children {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 4 * $grid-unit;
+    padding: 4 * $grid-unit 4 * $grid-unit 2 * $grid-unit 4 * $grid-unit;
   }
 }
 

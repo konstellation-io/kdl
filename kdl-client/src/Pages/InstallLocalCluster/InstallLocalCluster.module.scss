@@ -24,3 +24,10 @@
 .buttons > a:first-child > div {
   margin-bottom: $grid-unit;
 }
+
+.retry {
+  display: flex;
+  div {
+    height: 30px !important;
+  }
+}

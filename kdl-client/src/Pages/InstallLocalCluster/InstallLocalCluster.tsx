@@ -1,11 +1,12 @@
+import { BUTTON_THEMES, Button } from 'kwc';
 import LogViewer, { Log } from 'Components/LogViewer/LogViewer';
 import React, { useEffect, useState } from 'react';
 import StatusCircle, {
   States,
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
 
-import { Button } from 'kwc';
 import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
+import IconBack from '@material-ui/icons/ArrowBack';
 import ROUTE from 'Constants/routes';
 import { ipcRenderer } from 'electron';
 import styles from './InstallLocalCluster.module.scss';
@@ -89,14 +90,15 @@ function InstallLocalCluster() {
       break;
     case InstallationState.ERR:
       buttons = (
-        <>
+        <div className={styles.retry}>
+          <Button label="" Icon={IconBack} to={ROUTE.HOME} />
           <Button
-            label="RETRY INSTALLATION"
+            label="RETRY"
             onClick={startInstallation}
+            theme={BUTTON_THEMES.WARN}
             primary
           />
-          <Button label="CANCEL" to={ROUTE.HOME} />
-        </>
+        </div>
       );
       break;
     default:

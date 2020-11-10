@@ -7,10 +7,15 @@ import styles from './ActionsBar.module.scss';
 type Props = {
   centerActions?: boolean;
   children: JSX.Element | JSX.Element[];
+  className?: string;
 };
-const ActionsBar: FC<Props> = ({ children, centerActions = false }) => {
+const ActionsBar: FC<Props> = ({
+  children,
+  centerActions = false,
+  className,
+}) => {
   return (
-    <div className={styles.container}>
+    <div className={cx(styles.container, className)}>
       <HorizontalBar
         className={cx(styles.actions, { [styles.center]: centerActions })}
       >

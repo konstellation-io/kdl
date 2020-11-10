@@ -1,0 +1,47 @@
+@import 'Styles/colors';
+@import 'Styles/variables';
+@import 'Styles/mixins';
+
+.container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: palette(base, 700);
+}
+
+.actions div {
+  padding: 0;
+  flex-direction: row;
+}
+
+.sidebar {
+  width: 40 * $grid-unit;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: palette(base, 500);
+  padding: 10 * $grid-unit 5 * $grid-unit 0 3 * $grid-unit;
+
+  h1 {
+    text-align: left;
+  }
+
+  .subtitle {
+    margin-top: 3 * $grid-unit;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 1280px;
+  background-color: palette(base, 800);
+  overflow: auto;
+}
+
+.children {
+  flex-grow: 1;
+}

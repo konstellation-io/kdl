@@ -3,7 +3,13 @@
 @import './mixins';
 @import './shadows';
 
+.Toastify__toast-container {
+  width: auto;
+}
+
 .Toastify__toast {
+  padding-right: 50px;
+
   &--info {
     @include shadow(4);
     @include font-small;

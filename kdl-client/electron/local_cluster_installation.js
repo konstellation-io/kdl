@@ -48,13 +48,15 @@ function installComponents(request) {
         createCluster({
           name: 'Local Cluster',
           state: 'STOPPED',
+          // TODO: get and build local cluster url
+          url: 'local-cluster-url.local-cluster-domain',
           type: 'local'
         });
       }
-      
-      resolve(success)
+
+      resolve(success);
     });
-    
+
   });
 }
 

@@ -10,6 +10,7 @@
   "repository": "https://github.com/konstellation-io/kdl",
   "private": true,
   "dependencies": {
+    "@apollo/client": "3.2.5",
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
     "@testing-library/jest-dom": "4.2.4",
@@ -25,7 +26,9 @@
     "electron-is-dev": "1.2.0",
     "electron-store": "6.0.1",
     "electron-updater": "4.3.5",
-    "kwc": "1.1.0",
+    "graphql": "^15.3.0",
+    "graphql.macro": "github:mgs95/graphql.macro#build",
+    "kwc": "1.1.1",
     "lodash": "4.17.20",
     "node-sass": "4.14.1",
     "react": "16.13.1",
@@ -35,6 +38,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",
     "react-toastify": "6.0.9",
+    "react-transition-group": "4.4.1",
     "typeface-montserrat": "1.1.13",
     "typeface-roboto-mono": "1.1.13",
     "uuid": "8.3.1"
@@ -45,6 +49,7 @@
     "@semantic-release/git": "9.0.0",
     "@types/lodash": "4.14.162",
     "@types/react-router-dom": "5.1.6",
+    "@types/react-transition-group": "4.4.0",
     "@types/uuid": "8.3.0",
     "concurrently": "5.3.0",
     "electron": "10.1.3",
@@ -105,7 +110,8 @@
     "electron-pack": "electron-builder build -l",
     "prerelease": "yarn build",
     "release": "electron-builder build -lw --publish always",
-    "prettier": "prettier --write --single-quote \"src/**/*.ts\""
+    "prettier": "prettier --write --single-quote \"src/**/*.ts\"",
+    "gen:types": "apollo client:codegen types --globalTypesFile=src/Graphql/types/globalTypes.ts --target typescript --includes=./src/Graphql/**/*.graphql --localSchemaFile=./graphql/schema.graphql && yarn prettier"
   },
   "eslintConfig": {
     "extends": "react-app"

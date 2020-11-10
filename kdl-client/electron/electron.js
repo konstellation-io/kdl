@@ -24,12 +24,16 @@ require('./store.js');
 
 let mainWindow;
 let splashScreen;
+const iconPath = isDev
+  ? path.join(__dirname, '../public/icons/png/64x64.png')
+  : path.join(__dirname, '../build/icons/png/64x64.png');
 
 function showSplashScreen() {
   splashScreen = new BrowserWindow({
     ...SPLASH_SCREEN_SIZE,
     frame: false,
     backgroundColor: '#060606',
+    icon: iconPath
   });
 
   splashScreen.loadURL(
@@ -57,6 +61,7 @@ function createMainWindow() {
     transparent: true,
     frame: false,
     titleBarStyle: 'hidden',
+    icon: iconPath
   });
 
   mainWindow.loadURL(

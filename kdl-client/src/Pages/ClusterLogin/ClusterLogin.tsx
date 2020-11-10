@@ -28,9 +28,8 @@ type FormData = {
 
 function ClusterLogin() {
   const [linkSent, setLinkSent] = useState(false);
-  const { getCluster } = useClusters();
   const { clusterId } = useParams<RouteClusterParams>();
-
+  const { getCluster } = useClusters();
   const cluster = getCluster(clusterId);
 
   const {
@@ -73,7 +72,7 @@ function ClusterLogin() {
     if (cluster) {
       ipcRenderer.send('clusterLogin', { clusterId: cluster.id, email });
     } else {
-      console.error(`Cannot get cluster for id: ${clusterId}`);
+      console.error(`Cannot get cluster`);
     }
   }
 

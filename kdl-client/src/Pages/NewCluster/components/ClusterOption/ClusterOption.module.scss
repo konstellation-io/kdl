@@ -10,16 +10,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  opacity: 1;
-
-  transition: transform ease 0.2s, opacity ease 0.2s;
 
   .title {
     @include font-body;
     color: font-color(light);
 
     height: 5 * $grid-unit;
-    margin-top: 5 * $grid-unit;
+    margin-top: 7 * $grid-unit;
   }
 
   .subtitle {

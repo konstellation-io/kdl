@@ -1,12 +1,16 @@
+import React, { MouseEvent } from 'react';
+
 import { Action } from './Cluster';
-import React from 'react';
 import styles from './Cluster.module.scss';
 import { useHistory } from 'react-router-dom';
 
 function ActionButton({ label, Icon, onClick, to }: Action) {
   const history = useHistory();
 
-  function handleOnClick() {
+  function handleOnClick(event?: MouseEvent<HTMLDivElement>) {
+    event?.stopPropagation();
+    event?.preventDefault();
+
     if (onClick) onClick();
     else if (to) history.push(to || '');
   }

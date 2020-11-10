@@ -95,7 +95,7 @@ function InstallLocalCluster() {
           <Button
             label="RETRY"
             onClick={startInstallation}
-            theme={BUTTON_THEMES.WARN}
+            theme={BUTTON_THEMES.ERROR}
             primary
           />
         </div>

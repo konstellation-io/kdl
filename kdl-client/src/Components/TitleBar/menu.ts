@@ -1,28 +1,81 @@
-import { remote } from 'electron';
+import * as LINK from 'Constants/konstellationLinks';
 
-const { Menu, MenuItem } = remote;
-const menu = new Menu();
+import { Cluster, ClusterType } from 'Hooks/useClusters';
+import { MenuItemConstructorOptions, remote, shell } from 'electron';
+import ROUTE, { buildRoute } from 'Constants/routes';
 
-menu.append(
-  new MenuItem({
-    label: 'File',
+import history from 'browserHistory';
+
+const MAIL_SUBJECT = 'Contact';
+
+const { Menu } = remote;
+
+export const updateMenu = {
+  cluster: (clusters: Cluster[]) => {
+    const localCluster = clusters.find((c) => c.type === ClusterType.LOCAL);
+    const remoteClusters = clusters.filter(
+      (c) => c.type === ClusterType.REMOTE
+    );
+
+    // @ts-ignore
+    const clustersMenu: MenuItemConstructorOptions = template[0].submenu[2];
+
+    if (clusters.length !== 0) {
+      clustersMenu.enabled = clusters.length !== 0;
+      // @ts-ignore
+      template[0].submenu[1].enabled = true;
+    }
+
+    // @ts-ignore
+    const clustersSubMenu: MenuItemConstructorOptions[] = clustersMenu.submenu;
+    clustersSubMenu.length = 0;
+
+    if (localCluster) {
+      clustersSubMenu.push(
+        {
+          label: localCluster.name,
+          click: () =>
+            history.push(buildRoute.cluster(ROUTE.CLUSTER, localCluster.id)),
+        },
+        {
+          type: 'separator',
+        }
+      );
+    }
+
+    remoteClusters.forEach((cluster) => {
+      clustersSubMenu.push({
+        label: cluster.name,
+        click: () =>
+          history.push(buildRoute.cluster(ROUTE.CLUSTER, cluster.id)),
+      });
+    });
+
+    return Menu.buildFromTemplate(template);
+  },
+};
+
+const template: MenuItemConstructorOptions[] = [
+  {
+    label: 'Cluster',
     submenu: [
       {
-        label: 'Info',
-        click: () => alert('Info'),
+        label: 'Add Cluster',
+        click: () => history.push(ROUTE.NEW_CLUSTER),
       },
       {
-        label: 'Exit',
-        accelerator: 'Ctrl+Q',
+        label: 'View all Clusters',
         enabled: false,
-        click: () => alert('Exit'),
+        click: () => history.push(ROUTE.HOME),
+      },
+      {
+        label: 'Go to Cluster...',
+        enabled: false,
+        submenu: [],
       },
     ],
-  })
-);
-
-menu.append(
-  new MenuItem({
+  },
+  {
     label: 'Edit',
     submenu: [
       {
@@ -49,23 +102,30 @@ menu.append(
         click: () => alert('Select All'),
       },
     ],
-  })
-);
-
-menu.append(
-  new MenuItem({
-    label: 'Help',
+  },
+  {
+    label: 'About',
     submenu: [
       {
         label: 'Repository',
-        click: () => alert('Repository'),
+        click: () => shell.openExternal(LINK.REPOSITORY_URL),
+      },
+      {
+        label: 'Documentation',
+        click: () => shell.openExternal(LINK.DOCUMENTATION_URL),
       },
       {
         label: 'Contact',
-        click: () => alert('Contact'),
+        click: () =>
+          `mailto:${LINK.MAIL_SUPPORT}?subject=${MAIL_SUBJECT}&body=`,
       },
     ],
-  })
-);
+  },
+  {
+    label: 'Help',
+  },
+];
+
+const menu = Menu.buildFromTemplate(template);
 
 export default menu;

@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - ensure-all-platform-installers-work-as-expected
     paths:
       - kdl-client/**
 

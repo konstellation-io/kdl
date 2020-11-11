@@ -78,7 +78,7 @@ function NewProject() {
   });
 
   function onSubmit() {
-    alert('CREATE');
+    console.log('CREATE PROJECT');
   }
 
   if (!data) return <SpinnerCircular />;

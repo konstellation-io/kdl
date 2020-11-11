@@ -1,13 +1,7 @@
-import ProjectBar from './components/ProjectBar/ProjectBar';
 import React from 'react';
 
 function Project() {
-  return (
-    <div>
-      <ProjectBar />
-      Project
-    </div>
-  );
+  return <div>Project</div>;
 }
 
 export default Project;

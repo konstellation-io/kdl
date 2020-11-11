@@ -58,8 +58,7 @@ export default class Request {
 
     console.log(`child process exited with code ${code}`);
     this.event.sender.send(this.replyEventName, {
-      // FIXME: set this to success
-      success: true,
+      success,
       finished: true,
       isError: !success,
       text: `child process exited with code ${code}`,

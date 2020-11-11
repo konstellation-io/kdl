@@ -26,6 +26,10 @@ Builds the app for production to the `build` folder.
 
 This build will be used when publishing the app.
 
+### `yarn local-release`
+
+Builds the app and generates an AppImage for Linux inside a `release` directory. Use this to test wether the App builds correctly or not.
+
 ## Working in Development Mode
 
 ### Starting the app

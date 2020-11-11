@@ -64,12 +64,12 @@
   },
   "build": {
     "appId": "org.konstellation.KdlClient",
+    "extends": null,
     "productName": "KDL",
     "copyright": "Copyright © 2020 Konstellation",
     "files": [
       "build/**/*",
-      "node_modules/**/*",
-      "electron/main.js"
+      "node_modules/**/*"
     ],
     "directories": {
       "buildResources": "assets",
@@ -96,20 +96,19 @@
     }
   },
   "homepage": "./",
-  "main": "electron/electron.js",
+  "main": "build/electron/main.js",
   "scripts": {
     "start": "rescripts start",
-    "build": "yarn build-dev && yarn build-app",
-    "build-app": "rescripts build && cp electron/electron.js build",
+    "build": "yarn build-dev && yarn build-app && yarn build-electron",
+    "build-app": "rescripts build",
     "build-dev": "tsc",
+    "build-electron": "cd electron && tsc && cd ..",
     "test": "rescripts test",
     "eject": "react-scripts eject",
-    "dev": "SASS_PATH=src concurrently \"yarn build-dev\" \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "SASS_PATH=src concurrently \"yarn build-electron\" \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "yarn build",
-    "electron-pack": "electron-builder build -l",
-    "prerelease": "yarn build",
-    "release": "electron-builder build -lw --publish always",
+    "prelocal-release": "yarn build",
+    "local-release": "electron-builder build -l -p never",
     "prettier": "prettier --write --single-quote \"src/**/*.ts\"",
     "gen:types": "apollo client:codegen types --globalTypesFile=src/Graphql/types/globalTypes.ts --target typescript --includes=./src/Graphql/**/*.graphql --localSchemaFile=./graphql/schema.graphql && yarn prettier"
   },

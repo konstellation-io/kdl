@@ -1,7 +1,14 @@
-const { exec } = require('child_process');
+import { ExecException, exec } from 'child_process';
 
-class Request {
-  constructor(event, eventName, command = undefined) {
+import { IpcMainEvent } from 'electron';
+
+export default class Request {
+  event: IpcMainEvent;
+  eventName: string;
+  replyEventName: string;
+  command?: string;
+
+  constructor(event: IpcMainEvent, eventName: string, command: string | undefined = undefined) {
     this.event = event;
     this.eventName = eventName;
     this.replyEventName = `${eventName}Reply`;
@@ -10,22 +17,26 @@ class Request {
 
   runCommand() {
     return new Promise(resolve => {
-      exec(this.command, { timeout: 5000 }, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Command: "${this.command}" failed: ${stderr}`, error);
-          return resolve(false);
-        }
-        console.info(`Command: "${this.command}" output: ${stdout}`);
-        resolve(true);
-      });
+      if (this.command) {
+        exec(this.command, { timeout: 5000 }, (error: ExecException | null, stdout: any, stderr: any) => {
+          if (error) {
+            console.error(`Command: "${this.command}" failed: ${stderr}`, error);
+            return resolve(false);
+          }
+          console.info(`Command: "${this.command}" output: ${stdout}`);
+          resolve(true);
+        });
+      } else {
+        return resolve(false);
+      }
     });
   }
 
-  reply(response) {
+  reply(response: any) {
     this.event.sender.send(this.replyEventName, response);
   }
 
-  onData(data) {
+  onData(data: unknown) {
     console.log(`stdout: ${data}`);
     this.event.sender.send(this.replyEventName, {
       finished: false,
@@ -33,7 +44,7 @@ class Request {
     });
   }
 
-  onError(data) {
+  onError(data: unknown) {
     console.error(`stderr: ${data}`);
     this.event.sender.send(this.replyEventName, {
       finished: false,
@@ -42,9 +53,9 @@ class Request {
     });
   }
 
-  onClose(code) {
+  onClose(code: number) {
     const success = code === 0;
-  
+
     console.log(`child process exited with code ${code}`);
     this.event.sender.send(this.replyEventName, {
       // FIXME: set this to success
@@ -53,9 +64,7 @@ class Request {
       isError: !success,
       text: `child process exited with code ${code}`,
     });
-  
+
     return success;
   }
 }
-
-module.exports = Request;

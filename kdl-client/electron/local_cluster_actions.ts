@@ -1,5 +1,5 @@
-const electron = require('electron');
-const { updateClusterState } = require('./cluster');
+import { ipcMain } from 'electron';
+import { updateClusterState } from './cluster';
 
 // TODO: replace this with real actions
 function doAction() {
@@ -10,14 +10,14 @@ function doAction() {
   });
 }
 
-electron.ipcMain.on('startLocalCluster', (_, clusterId) => {
+ipcMain.on('startLocalCluster', (_: unknown, clusterId: string) => {
   updateClusterState(clusterId, 'STARTING');
   doAction().then(() => {
     updateClusterState(clusterId, 'STARTED');
   });
 });
 
-electron.ipcMain.on('stopLocalCluster', (_, clusterId) => {
+ipcMain.on('stopLocalCluster', (_: unknown, clusterId: string) => {
   updateClusterState(clusterId, 'STOPPING');
   doAction().then(() => {
     updateClusterState(clusterId, 'STOPPED');

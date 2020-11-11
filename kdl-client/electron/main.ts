@@ -1,32 +1,35 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+// Add IPC listeners
+import './store';
+import './local_cluster_actions';
+import './local_cluster_installation';
+import './remote_cluster_actions';
 
-const path = require('path');
-const isDev = require('electron-is-dev');
-const { autoUpdater } = require('electron-updater');
+import { BrowserWindow, app, ipcMain } from 'electron';
+
+import { autoUpdater } from 'electron-updater';
+import isDev from 'electron-is-dev';
+import { join } from 'path';
+
+interface WindowSize {
+  width: number,
+  height: number,
+}
 
 const SPLASH_SCREEN_MIN_TIME = 2000;
-const SPLASH_SCREEN_SIZE = {
+const SPLASH_SCREEN_SIZE: WindowSize = {
   width: 600,
   height: 400,
 };
-const WINDOW_SIZE = {
+const WINDOW_SIZE: WindowSize = {
   width: 1400,
   height: 900,
 };
 
-// Add IPC listeners
-require('./local_cluster_installation.js');
-require('./remote_cluster_actions.js');
-require('./local_cluster_actions.js');
-require('./store.js');
-
-let mainWindow;
-let splashScreen;
+let mainWindow: BrowserWindow | null = null;
+let splashScreen: BrowserWindow | null = null;
 const iconPath = isDev
-  ? path.join(__dirname, '../public/icons/png/64x64.png')
-  : path.join(__dirname, '../build/icons/png/64x64.png');
+  ? join(__dirname, '../../public/icons/png/64x64.png')
+  : join(__dirname, '../icons/png/64x64.png');
 
 function showSplashScreen() {
   splashScreen = new BrowserWindow({
@@ -38,13 +41,13 @@ function showSplashScreen() {
 
   splashScreen.loadURL(
     isDev
-      ? `file://${path.join(__dirname, '../public/splash_screen.html')}`
-      : `file://${path.join(__dirname, '../build/splash_screen.html')}`
+      ? `file://${join(__dirname, '../../public/splash_screen.html')}`
+      : `file://${join(__dirname, '../splash_screen.html')}`
   );
 }
 
 function closeSplashScreen() {
-  splashScreen.close();
+  splashScreen?.close();
   splashScreen = null;
 }
 
@@ -67,7 +70,7 @@ function createMainWindow() {
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
+      : `file://${join(__dirname, '../index.html')}`
   );
 
   if (isDev) {
@@ -79,10 +82,10 @@ function createMainWindow() {
     mainWindow.webContents.openDevTools();
 
     installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name) => {
+      .then((name: string) => {
         console.log(`Added Extension:  ${name}`);
       })
-      .catch((err) => {
+      .catch((err: string) => {
         console.log('An error occurred: ', err);
       });
   }
@@ -133,10 +136,10 @@ app.on('activate', () => {
 
 // when the update has been downloaded and is ready to be installed, notify the BrowserWindow
 autoUpdater.on('update-downloaded', () => {
-  mainWindow.webContents.send('updateReady');
+  mainWindow?.webContents.send('updateReady');
 });
 
 // when receiving a quitAndInstall signal, quit and install the new version ;)
-electron.ipcMain.on('quitAndInstall', () => {
+ipcMain.on('quitAndInstall', () => {
   autoUpdater.quitAndInstall();
 });

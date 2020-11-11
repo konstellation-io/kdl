@@ -32,7 +32,6 @@ function App() {
             <Redirect exact from={ROUTE.HOME} to={ROUTE.NEW_CLUSTER} />
           )}
 
-          <Route exact path={ROUTE.HOME} component={Clusters} />
           <Route path={ROUTE.CLUSTER} component={ClusterClient} />
           <Route exact path={ROUTE.NEW_CLUSTER} component={NewCluster} />
           <Route
@@ -51,6 +50,7 @@ function App() {
             component={ConnectToRemoteCluster}
           />
           <Route exact path={ROUTE.CLUSTER_LOGIN} component={ClusterLogin} />
+          <Route default path={ROUTE.HOME} component={Clusters} />
         </Switch>
       </Router>
       <ToastContainer

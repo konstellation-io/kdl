@@ -28,9 +28,9 @@ function Cluster() {
     () => () => {
       updateOpenedCluster(null);
       titlebar.updateTitle('Konstellation');
-      // We want to execute this on on component mount/unmount
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // We want to execute this on on component mount/unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

@@ -1,16 +1,16 @@
-const electron = require('electron');
-const settings = require('./settings.json');
-const { createCluster } = require('./cluster');
-const { spawn } = require('child_process');
-const Request = require('./Request');
+import Request from './Request';
+import { createCluster } from './cluster';
+import { ipcMain } from 'electron';
+import settings from './settings.json';
+import { spawn } from 'child_process';
 
-const commands = {
+const commands: { [k: string]: string} = {
   k8s: "kubectl get nodes -o jsonpath='{.items[*].status.conditions[*].type}'",
   minikube: 'minikube status',
   helm: 'helm ls'
 };
 
-function createNamespace(request) {
+function createNamespace(request: Request) {
   return new Promise(resolve => {
     const cmd = spawn('kubectl', ['create', 'ns', 'kst-local']);
 
@@ -27,7 +27,7 @@ function createNamespace(request) {
   });
 }
 
-function installComponents(request) {
+function installComponents(request: Request) {
   return new Promise(resolve => {
     const cmd = spawn('helm', [
       'upgrade',
@@ -60,7 +60,7 @@ function installComponents(request) {
   });
 }
 
-electron.ipcMain.on('installLocalCluster', event => {
+ipcMain.on('installLocalCluster', event => {
   const request = new Request(event, 'installLocalCluster');
   createNamespace(request).then(success => {
     if (success) {
@@ -69,7 +69,7 @@ electron.ipcMain.on('installLocalCluster', event => {
   });
 });
 
-electron.ipcMain.on('checkRequirement', (event, requirement) => {
+ipcMain.on('checkRequirement', (event, requirement) => {
   const command = commands[requirement];
   const request = new Request(event, 'checkRequirement', command);
 

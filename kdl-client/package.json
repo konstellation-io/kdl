@@ -81,7 +81,10 @@
     },
     "linux": {
       "category": "Utility",
-      "target": "AppImage"
+      "target": ["AppImage", "snap"],
+      "maintainer": "Intelygenz",
+      "executableName": "Konstellation Dev Lab",
+      "icon": "build/icons/512x512.png"
     },
     "win": {
       "target": "NSIS"

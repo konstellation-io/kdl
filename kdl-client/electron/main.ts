@@ -28,8 +28,8 @@ const WINDOW_SIZE: WindowSize = {
 let mainWindow: BrowserWindow | null = null;
 let splashScreen: BrowserWindow | null = null;
 const iconPath = isDev
-  ? join(__dirname, '../../public/icons/png/64x64.png')
-  : join(__dirname, '../icons/png/64x64.png');
+  ? join(__dirname, '../../public/icons/64x64.png')
+  : join(__dirname, '../icons/64x64.png');
 
 function showSplashScreen() {
   splashScreen = new BrowserWindow({

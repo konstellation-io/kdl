@@ -95,15 +95,25 @@
       "icon": "build/icons/512x512.png"
     },
     "win": {
-      "target": "NSIS"
+      "icon": "build/icons/512x512.png",
+      "target": "NSIS",
+      "publisherName": "Konstellation IO"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerHeaderIcon": "build/icons/512x512.png",
+      "shortcutName": "KDL"
     },
     "mac": {
       "target": "dmg",
       "category": "public.app-category.utilities",
-      "darkModeSupport": false
+      "darkModeSupport": false,
+      "icon": "build/icons/512x512.png",
+      "type": "development"
     },
     "dmg": {
-      "icon": false
+      "icon": "build/icons/512x512.png",
+      "title": "Konstellation Dev Lab"
     }
   },
   "homepage": "./",
@@ -119,7 +129,7 @@
     "dev": "SASS_PATH=src concurrently \"yarn build-electron\" \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "prelocal-release": "yarn build",
-    "local-release": "electron-builder build -l -p never",
+    "local-release": "electron-builder build -w -p never",
     "prettier": "prettier --write --single-quote \"src/**/*.ts\"",
     "gen:types": "apollo client:codegen types --globalTypesFile=src/Graphql/types/globalTypes.ts --target typescript --includes=./src/Graphql/**/*.graphql --localSchemaFile=./graphql/schema.graphql && yarn prettier"
   },

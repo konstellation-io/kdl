@@ -10,7 +10,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout
@@ -32,6 +33,8 @@ jobs:
         with:
           package_root: kdl-client
           github_token: ${{ secrets.github_token }}
+          windows_certs: ${{ secrets.windows_certs }}
+          windows_certs_password: ${{ secrets.windows_certs_password }}
           release: true
         env:
           SASS_PATH: src

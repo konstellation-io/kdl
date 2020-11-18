@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [macos-latest]
         # os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -35,6 +35,8 @@ jobs:
           github_token: ${{ secrets.github_token }}
           windows_certs: ${{ secrets.windows_certs }}
           windows_certs_password: ${{ secrets.windows_certs_password }}
+          mac_certs: ${{ secrets.mac_certs }}
+          mac_certs_password: ${{ secrets.mac_certs_password }}
           release: true
         env:
           SASS_PATH: src

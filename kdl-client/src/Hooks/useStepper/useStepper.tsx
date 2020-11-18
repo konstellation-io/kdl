@@ -94,7 +94,7 @@ export default function useStepper({
   function getActions() {
     let actions = [];
 
-    const hasError = steps.map((s) => s.error).some((e) => !!e);
+    const hasError = steps.some((step) => !!step.error);
 
     const buttonCancel = (
       <ActionButton key="cancel" label="CANCEL" to={cancelRoute} />

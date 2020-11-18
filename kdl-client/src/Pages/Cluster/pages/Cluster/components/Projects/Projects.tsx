@@ -1,4 +1,8 @@
 import { ErrorMessage, SpinnerCircular } from 'kwc';
+import {
+  GET_PROJECT_FILTERS,
+  GetProjectFilters,
+} from 'Graphql/client/queries/getProjectsFilters.graphql';
 
 import AddProject from './components/Project/AddProject';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
@@ -12,12 +16,17 @@ import { useQuery } from '@apollo/client';
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 function Projects() {
   const { data, error, loading } = useQuery<GetProjects>(GetProjectsQuery);
+  const { data: projectFiltersData } = useQuery<GetProjectFilters>(
+    GET_PROJECT_FILTERS
+  );
+
   const { filterProjects } = useProjectFilters();
 
   if (loading) return <SpinnerCircular />;
-  if (error || !data) return <ErrorMessage />;
+  if (error || !data || !projectFiltersData) return <ErrorMessage />;
 
-  const projects = filterProjects(data.projects);
+  const filters = projectFiltersData.projectFilters;
+  const projects = filterProjects(data.projects, filters);
 
   return (
     <div className={styles.container}>

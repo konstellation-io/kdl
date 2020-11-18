@@ -10,6 +10,8 @@ const MAIL_SUBJECT = 'Contact';
 
 const { Menu } = remote;
 
+// TODO: fix typings
+
 export const updateMenu = {
   cluster: (clusters: Cluster[]) => {
     const localCluster = clusters.find((c) => c.type === ClusterType.LOCAL);
@@ -21,7 +23,7 @@ export const updateMenu = {
     const clustersMenu: MenuItemConstructorOptions = template[0].submenu[2];
 
     if (clusters.length !== 0) {
-      clustersMenu.enabled = clusters.length !== 0;
+      clustersMenu.enabled = true;
       // @ts-ignore
       template[0].submenu[1].enabled = true;
     }

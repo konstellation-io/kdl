@@ -1,4 +1,8 @@
 import { ErrorMessage, SpinnerCircular } from 'kwc';
+import {
+  GET_PROJECT_FILTERS,
+  GetProjectFilters,
+} from 'Graphql/client/queries/getProjectsFilters.graphql';
 
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import React from 'react';
@@ -11,12 +15,16 @@ const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
 function ProjectsShownStatus() {
   const { data, error, loading } = useQuery<GetProjects>(GetProjectsQuery);
+  const { data: projectFiltersData } = useQuery<GetProjectFilters>(
+    GET_PROJECT_FILTERS
+  );
   const { filterProjects } = useProjectFilters();
 
   if (loading) return <SpinnerCircular />;
-  if (error || !data) return <ErrorMessage />;
+  if (error || !data || !projectFiltersData) return <ErrorMessage />;
 
-  const projects = filterProjects(data.projects);
+  const filters = projectFiltersData.projectFilters;
+  const projects = filterProjects(data.projects, filters);
 
   const projectsOk = projects.filter((p) => !p.error).length;
   const projectsError = projects.length - projectsOk;

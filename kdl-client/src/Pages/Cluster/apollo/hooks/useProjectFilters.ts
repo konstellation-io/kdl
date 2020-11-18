@@ -1,8 +1,7 @@
-import { GET_PROJECT_FILTERS } from 'Graphql/client/queries/getProjectsFilters.graphql';
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
+import { ProjectFilters } from '../models/ProjectFilters';
 import { ProjectState } from 'Pages/Cluster/pages/Cluster/components/ClusterInfo/components/ProjectStateIcon/ProjectStateIcon';
 import { projectFilters } from './../cache';
-import { useQuery } from '@apollo/client';
 
 export type NewFilters = {
   name?: string;
@@ -10,9 +9,6 @@ export type NewFilters = {
 };
 
 function useProjectFilters() {
-  // Makes sure cache is updated
-  useQuery(GET_PROJECT_FILTERS);
-
   function updateFilters(newFilters: NewFilters) {
     const filters = projectFilters();
 
@@ -22,27 +18,29 @@ function useProjectFilters() {
     });
   }
 
-  function filterByState(project: GetProjects_projects) {
-    const filters = projectFilters();
-
-    if (filters.states.length === 0) return true;
+  function filterByState(
+    project: GetProjects_projects,
+    states: ProjectState[]
+  ) {
+    if (states.length === 0) return true;
 
     return (
-      (filters.states.includes(ProjectState.ERROR) || !project.error) &&
-      (filters.states.includes(ProjectState.STARTED) ||
+      (states.includes(ProjectState.ERROR) || !project.error) &&
+      (states.includes(ProjectState.STARTED) ||
         project.state !== ProjectState.STARTED) &&
-      (filters.states.includes(ProjectState.STOPPED) ||
+      (states.includes(ProjectState.STOPPED) ||
         project.state !== ProjectState.STOPPED) &&
-      (filters.states.includes(ProjectState.NOT_FAVORITE) || project.favorite)
+      (states.includes(ProjectState.NOT_FAVORITE) || project.favorite)
     );
   }
 
-  function filterProjects(projects: GetProjects_projects[]) {
-    const filters = projectFilters();
-
+  function filterProjects(
+    projects: GetProjects_projects[],
+    filters: ProjectFilters
+  ) {
     let filteredProjects = projects
       .filter((project) => project.name.includes(filters.name))
-      .filter(filterByState);
+      .filter((project) => filterByState(project, filters.states));
 
     projectFilters({
       ...filters,

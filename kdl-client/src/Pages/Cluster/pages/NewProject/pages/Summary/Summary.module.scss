@@ -1,0 +1,80 @@
+@import 'Styles/colors';
+@import 'Styles/variables';
+@import 'Styles/mixins';
+
+.container {
+  height: 100%;
+}
+
+.section {
+  @include font-title;
+  color: font-color(lowlight);
+
+  .title {
+    margin: 0 0 3 * $grid-unit 0;
+  }
+}
+
+.field {
+  margin-bottom: 6 * $grid-unit;
+}
+
+.label {
+  @include font-caption;
+  color: font-color(regular);
+  margin: 0 0 $grid-unit 0;
+}
+
+.name {
+  @include font-headline;
+  color: font-color(light);
+}
+.description,
+.repository,
+.email {
+  @include font-body;
+  color: font-color(lowlight);
+}
+.repository,
+.email {
+  display: flex;
+  align-items: center;
+
+  p {
+    margin: 0 2 * $grid-unit 0 2 * $grid-unit;
+  }
+}
+
+.incomplete {
+  @include font-body;
+  color: palette(alert);
+
+  margin: 0;
+}
+
+.check {
+  @include font-small;
+  color: palette(success);
+
+  @include circle-before(palette(success));
+
+  padding-left: 2 * $grid-unit;
+  line-height: 3 * $grid-unit;
+  margin: 0 $grid-unit / 2;
+
+  &.error {
+    color: palette(error);
+
+    &:before {
+      background-color: palette(error);
+    }
+  }
+
+  &.skip {
+    color: palette(alert);
+
+    &:before {
+      background-color: palette(alert);
+    }
+  }
+}

@@ -13,11 +13,12 @@ $size-t4: 250px;
 $size-tot: 151px;
 .triangle {
   position: relative;
-  cursor: pointer;
 
   user-select: none;
   height: $size-tot;
   width: $size-tot;
+
+  transition: transform ease 0.3s;
 
   &.down {
     transform: rotateX(180deg);
@@ -71,6 +72,14 @@ $size-tot: 151px;
 
 .triangle:hover,
 .hoverContainer:hover {
+  .triangle {
+    transform: scale(1.1);
+
+    &.down {
+      transform: scale(1.1) rotateX(180deg);
+    }
+  }
+
   .t4 {
     font-size: $size-t4 * 1.1;
   }

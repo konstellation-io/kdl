@@ -1,0 +1,14 @@
+query GetProjects {
+  projects {
+    id
+    name
+    description
+    favorite
+    repository {
+      id
+      type
+    }
+    state
+    error
+  }
+}

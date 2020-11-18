@@ -1,6 +1,5 @@
 import { LocalCluster, RemoteCluster } from './components/Cluster/Cluster';
 import React, { useEffect, useState } from 'react';
-import { Slide, ToastContainer } from 'react-toastify';
 import useClusters, { Cluster, ClusterType } from 'Hooks/useClusters';
 
 import ClustersBar from './components/ClustersBar/ClustersBar';
@@ -68,19 +67,6 @@ function Clusters() {
           addClusterRoute={ROUTE.CONNECT_TO_REMOTE_CLUSTER}
         />
       </div>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-        transition={Slide}
-        limit={1}
-      />
     </div>
   );
 }

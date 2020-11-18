@@ -1,0 +1,93 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.container {
+  position: relative;
+  display: flex;
+  height: 8 * $grid-unit;
+  border-bottom: solid 2px palette(base, 400);
+
+  & > div:not(:first-child) {
+    border-left: solid 2px palette(base, 400);
+  }
+}
+
+.clusterDetails {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 2.5 * $grid-unit;
+
+  .clusterName {
+    display: flex;
+
+    .clusterState {
+      @include make-triangle(2 * $grid-unit, palette(success));
+
+      margin-right: $grid-unit;
+    }
+    .clusterNameInput {
+      @include font-subheader;
+      color: font-color(light);
+    }
+  }
+  .clusterUrl {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+    height: 2.5 * $grid-unit;
+
+    p {
+      @include font-body;
+      color: palette(lowlight);
+
+      margin: 0 2 * $grid-unit 0 0;
+    }
+  }
+}
+
+.projectsShown {
+  @include font-caption;
+  color: font-color(lowlight);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 $grid-unit;
+
+  .nProjects {
+    color: font-color(light);
+    margin-right: $grid-unit;
+  }
+
+  .formProjectStates {
+    > div > div {
+      border: none;
+      background-color: transparent;
+    }
+  }
+}
+
+.projectsShownStatus {
+  @include font-small;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2 * $grid-unit;
+
+  .nStateProjects {
+    margin-right: 0.5 * $grid-unit;
+  }
+
+  .ok {
+    color: palette(success);
+    margin-right: 3 * $grid-unit;
+  }
+  .error {
+    color: palette(error);
+  }
+}

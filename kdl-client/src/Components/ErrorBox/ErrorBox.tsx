@@ -4,11 +4,11 @@ import AnimateHeight from 'react-animate-height';
 import { Button } from 'kwc';
 import IconOpen from '@material-ui/icons/KeyboardArrowDown';
 import IconRetry from '@material-ui/icons/Refresh';
+import { MAIL_SUPPORT } from 'Constants/konstellationLinks';
 import cx from 'classnames';
 import { shell } from 'electron';
 import styles from './ErrorBox.module.scss';
 
-const MAIL_SUPPORT = 'support@kosntellation.com';
 const MAIL_SUBJECT = 'LocalClusterRequirements';
 
 function getHeight(opened: boolean) {
@@ -17,7 +17,7 @@ function getHeight(opened: boolean) {
 
 type Action = {
   label: string;
-  onClick: Function;
+  onClick: () => void;
 };
 
 type Props = {

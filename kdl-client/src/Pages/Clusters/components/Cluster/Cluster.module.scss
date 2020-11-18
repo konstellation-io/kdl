@@ -26,6 +26,7 @@ $label-height: 3 * $grid-unit;
       box-shadow: inset 0 0 0 3px transparent,
         0 2px 3 * $grid-unit 0 palette(highlight, 900);
       background-color: palette(highlight, 900);
+      border-color: palette(highlight);
     }
 
     .nameSection .name,
@@ -39,11 +40,13 @@ $label-height: 3 * $grid-unit;
   background-color: palette(base, 400);
   transform: skew(-26.5deg);
   height: 100%;
-  box-shadow: inset 0 0 0 3px palette(base);
+  box-shadow: inset 0 0 0 2px palette(base);
+  border: solid 1px palette(base);
   pointer-events: all;
   cursor: pointer;
 
-  transition: background-color ease 0.4s, box-shadow ease 0.4s;
+  transition: background-color ease 0.4s, box-shadow ease 0.4s,
+    border-color ease 0.4s;
 
   .bgBand {
     position: absolute;
@@ -92,21 +95,21 @@ $label-height: 3 * $grid-unit;
 
   &.noOffset {
     left: -24px;
-    clip-path: polygon(0 100%, 12px 0, 100% 0, 100% 100%);
+    clip-path: polygon(0.9px 100%, 13px 0, 100% 0, 100% 100%);
   }
 }
 
 .triangle {
   @include make-triangle($big-triangle-base, palette(base));
   position: absolute;
-  bottom: 0;
-  left: -39px;
+  bottom: 1px;
+  left: -36px;
 
   &.down {
     transform: rotateX(180deg);
-    top: 0;
+    top: 1px;
     left: auto;
-    right: -39px;
+    right: -36px;
   }
 
   .state {
@@ -226,19 +229,12 @@ $label-height: 3 * $grid-unit;
 
   .copy {
     pointer-events: all;
-    cursor: pointer;
-    width: 40px;
-    height: 24px;
-    position: relative;
+    color: inherit;
 
-    .copyIcon {
-      @include center;
-    }
+    transition: unset;
 
     &:hover {
-      .copyIcon {
-        color: font-color(light);
-      }
+      color: font-color(light);
     }
   }
 }
@@ -247,6 +243,7 @@ $label-height: 3 * $grid-unit;
   position: relative;
   height: 5 * $grid-unit;
   width: 15 * $grid-unit;
+  margin: -1px 1px 0 0;
 
   .actionButtonBg {
     position: absolute;
@@ -298,8 +295,7 @@ $label-height: 3 * $grid-unit;
 
   &:hover {
     .addClusterBg {
-      border: 1px solid font-color(lowlight);
-      background-color: palette(highlight, 900);
+      border: 1px solid palette(highlight);
     }
     .addClusterLabel {
       color: font-color(highlight);

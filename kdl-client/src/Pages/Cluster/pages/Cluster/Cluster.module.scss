@@ -1,0 +1,8 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.container {
+  background-color: palette(base, 800);
+  height: 100%;
+}

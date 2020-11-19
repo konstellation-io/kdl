@@ -30,4 +30,8 @@ Access [KDL snap page](https://intelygenz.zoom.us/j/99817136044?pwd=RDN5RFNGd3BO
 
 ## Windows
 
+To start the application, you need to [download](https://github.com/konstellation-io/kdl/releases) the `./konstellation-dev-lab-*.exe` and execute the file.
+
+This application uses a one click installer, so you just need to run the `.exe` file and the installation will occur then.
+
 ## MacOS

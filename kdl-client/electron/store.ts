@@ -14,8 +14,13 @@ ipcMain.handle('setStoreValue', (_: unknown, { key, value }: StoreValue) => {
 	return store.set(key, value);
 });
 
+const subcribedKeys: string[] = [];
 ipcMain.on('subscribeToValue', (event: any, key: "clusters") => {
-  store.onDidChange(key, (newValue: unknown, _: unknown) => {
-    event.sender.send('subscribeToValueReply', newValue);
-  });
+  if (!subcribedKeys.includes(key)) {
+    store.onDidChange(key, (newValue: unknown, _: unknown) => {
+      event.sender.send('subscribeToValueReply', newValue);
+    });
+
+    subcribedKeys.push(key);
+  }
 });

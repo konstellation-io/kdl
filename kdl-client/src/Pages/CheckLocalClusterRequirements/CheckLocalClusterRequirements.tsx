@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from 'kwc';
 import CheckLocalRequirements from './components/CheckLocalRequirements/CheckLocalRequirements';
-import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
+import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
 import ROUTE from 'Constants/routes';
 import styles from './CheckLocalClusterRequirements.module.scss';
 import { useHistory } from 'react-router-dom';
@@ -19,6 +19,12 @@ function CheckLocalClusterRequirements() {
 
   const actions = [
     <Button
+      label="CANCEL"
+      key="button-2"
+      className={styles.cancelButton}
+      onClick={() => history.goBack()}
+    />,
+    <Button
       label="INSTALL"
       key="button-1"
       disabled={checksState !== CheckState.OK}
@@ -26,28 +32,23 @@ function CheckLocalClusterRequirements() {
       className={styles.installButton}
       primary
     />,
-    <Button
-      label="CANCEL"
-      key="button-2"
-      className={styles.cancelButton}
-      onClick={() => history.goBack()}
-    />,
   ];
   return (
-    <ColumnPage
+    <DefaultPage
       title="Install local Cluster"
       subtitle="Konstellation Cluster is based on Kubernetes. Kubernetes can run in almost any platform. The local cluster installation is checking if everything is ready to start the installation."
       actions={actions}
     >
-      <>
-        <p className={styles.checkTitle}>
-          {checksState === CheckState.PENDING
-            ? 'CHECKING REQUIREMENTS'
-            : 'REQUIREMENTS CHECKED'}
+      <div className={styles.container}>
+        <p className={styles.title}>Checking requirements</p>
+        <p className={styles.description}>
+          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
+          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
+          vel iaculis mauris. Sed ullamcorper tellus.
         </p>
         <CheckLocalRequirements setChecksState={setChecksState} />
-      </>
-    </ColumnPage>
+      </div>
+    </DefaultPage>
   );
 }
 

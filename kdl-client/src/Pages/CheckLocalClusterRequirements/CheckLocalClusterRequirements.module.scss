@@ -2,18 +2,28 @@
 @import 'Styles/mixins';
 @import 'Styles/colors';
 
-.checkTitle {
-  @include font-caption;
+.container {
+  padding: 8 * $grid-unit;
+}
+
+.title {
+  @include font-title;
+  color: font-color(light);
+
+  margin-bottom: 2 * $grid-unit;
+}
+
+.description {
+  @include font-small;
   color: font-color(regular);
-  text-align: center;
 
   margin-bottom: 4 * $grid-unit;
 }
 
 .installButton {
-  width: 29 * $grid-unit;
+  width: 18 * $grid-unit;
 }
 
 .cancelButton {
-  width: 17 * $grid-unit;
+  width: 14 * $grid-unit;
 }

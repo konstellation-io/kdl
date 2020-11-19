@@ -2,7 +2,7 @@ import { Button, CHECK, TextInput } from 'kwc';
 import ROUTE, { RouteClusterParams } from 'Constants/routes';
 import React, { useEffect, useState } from 'react';
 
-import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
+import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
 import EmailIcon from '@material-ui/icons/Mail';
 import cx from 'classnames';
 import { ipcRenderer } from 'electron';
@@ -76,10 +76,24 @@ function ClusterLogin() {
     }
   }
 
-  const actions = <Button label="CANCEL" to={ROUTE.HOME} />;
+  const actions = [
+    <Button
+      key="cancel"
+      label="CANCEL"
+      className={styles.cancelButton}
+      to={ROUTE.HOME}
+    />,
+    <Button
+      key="login"
+      label="SEND ME A LOGIN LINK"
+      className={styles.loginButton}
+      onClick={handleSubmit(onSubmit)}
+      primary
+    />,
+  ];
 
   return (
-    <ColumnPage
+    <DefaultPage
       title="Login to Remote Cluster"
       subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. "
       actions={actions}
@@ -112,11 +126,6 @@ function ClusterLogin() {
           />
         </div>
         <div className={styles.buttons}>
-          <Button
-            label="SEND ME A LOGIN LINK"
-            onClick={handleSubmit(onSubmit)}
-            primary
-          />
           <div className={cx(styles.confirmation, { [styles.show]: linkSent })}>
             <div className={styles.icon}>
               <EmailIcon className="icon-regular" />
@@ -125,7 +134,7 @@ function ClusterLogin() {
           </div>
         </div>
       </div>
-    </ColumnPage>
+    </DefaultPage>
   );
 }
 

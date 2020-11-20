@@ -6,19 +6,13 @@ import styles from './BGPage.module.scss';
 type Props = {
   title: string;
   subtitle?: string;
-  bgFile: string;
   children: JSX.Element;
   actions?: JSX.Element | JSX.Element[];
 };
 
-const BGPage: FC<Props> = ({ title, subtitle, bgFile, actions, children }) => {
+const BGPage: FC<Props> = ({ title, subtitle, actions, children }) => {
   return (
     <>
-      <div className={styles.bg}>
-        <video autoPlay loop muted>
-          <source src={bgFile} type="video/mp4" />
-        </video>
-      </div>
       <div className={styles.container}>
         <div className={styles.content}>
           <h1>{title}</h1>

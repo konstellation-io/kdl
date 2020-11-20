@@ -5,7 +5,6 @@ import { Button } from 'kwc';
 import ClusterOption from './components/ClusterOption/ClusterOption';
 import ROUTE from 'Constants/routes';
 import React from 'react';
-import file from './bg.mp4';
 import styles from './NewCluster.module.scss';
 
 function NewCluster() {
@@ -14,7 +13,6 @@ function NewCluster() {
     <BGPage
       title="Add a Cluster"
       subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. "
-      bgFile={file}
       actions={actions}
     >
       <div className={styles.clusters}>

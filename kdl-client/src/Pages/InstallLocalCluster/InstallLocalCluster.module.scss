@@ -3,31 +3,28 @@
 @import 'Styles/colors';
 
 .container {
-  padding: 0 12 * $grid-unit;
+  padding: 8 * $grid-unit;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .subtitle {
-  @include font-small;
-  color: font-color(lowlight);
-  text-align: center;
+  @include font-caption;
+  color: font-color(regular);
 
-  margin-top: -3 * $grid-unit;
+  margin-left: 2.5 * $grid-unit;
 }
 
-.buttons {
-  margin-top: 4 * $grid-unit;
+.connectButton,
+.laterButton,
+.retryButton {
+  width: 15 * $grid-unit;
 }
 
-.buttons > a:first-child > div {
-  margin-bottom: $grid-unit;
+.backButton {
+  width: 12 * $grid-unit;
 }
 
-.retry {
-  display: flex;
-  div {
-    height: 30px !important;
-  }
+.retryButton {
+  width: 15 * $grid-unit;
 }

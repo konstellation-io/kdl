@@ -4,7 +4,7 @@
 
 .container {
   width: 100%;
-  padding: 0 11 * $grid-unit;
+  padding: 8 * $grid-unit;
 
   .formClusterName {
     margin-top: 4 * $grid-unit;
@@ -14,6 +14,25 @@
     width: 100%;
     margin-top: 2 * $grid-unit;
   }
+}
+
+.title {
+  @include font-title;
+  color: font-color(light);
+
+  margin-top: 0;
+}
+.subtitle {
+  @include font-small;
+  color: font-color(regular);
+}
+
+.connectButton {
+  width: 18 * $grid-unit;
+}
+
+.cancelButton {
+  width: 12 * $grid-unit;
 }
 
 .loader {

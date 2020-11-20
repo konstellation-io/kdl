@@ -5,7 +5,8 @@ import StatusCircle, {
   States,
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
 
-import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
+import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
+import SidebarBottom from 'Components/Layout/Page/DefaultPage/SidebarBottom';
 import { ipcRenderer } from 'electron';
 import styles from './ConnectToRemoteCluster.module.scss';
 import useClusters from 'Hooks/useClusters';
@@ -138,22 +139,37 @@ function ConnectToRemoteCluster() {
   ) {
     actions = [
       <Button
+        label="CANCEL"
+        className={styles.cancelButton}
+        key="button-2"
+        onClick={() => history.goBack()}
+      />,
+      <Button
         label="CONNECT"
+        className={styles.connectButton}
         onClick={handleSubmit(onSubmit)}
         key="button-1"
         primary
       />,
-      <Button label="CANCEL" key="button-2" onClick={() => history.goBack()} />,
     ];
   }
 
   return (
-    <ColumnPage
+    <DefaultPage
       title="Connect to a Remote Cluster"
       subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum."
       actions={actions}
     >
       <div className={styles.container}>
+        <p className={styles.title}>How to connect to a Server</p>
+        <p className={styles.subtitle}>
+          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
+          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
+          vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem
+          tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh
+          aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis
+          accumsan turpis.
+        </p>
         <div className={styles.formClusterName}>
           <TextInput
             label="cluster name"
@@ -192,10 +208,14 @@ function ConnectToRemoteCluster() {
           />
         </div>
         {connectionState && (
-          <div className={styles.loader}>{getStateCircle(connectionState)}</div>
+          <SidebarBottom>
+            <div className={styles.loader}>
+              {getStateCircle(connectionState)}
+            </div>
+          </SidebarBottom>
         )}
       </div>
-    </ColumnPage>
+    </DefaultPage>
   );
 }
 

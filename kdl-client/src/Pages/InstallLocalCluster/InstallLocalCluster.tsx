@@ -5,9 +5,9 @@ import StatusCircle, {
   States,
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
 
-import ColumnPage from 'Components/Layout/Page/ColumnPage/ColumnPage';
-import IconBack from '@material-ui/icons/ArrowBack';
+import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
 import ROUTE from 'Constants/routes';
+import SidebarBottom from 'Components/Layout/Page/DefaultPage/SidebarBottom';
 import { ipcRenderer } from 'electron';
 import styles from './InstallLocalCluster.module.scss';
 
@@ -77,46 +77,60 @@ function InstallLocalCluster() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let buttons;
+  let actions: JSX.Element[];
   switch (installationState) {
     case InstallationState.OK:
-      buttons = (
-        <>
-          {/* TODO: redirect to cluster */}
-          <Button label="CONNECT NOW" to={ROUTE.HOME} primary />
-          <Button label="MAYBE LATER" to={ROUTE.HOME} />
-        </>
-      );
+      /* TODO: redirect to cluster */
+      actions = [
+        <Button
+          key="connect"
+          className={styles.connectButton}
+          label="CONNECT NOW"
+          to={ROUTE.HOME}
+          primary
+        />,
+        <Button
+          key="later"
+          className={styles.laterButton}
+          label="MAYBE LATER"
+          to={ROUTE.HOME}
+        />,
+      ];
       break;
     case InstallationState.ERR:
-      buttons = (
-        <div className={styles.retry}>
-          <Button label="" Icon={IconBack} to={ROUTE.HOME} />
-          <Button
-            label="RETRY"
-            onClick={startInstallation}
-            theme={BUTTON_THEMES.ERROR}
-            primary
-          />
-        </div>
-      );
+      actions = [
+        <Button
+          key="back"
+          className={styles.backButton}
+          label="BACK"
+          to={ROUTE.HOME}
+        />,
+        <Button
+          key="retry"
+          className={styles.retryButton}
+          label="RETRY"
+          onClick={startInstallation}
+          theme={BUTTON_THEMES.ERROR}
+          primary
+        />,
+      ];
       break;
     default:
-      buttons = null;
+      actions = [];
   }
 
   return (
-    <ColumnPage
-      title="Installing Local Cluster"
+    <DefaultPage
+      title="Install Local Cluster"
       subtitle="Konstellation is being installed into your Kubernetes. Please, don't stop or restart your local Kubernetes during the installation."
+      actions={actions}
     >
       <div className={styles.container}>
-        <p className={styles.subtitle}>This can take few minutes.</p>
-        {getStateCircle(installationState)}
+        <p className={styles.subtitle}>INSTALLING LOG</p>
         <LogViewer logs={logs} />
-        <div className={styles.buttons}>{buttons}</div>
+        <SidebarBottom>{getStateCircle(installationState)}</SidebarBottom>
       </div>
-    </ColumnPage>
+    </DefaultPage>
   );
 }
 

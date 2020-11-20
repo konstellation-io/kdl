@@ -14,13 +14,20 @@
         padding: 0;
       }
 
-      div {
+      .bg {
         position: relative;
         height: 100%;
         width: 100%;
       }
-
-      div img {
+      .bg > video {
+        opacity: 0.5;
+        width: auto;
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .bg > img {
         position: absolute;
         top: 0;
         left: 0;
@@ -31,7 +38,10 @@
     </style>
   </head>
   <body style="width: 600px; height: 400px">
-    <div>
+    <div class="bg">
+      <video autoPlay loop muted>
+        <source src="../src/Pages/NewCluster/bg.mp4" type="video/mp4" />
+      </video>
       <img
         src="./kdl.png"
         alt="Konstellation Development Lab"

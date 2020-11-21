@@ -10,13 +10,13 @@ $size-t1: 24px;
 $size-t2: 172px;
 $size-t3: 216px;
 $size-t4: 250px;
-$size-tot: 151px;
 .triangle {
   position: relative;
+  font-family: 'Montserrat', sans-serif;
 
   user-select: none;
-  height: $size-tot;
-  width: $size-tot;
+  height: $size-t4;
+  width: $size-t4;
 
   transition: transform ease 0.3s;
 
@@ -36,7 +36,7 @@ $size-tot: 151px;
 
   .t1 {
     font-size: $size-t1;
-    top: get-triangle-center($size-tot, $size-t1);
+    top: get-triangle-center($size-t4, $size-t1);
     color: palette(base);
     -webkit-text-stroke: 1px palette(highlight);
     text-shadow: 0 0 10px palette(highlight, 800);
@@ -46,7 +46,7 @@ $size-tot: 151px;
 
   .t2 {
     font-size: $size-t2;
-    top: get-triangle-center($size-tot, $size-t2);
+    top: get-triangle-center($size-t4, $size-t2);
     color: transparent;
     background-color: palette(base, 900);
     background-clip: text;
@@ -56,14 +56,14 @@ $size-tot: 151px;
   }
   .t3 {
     font-size: $size-t3;
-    top: get-triangle-center($size-tot, $size-t3);
+    top: get-triangle-center($size-t4, $size-t3);
     color: transparent;
     -webkit-text-stroke: 1px palette(highlight);
     filter: drop-shadow(0px 0px 2px palette(highlight));
   }
   .t4 {
     font-size: $size-t4;
-    top: get-triangle-center($size-tot, $size-t4);
+    top: get-triangle-center($size-t4, $size-t4);
     color: transparent;
     -webkit-text-stroke: 1px palette(feedback, 700);
     filter: drop-shadow(0px 0px 4px palette(highlight));

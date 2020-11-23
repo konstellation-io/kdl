@@ -64,3 +64,10 @@ $color-bg: palette(base);
   overflow: hidden;
   background-color: $color-bg;
 }
+
+.logoutMessage {
+  @include font-body;
+  color: font-color(lowlight);
+  white-space: initial;
+  text-align: left;
+}

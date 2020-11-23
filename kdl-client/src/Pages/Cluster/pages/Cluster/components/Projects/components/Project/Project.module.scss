@@ -167,20 +167,6 @@ $small-square-base: 30px;
   clip-path: polygon(0 100%, 0 0, 100% 0, calc(100% - #{$side}) 50%, 100% 100%);
 }
 
-.open {
-  $side: $band-height / 2;
-
-  margin-left: auto;
-  width: 10 * $grid-unit;
-  clip-path: polygon($side 100%, 0 50%, $side 0, 100% 0, 100% 100%);
-  pointer-events: all;
-
-  > div {
-    padding: 0 0 0 4 * $grid-unit !important;
-    text-align: center;
-  }
-}
-
 .internalTag {
   @include font-small;
   color: font-color(lowlight) !important;

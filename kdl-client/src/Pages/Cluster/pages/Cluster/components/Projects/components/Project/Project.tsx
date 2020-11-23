@@ -2,11 +2,9 @@ import { Link, useParams } from 'react-router-dom';
 import ROUTE, { RouteClusterParams, buildRoute } from 'Constants/routes';
 import React, { FC, MouseEvent } from 'react';
 
-import { Button } from 'kwc';
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import IconFav from '@material-ui/icons/Favorite';
 import IconNoFav from '@material-ui/icons/FavoriteBorder';
-import IconOpen from '@material-ui/icons/KeyboardArrowRight';
 import { RepositoryType } from 'Graphql/types/globalTypes';
 import cx from 'classnames';
 import styles from './Project.module.scss';
@@ -88,9 +86,6 @@ const Band: FC<Props> = ({ project }) => (
     {project.error && (
       <div className={cx(styles.label, styles.ERROR)}>ERROR</div>
     )}
-    <div className={styles.open}>
-      <Button label="" Icon={IconOpen} />
-    </div>
   </div>
 );
 

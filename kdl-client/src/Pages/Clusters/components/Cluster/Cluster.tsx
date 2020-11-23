@@ -27,6 +27,7 @@ type ClusterProps = {
   clusterId: string;
   name: string;
   url?: string;
+  warning?: boolean;
   state: LocalClusterStates | RemoteClusterStates;
   local?: boolean;
   actions: Action[];
@@ -35,6 +36,7 @@ function Cluster({
   clusterId,
   name,
   url,
+  warning,
   state,
   actions,
   local = false,
@@ -57,6 +59,7 @@ function Cluster({
           <div className={cx(styles.state, styles[state])} />
         </div>
         <div className={styles.actions}>
+          {warning && <p className={styles.warning}>WARNING</p>}
           {actions.map((action) => (
             <ActionButton {...action} key={action.label} />
           ))}

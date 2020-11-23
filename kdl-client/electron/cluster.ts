@@ -14,6 +14,7 @@ type NewCluster = {
   type: 'local' | 'remote';
   state: string;
   url?: string;
+  warning?: boolean;
 }
 
 export function updateClusterState(clusterId: string, newState: string) {

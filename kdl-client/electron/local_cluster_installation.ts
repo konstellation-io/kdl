@@ -18,7 +18,8 @@ function createNamespace(request: Request) {
     createCluster({
       name: 'Local Cluster',
       state: 'STOPPED',
-      type: 'local'
+      type: 'local',
+      warning: true
     });
 
     cmd.stdout.on('data', data => request.onData(data));

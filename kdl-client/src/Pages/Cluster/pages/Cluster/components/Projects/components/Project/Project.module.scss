@@ -6,7 +6,11 @@
 
 $label-height: 3 * $grid-unit;
 $shape-height: 20 * $grid-unit;
-$shape-width: 50 * $grid-unit;
+
+$min-shape-width: 50 * $grid-unit;
+$max-shape-width: 100 * $grid-unit;
+$shape-width: 40vw;
+
 $band-height: 5 * $grid-unit;
 $big-square-base: 10 * $grid-unit;
 $small-square-base: 30px;
@@ -35,6 +39,8 @@ $small-square-base: 30px;
   position: relative;
   height: $shape-height / 2;
   width: $shape-width;
+  min-width: $min-shape-width;
+  max-width: $max-shape-width;
 }
 
 .bg {
@@ -160,7 +166,9 @@ $small-square-base: 30px;
   display: flex;
   align-items: center;
   height: $band-height;
-  width: $shape-width - 8 * $grid-unit;
+  width: calc(#{$shape-width} - #{8 * $grid-unit});
+  min-width: $min-shape-width - 8 * $grid-unit;
+  max-width: $max-shape-width - 8 * $grid-unit;
   padding-right: 3 * $grid-unit;
 
   background-color: palette(base);
@@ -263,6 +271,8 @@ $small-square-base: 30px;
     .addProjectBgLower {
       height: $shape-height / 2;
       width: $shape-width;
+      min-width: $min-shape-width;
+      max-width: $max-shape-width;
 
       transition: border ease 0.4s, background-color ease 0.4s;
       border: 1px dashed font-color(regular);

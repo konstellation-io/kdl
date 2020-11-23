@@ -29,7 +29,34 @@ const Project: FC<Props> = ({ project }) => {
   );
 };
 
-const UpperBg: FC<Props> = ({ project }) => {
+const UpperBg: FC<Props> = ({ project }) => (
+  <div className={styles.sup}>
+    <div className={styles.bg}>
+      <div className={styles.bgBand} />
+    </div>
+    <div className={styles.content}>
+      <p className={styles.name}>{project.name}</p>
+      {project.repository?.type === RepositoryType.INTERNAL && (
+        <div className={styles.internalTag}>Internal</div>
+      )}
+    </div>
+  </div>
+);
+
+const LowerBg: FC<Props> = ({ project }) => (
+  <div className={styles.inf}>
+    <div className={styles.bg}>
+      <div className={styles.bgBand} />
+    </div>
+    <div className={styles.content}>
+      <p className={styles.description} title={project.description}>
+        {project.description}
+      </p>
+    </div>
+  </div>
+);
+
+const Band: FC<Props> = ({ project }) => {
   const Favorite = project.favorite ? IconFav : IconNoFav;
   const FavoriteBg = project.favorite ? IconNoFav : IconFav;
 
@@ -47,47 +74,18 @@ const UpperBg: FC<Props> = ({ project }) => {
   }
 
   return (
-    <div className={styles.sup}>
-      <div className={styles.bg}>
-        <div className={styles.bgBand} />
+    <div className={styles.band}>
+      <div className={cx(styles.label, styles[project.state])}>
+        {project.state.replace('_', ' ')}
       </div>
-      <div className={styles.content}>
-        <p className={styles.name}>{project.name}</p>
-        <div className={styles.favorite} onClick={onToggleFav}>
-          <Favorite className={cx('icon-small', styles.fav)} />
-          <FavoriteBg className={cx('icon-small', styles.favBg)} />
-        </div>
-        {project.repository?.type === RepositoryType.INTERNAL && (
-          <div className={styles.internalTag}>Internal</div>
-        )}
+      {project.error && <div className={styles.warning}>WARNING</div>}
+      <div className={styles.favorite} onClick={onToggleFav}>
+        <Favorite className={cx('icon-small', styles.fav)} />
+        <FavoriteBg className={cx('icon-small', styles.favBg)} />
       </div>
     </div>
   );
 };
-
-const LowerBg: FC<Props> = ({ project }) => (
-  <div className={styles.inf}>
-    <div className={styles.bg}>
-      <div className={styles.bgBand} />
-    </div>
-    <div className={styles.content}>
-      <p className={styles.description} title={project.description}>
-        {project.description}
-      </p>
-    </div>
-  </div>
-);
-
-const Band: FC<Props> = ({ project }) => (
-  <div className={styles.band}>
-    <div className={cx(styles.label, styles[project.state])}>
-      {project.state.replace('_', ' ')}
-    </div>
-    {project.error && (
-      <div className={cx(styles.label, styles.ERROR)}>ERROR</div>
-    )}
-  </div>
-);
 
 const Square: FC<Props> = ({ project }) => (
   <div className={styles.square}>

@@ -161,6 +161,7 @@ $small-square-base: 30px;
   align-items: center;
   height: $band-height;
   width: $shape-width - 8 * $grid-unit;
+  padding-right: 3 * $grid-unit;
 
   background-color: palette(base);
 
@@ -179,6 +180,12 @@ $small-square-base: 30px;
   margin-left: 2 * $grid-unit;
 }
 
+.warning {
+  @include font-button;
+  color: palette(alert);
+  margin-right: 2 * $grid-unit;
+}
+
 .label {
   @include font-button;
   color: font-color(dark);
@@ -188,6 +195,7 @@ $small-square-base: 30px;
   height: $label-height;
   min-width: 150px;
   padding: 0 5 * $grid-unit;
+  margin-right: auto;
 
   border-bottom-right-radius: 3 * $grid-unit;
   border-top-right-radius: 3 * $grid-unit;
@@ -201,14 +209,6 @@ $small-square-base: 30px;
 
   &.STOPPED {
     background-color: palette(feedback);
-  }
-
-  &.ERROR {
-    background-color: palette(error);
-    margin-left: -2 * $grid-unit;
-    padding: 0 $grid-unit;
-    min-width: 100px;
-    z-index: 0;
   }
 }
 

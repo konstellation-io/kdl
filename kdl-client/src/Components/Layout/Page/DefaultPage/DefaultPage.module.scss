@@ -50,4 +50,5 @@ $sidebar-width: 40 * $grid-unit;
 
 .children {
   flex-grow: 1;
+  overflow: auto;
 }

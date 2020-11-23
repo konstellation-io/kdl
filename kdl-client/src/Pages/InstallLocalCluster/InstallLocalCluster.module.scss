@@ -3,9 +3,27 @@
 @import 'Styles/colors';
 
 .container {
-  padding: 8 * $grid-unit;
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+.slides {
+  flex-shrink: 0;
+  padding: 6 * $grid-unit 10 * $grid-unit 4 * $grid-unit 10 * $grid-unit;
+  background-color: palette(base, 700);
+}
+.content {
+  position: relative;
+  padding: 6 * $grid-unit 8 * $grid-unit;
+  overflow: hidden;
+}
+
+.expandButton {
+  width: 5 * $grid-unit;
+  position: absolute;
+  top: 6 * $grid-unit;
+  right: 6 * $grid-unit;
 }
 
 .subtitle {

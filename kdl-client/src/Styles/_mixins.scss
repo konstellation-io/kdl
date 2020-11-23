@@ -1,9 +1,9 @@
 @import '~kwc/styles/borders';
 @import '~kwc/styles/mixins';
 
-@mixin circle($color) {
-  width: $grid-unit;
-  height: $grid-unit;
+@mixin circle($color, $size: $grid-unit) {
+  width: $size;
+  height: $size;
   border-radius: 50%;
   background-color: $color;
 }

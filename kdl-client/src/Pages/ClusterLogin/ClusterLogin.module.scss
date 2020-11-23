@@ -4,7 +4,7 @@
 
 .container {
   width: 100%;
-  padding: 0 11 * $grid-unit;
+  padding: 8 * $grid-unit;
 
   .title {
     @include font-caption;
@@ -32,15 +32,6 @@
     margin: 12 * $grid-unit auto 0 auto;
   }
 
-  .buttons {
-    width: 38 * $grid-unit;
-    margin: 4 * $grid-unit auto 0 auto;
-
-    & > div:first-child {
-      margin-bottom: $grid-unit;
-    }
-  }
-
   .confirmation {
     @include font-caption;
     color: palette(highlight);
@@ -64,4 +55,12 @@
       flex-shrink: 0;
     }
   }
+}
+
+.cancelButton {
+  width: 12 * $grid-unit;
+}
+
+.loginButton {
+  width: 25 * $grid-unit;
 }

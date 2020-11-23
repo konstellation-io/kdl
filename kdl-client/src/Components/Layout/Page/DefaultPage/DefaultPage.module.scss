@@ -2,6 +2,8 @@
 @import 'Styles/variables';
 @import 'Styles/mixins';
 
+$sidebar-width: 40 * $grid-unit;
+
 .container {
   position: relative;
   display: flex;
@@ -16,7 +18,7 @@
 }
 
 .sidebar {
-  width: 40 * $grid-unit;
+  width: $sidebar-width;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -30,6 +32,10 @@
   .subtitle {
     margin-top: 3 * $grid-unit;
   }
+
+  .bottom {
+    margin-top: auto;
+  }
 }
 
 .content {
@@ -37,7 +43,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px - $sidebar-width;
   background-color: palette(base, 800);
   overflow: auto;
 }

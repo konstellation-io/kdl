@@ -13,19 +13,19 @@ $img-side: 22 * $grid-unit;
 
 .next {
   .enter {
-    animation: slideInRight 0.2s forwards;
+    animation: slideInRight 0.4s forwards;
   }
   .exit {
-    animation: slideOutLeft 0.2s forwards;
+    animation: slideOutLeft 0.4s forwards;
   }
 }
 
 .prev {
   .enter {
-    animation: slideInLeft 0.2s forwards;
+    animation: slideInLeft 0.4s forwards;
   }
   .exit {
-    animation: slideOutRight 0.2s forwards;
+    animation: slideOutRight 0.4s forwards;
   }
 }
 

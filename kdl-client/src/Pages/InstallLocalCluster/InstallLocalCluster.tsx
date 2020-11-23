@@ -1,11 +1,11 @@
-import { BUTTON_THEMES, Button } from 'kwc';
 import LogViewer, { Log } from 'Components/LogViewer/LogViewer';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import StatusCircle, {
   States,
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
 
 import AnimateHeight from 'react-animate-height';
+import { Button } from 'kwc';
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
 import IconExpand from '@material-ui/icons/Fullscreen';
 import IconShrink from '@material-ui/icons/FullscreenExit';
@@ -30,23 +30,29 @@ enum InstallationState {
   ERR = 'ERR',
 }
 
-function getStateCircle(state = '') {
-  switch (state) {
-    case InstallationState.OK:
-      return <StatusCircle animation={States.SUCCESS} label="DONE" />;
-    case InstallationState.ERR:
-      return <StatusCircle animation={States.ERROR} label="ERROR" />;
-    default:
-      return <StatusCircle />;
-  }
-}
+const stateToCircle = new Map([
+  [InstallationState.INSTALLING, <StatusCircle />],
+  [
+    InstallationState.OK,
+    <StatusCircle animation={States.SUCCESS} label="DONE" key="ok" />,
+  ],
+  [
+    InstallationState.ERR,
+    <StatusCircle animation={States.ERROR} label="ERROR" key="error" />,
+  ],
+]);
 
 function InstallLocalCluster() {
   const [fullscreen, setFullscreen] = useState(false);
-  const [installationState, setInstallationState] = useState<
-    InstallationState
-  >();
+  const statusCircle = useRef<JSX.Element | undefined>(<StatusCircle />);
+  const [installationState, setInstallationState] = useState<InstallationState>(
+    InstallationState.INSTALLING
+  );
   const [logs, setLogs] = useState<Log[]>([]);
+
+  useEffect(() => {
+    statusCircle.current = stateToCircle.get(installationState);
+  }, [installationState]);
 
   function toggleFullScreen() {
     setFullscreen(!fullscreen);
@@ -90,20 +96,14 @@ function InstallLocalCluster() {
   let actions: JSX.Element[];
   switch (installationState) {
     case InstallationState.OK:
-      /* TODO: redirect to cluster */
+      /* TODO: add Connect to cluster button */
       actions = [
         <Button
-          key="connect"
-          className={styles.connectButton}
-          label="CONNECT NOW"
+          key="continue"
+          className={styles.continueButton}
+          label="CONTINUE"
           to={ROUTE.HOME}
           primary
-        />,
-        <Button
-          key="later"
-          className={styles.laterButton}
-          label="MAYBE LATER"
-          to={ROUTE.HOME}
         />,
       ];
       break;
@@ -120,7 +120,6 @@ function InstallLocalCluster() {
           className={styles.retryButton}
           label="RETRY"
           onClick={startInstallation}
-          theme={BUTTON_THEMES.ERROR}
           primary
         />,
       ];
@@ -147,16 +146,34 @@ function InstallLocalCluster() {
         </AnimateHeight>
         <div className={styles.content}>
           <p className={styles.subtitle}>INSTALLING LOG</p>
-          <div>
-            <Button
-              label=""
-              onClick={toggleFullScreen}
-              className={styles.expandButton}
-              Icon={fullscreen ? IconShrink : IconExpand}
-            />
-          </div>
+          <Button
+            label=""
+            onClick={toggleFullScreen}
+            className={styles.expandButton}
+            Icon={fullscreen ? IconShrink : IconExpand}
+          />
           <LogViewer logs={logs} />
-          <SidebarBottom>{getStateCircle(installationState)}</SidebarBottom>
+          <SidebarBottom>
+            <>
+              {statusCircle.current}
+              <AnimateHeight
+                duration={300}
+                height={installationState === InstallationState.OK ? 'auto' : 0}
+                className={styles.ok}
+              >
+                <div className={styles.serverReady}>
+                  <p className={styles.title}>Server installed and ready!</p>
+                  <p className={styles.description}>
+                    Curabitur lobortis id lorem id bibendum. Ut id consectetur
+                    magna. Quisque volutpat augue enim, pulvinar lobortis nibh
+                    lacinia at. Vestibulum nec erat ut mi sollicitudin porttitor
+                    id sit amet risus. Nam tempus vel odio vitae aliquam. In
+                    imperdiet
+                  </p>
+                </div>
+              </AnimateHeight>
+            </>
+          </SidebarBottom>
         </div>
       </div>
     </DefaultPage>

@@ -35,3 +35,4 @@ To start the application, you need to [download](https://github.com/konstellatio
 This application uses a one click installer, so you just need to run the `.exe` file and the installation will occur then.
 
 ## MacOS
+To start the application, you need to [download the `.dmg` file](https://github.com/konstellation-io/kdl/releases)  from GitHub, and then double click on the file and follow the instructions. Once you move your app in the Application folder as the instructions suggested you can find KDL app in the Spotlight.

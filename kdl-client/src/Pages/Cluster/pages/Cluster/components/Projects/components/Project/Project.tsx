@@ -1,11 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
+import { ProjectState, RepositoryType } from 'Graphql/types/globalTypes';
 import ROUTE, { RouteClusterParams, buildRoute } from 'Constants/routes';
 import React, { FC, MouseEvent } from 'react';
 
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import IconFav from '@material-ui/icons/Favorite';
 import IconNoFav from '@material-ui/icons/FavoriteBorder';
-import { RepositoryType } from 'Graphql/types/globalTypes';
 import cx from 'classnames';
 import styles from './Project.module.scss';
 import { toast } from 'react-toastify';
@@ -16,10 +16,15 @@ type Props = {
 
 const Project: FC<Props> = ({ project }) => {
   const { clusterId } = useParams<RouteClusterParams>();
+  const isProjectArchived = project.state === ProjectState.ARCHIVED;
 
   return (
     <Link to={buildRoute.project(ROUTE.PROJECT, clusterId, project.id)}>
-      <div className={styles.container}>
+      <div
+        className={cx(styles.container, {
+          [styles.archived]: isProjectArchived,
+        })}
+      >
         <UpperBg project={project} />
         <LowerBg project={project} />
         <Band project={project} />

@@ -21,6 +21,18 @@ $small-square-base: 30px;
   flex-shrink: 0;
   pointer-events: none;
 
+  &.archived {
+    .name,
+    .description {
+      color: font-color(regular);
+    }
+
+    .favorite,
+    .warning {
+      display: none;
+    }
+  }
+
   &:hover {
     .bg {
       box-shadow: inset 0 0 0 3px transparent,
@@ -218,6 +230,10 @@ $small-square-base: 30px;
   &.STOPPED {
     background-color: palette(feedback);
   }
+
+  &.ARCHIVED {
+    background-color: palette(base, 300);
+  }
 }
 
 .square {
@@ -246,6 +262,11 @@ $small-square-base: 30px;
     &.STOPPED {
       background-color: transparent;
       border: solid 1px palette(feedback);
+    }
+
+    &.ARCHIVED {
+      background-color: transparent;
+      border: solid 1px palette(base, 300);
     }
   }
 }

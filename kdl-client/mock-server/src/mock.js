@@ -20,7 +20,7 @@ module.exports = {
     favorite: casual.boolean,
     repository: this.Repository,
     error: casual.random_element([null, casual.error]),
-    state: casual.random_element(['STARTED', 'STOPPED']),
+    state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
   }),
   Repository: () => ({
     id: casual.uuid,

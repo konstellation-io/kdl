@@ -7,6 +7,7 @@
 //==============================================================
 
 export enum ProjectState {
+  ARCHIVED = 'ARCHIVED',
   STARTED = 'STARTED',
   STOPPED = 'STOPPED',
 }

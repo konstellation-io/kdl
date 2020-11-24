@@ -24,7 +24,7 @@ function SlidePresentation({ slides }: Props) {
       <TransitionGroup className={cx(styles.pages, styles[direction])}>
         <CSSTransition
           key={actStep}
-          timeout={1000}
+          timeout={500}
           classNames={{
             enter: styles.enter,
             exit: styles.exit,

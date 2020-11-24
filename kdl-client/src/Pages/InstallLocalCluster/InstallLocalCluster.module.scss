@@ -33,10 +33,12 @@
   margin-left: 2.5 * $grid-unit;
 }
 
-.connectButton,
-.laterButton,
 .retryButton {
   width: 15 * $grid-unit;
+}
+
+.continueButton {
+  width: 20 * $grid-unit;
 }
 
 .backButton {
@@ -45,4 +47,17 @@
 
 .retryButton {
   width: 15 * $grid-unit;
+}
+
+.serverReady {
+  margin-bottom: 4 * $grid-unit;
+
+  .title {
+    @include font-body;
+    color: font-color(light);
+  }
+  .description {
+    @include font-small;
+    color: font-color(regular);
+  }
 }

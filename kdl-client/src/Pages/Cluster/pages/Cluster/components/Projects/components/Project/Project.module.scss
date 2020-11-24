@@ -6,7 +6,11 @@
 
 $label-height: 3 * $grid-unit;
 $shape-height: 20 * $grid-unit;
-$shape-width: 50 * $grid-unit;
+
+$min-shape-width: 50 * $grid-unit;
+$max-shape-width: 100 * $grid-unit;
+$shape-width: 40vw;
+
 $band-height: 5 * $grid-unit;
 $big-square-base: 10 * $grid-unit;
 $small-square-base: 30px;
@@ -16,6 +20,18 @@ $small-square-base: 30px;
   margin: 0 0 2 * $grid-unit 5 * $grid-unit;
   flex-shrink: 0;
   pointer-events: none;
+
+  &.archived {
+    .name,
+    .description {
+      color: font-color(regular);
+    }
+
+    .favorite,
+    .warning {
+      display: none;
+    }
+  }
 
   &:hover {
     .bg {
@@ -35,6 +51,8 @@ $small-square-base: 30px;
   position: relative;
   height: $shape-height / 2;
   width: $shape-width;
+  min-width: $min-shape-width;
+  max-width: $max-shape-width;
 }
 
 .bg {
@@ -160,25 +178,14 @@ $small-square-base: 30px;
   display: flex;
   align-items: center;
   height: $band-height;
-  width: $shape-width - 8 * $grid-unit;
+  width: calc(#{$shape-width} - #{8 * $grid-unit});
+  min-width: $min-shape-width - 8 * $grid-unit;
+  max-width: $max-shape-width - 8 * $grid-unit;
+  padding-right: 3 * $grid-unit;
 
   background-color: palette(base);
 
   clip-path: polygon(0 100%, 0 0, 100% 0, calc(100% - #{$side}) 50%, 100% 100%);
-}
-
-.open {
-  $side: $band-height / 2;
-
-  margin-left: auto;
-  width: 10 * $grid-unit;
-  clip-path: polygon($side 100%, 0 50%, $side 0, 100% 0, 100% 100%);
-  pointer-events: all;
-
-  > div {
-    padding: 0 0 0 4 * $grid-unit !important;
-    text-align: center;
-  }
 }
 
 .internalTag {
@@ -193,6 +200,12 @@ $small-square-base: 30px;
   margin-left: 2 * $grid-unit;
 }
 
+.warning {
+  @include font-button;
+  color: palette(alert);
+  margin-right: 2 * $grid-unit;
+}
+
 .label {
   @include font-button;
   color: font-color(dark);
@@ -202,6 +215,7 @@ $small-square-base: 30px;
   height: $label-height;
   min-width: 150px;
   padding: 0 5 * $grid-unit;
+  margin-right: auto;
 
   border-bottom-right-radius: 3 * $grid-unit;
   border-top-right-radius: 3 * $grid-unit;
@@ -217,12 +231,8 @@ $small-square-base: 30px;
     background-color: palette(feedback);
   }
 
-  &.ERROR {
-    background-color: palette(error);
-    margin-left: -2 * $grid-unit;
-    padding: 0 $grid-unit;
-    min-width: 100px;
-    z-index: 0;
+  &.ARCHIVED {
+    background-color: palette(base, 300);
   }
 }
 
@@ -253,6 +263,11 @@ $small-square-base: 30px;
       background-color: transparent;
       border: solid 1px palette(feedback);
     }
+
+    &.ARCHIVED {
+      background-color: transparent;
+      border: solid 1px palette(base, 300);
+    }
   }
 }
 
@@ -277,6 +292,8 @@ $small-square-base: 30px;
     .addProjectBgLower {
       height: $shape-height / 2;
       width: $shape-width;
+      min-width: $min-shape-width;
+      max-width: $max-shape-width;
 
       transition: border ease 0.4s, background-color ease 0.4s;
       border: 1px dashed font-color(regular);

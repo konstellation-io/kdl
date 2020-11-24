@@ -31,4 +31,5 @@ enum RepositoryType {
 enum ProjectState {
   STARTED
   STOPPED
+  ARCHIVED
 }

@@ -8,7 +8,6 @@ import styles from './NewCluster.module.scss';
 import ActionsBar from '../../Components/Layout/ActionsBar/ActionsBar';
 
 function NewCluster() {
-  const actions = <Button label="CANCEL" to={ROUTE.HOME} />;
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -35,7 +34,7 @@ function NewCluster() {
         </div>
       </div>
       <ActionsBar className={styles.actionBar} centerActions>
-        {actions}
+        <Button label="CANCEL" to={ROUTE.HOME} />
       </ActionsBar>
     </div>
   );

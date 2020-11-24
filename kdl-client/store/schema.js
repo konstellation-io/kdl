@@ -17,6 +17,10 @@ const cluster = {
     },
     url: {
       type: 'string',
+    },
+    warning: {
+      type: 'boolean',
+      default: false
     }
   }
 };

@@ -8,6 +8,29 @@ $small-triangle-base: 37px;
 $band-height: 5 * $grid-unit;
 $label-height: 3 * $grid-unit;
 
+// When cluster is not clickable, highlight only the action buttons
+.cannotOpen {
+  .bg {
+    cursor: default;
+  }
+
+  .container {
+    &:hover {
+      .bg {
+        background-color: palette(base, 400);
+      }
+      .nameSection .name,
+      .url {
+        color: inherit;
+      }
+      .actionButtonContent,
+      .actionButtonBg:hover + .actionButtonContent {
+        color: palette(highlight);
+      }
+    }
+  }
+}
+
 .container {
   position: relative;
 
@@ -174,6 +197,13 @@ $label-height: 3 * $grid-unit;
   display: flex;
   justify-content: flex-end;
   right: 28px;
+
+  .warning {
+    @include font-button;
+    color: palette(alert);
+
+    margin-right: 4 * $grid-unit;
+  }
 }
 
 .nameSection {

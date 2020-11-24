@@ -1,4 +1,5 @@
 import Cluster, { DIRECTION } from './components/Cluster/Cluster';
+import useClusters from 'Hooks/useClusters';
 
 import { Button } from 'kwc';
 import ClusterOption from './components/ClusterOption/ClusterOption';
@@ -8,6 +9,9 @@ import styles from './NewCluster.module.scss';
 import ActionsBar from '../../Components/Layout/ActionsBar/ActionsBar';
 
 function NewCluster() {
+  const { clusters } = useClusters();
+  const hasServers = !!clusters.length;
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -33,9 +37,11 @@ function NewCluster() {
           />
         </div>
       </div>
-      <ActionsBar className={styles.actionBar} centerActions>
-        <Button label="CANCEL" to={ROUTE.HOME} />
-      </ActionsBar>
+      {hasServers && (
+        <ActionsBar className={styles.actionBar} centerActions>
+          <Button label="CANCEL" to={ROUTE.HOME} />
+        </ActionsBar>
+      )}
     </div>
   );
 }

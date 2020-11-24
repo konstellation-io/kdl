@@ -2,6 +2,12 @@
 
 ## Available Scripts
 
+Before using the scripts you need to add a `.env` file with the following content:
+
+```bash
+SASS_PATH=src
+```
+
 In the project directory, you can run:
 
 ### `yarn dev`

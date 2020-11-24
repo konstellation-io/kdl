@@ -33,6 +33,11 @@ export const updateMenu = {
     clustersSubMenu.length = 0;
 
     if (localCluster) {
+      // @ts-ignore
+      const addClusterMenu: MenuItemConstructorOptions = template[0].submenu[0];
+      addClusterMenu.click = () =>
+        history.push(ROUTE.CONNECT_TO_REMOTE_CLUSTER);
+
       clustersSubMenu.push(
         {
           label: localCluster.name,

@@ -83,15 +83,10 @@ function CheckLocalRequirements({ setChecksState }: Props) {
   }, []);
 
   useEffect(() => {
-    switch (true) {
-      case checks.some((c) => c):
-        // FIXME: Uncomment next line and remove previous.
-        // case checks.every((c) => c.isOk):
-        setChecksState(CheckState.OK);
-        break;
-      case checks.some((c) => c.isOk === false):
-        setChecksState(CheckState.ERROR);
-        break;
+    if (checks.every((c) => c.isOk)) {
+      setChecksState(CheckState.OK);
+    } else if (checks.some((c) => c.isOk === false)) {
+      setChecksState(CheckState.ERROR);
     }
   }, [checks, setChecksState]);
 

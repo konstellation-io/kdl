@@ -75,7 +75,8 @@ ipcMain.on('checkRequirement', (event, requirement) => {
   const request = new Request(event, 'checkRequirement', command);
 
   request.runCommand()
-    .then(result => {
-      request.reply([requirement, result]);
+    .then(_ => {
+      // TODO: retrieve real response state. Remember promise return this state.
+      request.reply([requirement, true]);
     });
 });

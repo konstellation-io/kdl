@@ -5,10 +5,15 @@ import StatusCircle, {
   States,
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
 
+import AnimateHeight from 'react-animate-height';
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
+import IconExpand from '@material-ui/icons/Fullscreen';
+import IconShrink from '@material-ui/icons/FullscreenExit';
 import ROUTE from 'Constants/routes';
 import SidebarBottom from 'Components/Layout/Page/DefaultPage/SidebarBottom';
+import SlidePresentation from './components/SlidePresentation/SlidePresentation';
 import { ipcRenderer } from 'electron';
+import slides from './slides';
 import styles from './InstallLocalCluster.module.scss';
 
 const INITIAL_LOG: Log = { text: 'Starting installation...' };
@@ -37,10 +42,15 @@ function getStateCircle(state = '') {
 }
 
 function InstallLocalCluster() {
+  const [fullscreen, setFullscreen] = useState(false);
   const [installationState, setInstallationState] = useState<
     InstallationState
   >();
   const [logs, setLogs] = useState<Log[]>([]);
+
+  function toggleFullScreen() {
+    setFullscreen(!fullscreen);
+  }
 
   function startInstallation() {
     setInstallationState(InstallationState.INSTALLING);
@@ -126,9 +136,28 @@ function InstallLocalCluster() {
       actions={actions}
     >
       <div className={styles.container}>
-        <p className={styles.subtitle}>INSTALLING LOG</p>
-        <LogViewer logs={logs} />
-        <SidebarBottom>{getStateCircle(installationState)}</SidebarBottom>
+        <AnimateHeight
+          duration={300}
+          height={fullscreen ? 0 : 'auto'}
+          className={styles.box}
+        >
+          <div className={styles.slides}>
+            <SlidePresentation slides={slides} />
+          </div>
+        </AnimateHeight>
+        <div className={styles.content}>
+          <p className={styles.subtitle}>INSTALLING LOG</p>
+          <div>
+            <Button
+              label=""
+              onClick={toggleFullScreen}
+              className={styles.expandButton}
+              Icon={fullscreen ? IconShrink : IconExpand}
+            />
+          </div>
+          <LogViewer logs={logs} />
+          <SidebarBottom>{getStateCircle(installationState)}</SidebarBottom>
+        </div>
       </div>
     </DefaultPage>
   );

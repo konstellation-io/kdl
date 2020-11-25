@@ -5,7 +5,14 @@ import { cloneDeep } from 'lodash';
 import styles from './useStepper.module.scss';
 import useNavigation from 'Hooks/useNavigation';
 
-type ActionButtonProps = {
+export enum ActionButtonTypes {
+  Back = 'Back',
+  Next = 'Next',
+  Complete = 'Complete',
+  Cancel = 'Cancel',
+}
+
+export type ActionButtonProps = {
   label: string;
   onClick?: (e?: MouseEvent<HTMLDivElement> | undefined) => void;
   to?: string;
@@ -13,7 +20,7 @@ type ActionButtonProps = {
   disabled?: boolean;
 };
 
-const ActionButton = (props: ActionButtonProps) => (
+export const ActionButton = (props: ActionButtonProps) => (
   <div className={styles.actionButton}>
     <Button {...props} />
   </div>
@@ -30,27 +37,26 @@ type Data = {
   Component: any;
 };
 
-function buildSteps(data: Data[]): Step[] {
-  return data.map((d) => ({
+const buildSteps = (data: Data[]): Step[] =>
+  data.map((d) => ({
     id: d.id,
     completed: false,
     error: false,
   }));
-}
 
 type Params = {
   data: Data[];
   initialStep?: number;
-  beforeGoToStep: () => void;
-  cancelRoute: string;
-  onSubmit: Function;
+  beforeGoToStep?: () => void;
+  cancelRoute?: string;
+  onSubmit?: Function;
+  actions: any;
 };
 export default function useStepper({
   data,
   beforeGoToStep,
-  cancelRoute,
-  onSubmit,
   initialStep = 0,
+  actions,
 }: Params) {
   const [steps, setSteps] = useState(buildSteps(data));
   const { actStep, goToStep, nextStep, prevStep, direction } = useNavigation({
@@ -58,6 +64,8 @@ export default function useStepper({
     beforeGoToStep,
     maxSteps: steps.length,
   });
+
+  const _actions = createActions(actions, prevStep, nextStep, steps);
 
   function getActStepComponent() {
     const Component = data[actStep].Component;
@@ -76,42 +84,23 @@ export default function useStepper({
   }
 
   function getActions() {
-    let actions = [];
-
-    const hasError = steps.some((step) => !!step.error);
-
-    const buttonCancel = (
-      <ActionButton key="cancel" label="CANCEL" to={cancelRoute} />
-    );
-    const buttonNext = (
-      <ActionButton key="next" label="NEXT" onClick={nextStep} primary />
-    );
-    const buttonPrev = (
-      <ActionButton key="prev" label="BACK" onClick={prevStep} />
-    );
-    const buttonComplete = (
-      <ActionButton
-        key="complete"
-        label="CREATE"
-        onClick={() => onSubmit()}
-        disabled={hasError}
-        primary
-      />
-    );
-
     switch (actStep) {
       case 0:
-        actions = [buttonCancel, buttonNext];
-        break;
+        return [
+          _actions.get(ActionButtonTypes.Cancel),
+          _actions.get(ActionButtonTypes.Next),
+        ];
       case data.length - 1:
-        actions = [buttonPrev, buttonComplete];
-        break;
+        return [
+          _actions.get(ActionButtonTypes.Back),
+          _actions.get(ActionButtonTypes.Complete),
+        ];
       default:
-        actions = [buttonPrev, buttonNext];
-        break;
+        return [
+          _actions.get(ActionButtonTypes.Back),
+          _actions.get(ActionButtonTypes.Next),
+        ];
     }
-
-    return actions;
   }
 
   return {
@@ -124,3 +113,49 @@ export default function useStepper({
     steps,
   };
 }
+
+const createActions = (
+  actions: any,
+  onBackClick: any,
+  onNextClick: any,
+  steps: any
+) => {
+  const hasError = steps.some((step: any) => !!step.error);
+  console.log('ciao', hasError);
+  const _actions = new Map();
+  const backButton = actions.find(
+    ({ key }: any) => key === ActionButtonTypes.Back
+  );
+  const nextButton = actions.find(
+    ({ key }: any) => key === ActionButtonTypes.Next
+  );
+  const completeButton = actions.find(
+    ({ key }: any) => key === ActionButtonTypes.Complete
+  );
+  _actions.set(
+    ActionButtonTypes.Back,
+    React.cloneElement(backButton, {
+      ...backButton.props,
+      onClick: onBackClick,
+    })
+  );
+  _actions.set(
+    ActionButtonTypes.Next,
+    React.cloneElement(nextButton, {
+      ...nextButton.props,
+      onClick: onNextClick,
+    })
+  );
+  _actions.set(
+    ActionButtonTypes.Complete,
+    React.cloneElement(completeButton, {
+      ...completeButton.props,
+      disabled: hasError,
+    })
+  );
+  _actions.set(
+    ActionButtonTypes.Cancel,
+    actions.find(({ key }: any) => key === ActionButtonTypes.Cancel)
+  );
+  return _actions;
+};

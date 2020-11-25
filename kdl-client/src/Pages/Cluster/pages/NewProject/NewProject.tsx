@@ -18,7 +18,10 @@ import styles from './NewProject.module.scss';
 import useNewProject from 'Pages/Cluster/apollo/hooks/useNewProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import useStepper from 'Hooks/useStepper/useStepper';
+import useStepper, {
+  ActionButton,
+  ActionButtonTypes,
+} from 'Hooks/useStepper/useStepper';
 
 enum Steps {
   INFORMATION,
@@ -57,6 +60,21 @@ function NewProject() {
   const { clusterId } = useParams<RouteClusterParams>();
   const { clearAll } = useNewProject('information');
   const cancelRoute = buildRoute.cluster(ROUTE.CLUSTER, clusterId);
+  const actions = [
+    <ActionButton
+      key={ActionButtonTypes.Cancel}
+      label="CANCEL"
+      to={cancelRoute}
+    />,
+    <ActionButton key={ActionButtonTypes.Next} label="NEXT" primary />,
+    <ActionButton key={ActionButtonTypes.Back} label="BACK" />,
+    <ActionButton
+      key={ActionButtonTypes.Complete}
+      label="CREATE"
+      onClick={onSubmit}
+      primary
+    />,
+  ];
 
   // We want to execute this on on component unmount
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,8 +91,7 @@ function NewProject() {
   } = useStepper({
     data: stepperSteps,
     beforeGoToStep,
-    cancelRoute,
-    onSubmit,
+    actions,
   });
 
   function onSubmit() {

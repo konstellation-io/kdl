@@ -44,9 +44,9 @@ yarn start
 
 ### Connection between pieces
 
-Electron app will connect to the mock server when retrieving information related with an opened cluster. If you are not going to work with projects (or an open cluster), you can skip the mock server step.
+Electron app will connect to the mock server when retrieving information related with an opened server. If you are not going to work with projects (or an open server), you can skip the mock server step.
 
-For the remaining views, the app uses a file to store the information regarding stored clusters.
+For the remaining views, the app uses a file to store the information regarding stored servers.
 
 ## Publishing the application
 

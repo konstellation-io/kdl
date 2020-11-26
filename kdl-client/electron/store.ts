@@ -15,7 +15,7 @@ ipcMain.handle('setStoreValue', (_: unknown, { key, value }: StoreValue) => {
 });
 
 const subcribedKeys: string[] = [];
-ipcMain.on('subscribeToValue', (event: any, key: "clusters") => {
+ipcMain.on('subscribeToValue', (event: any, key: "servers") => {
   if (!subcribedKeys.includes(key)) {
     store.onDidChange(key, (newValue: unknown, _: unknown) => {
       event.sender.send('subscribeToValueReply', newValue);

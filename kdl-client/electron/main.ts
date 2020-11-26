@@ -1,8 +1,8 @@
 // Add IPC listeners
 import './store';
-import './local_cluster_actions';
-import './local_cluster_installation';
-import './remote_cluster_actions';
+import './local_server_actions';
+import './local_server_installation';
+import './remote_server_actions';
 
 import { BrowserWindow, app, ipcMain } from 'electron';
 

@@ -1,4 +1,4 @@
-const cluster = {
+const server = {
   type: 'object',
   required: ['id', 'type', 'name'],
   properties: {
@@ -26,11 +26,11 @@ const cluster = {
 };
 
 const schema = {
-  clusters: {
-    definition: 'Collection of all clusters added in the machine.',
+  servers: {
+    definition: 'Collection of all servers added in the machine.',
     type: 'array',
     default: [],
-    items: cluster
+    items: server
   }
 };
 

@@ -4,7 +4,7 @@ import { Color, Titlebar } from 'custom-electron-titlebar';
 import { Menu, ipcRenderer } from 'electron';
 import menu, { updateMenu } from './menu';
 
-import { Cluster } from 'Hooks/useClusters';
+import { Server } from 'Hooks/useServers';
 import logo from './logo.svg';
 
 export const titlebar = new Titlebar({
@@ -16,21 +16,21 @@ titlebar.updateTitle('Konstellation');
 titlebar.updateMenu(menu);
 
 async function fetchData() {
-  const clusters: Cluster[] = await ipcRenderer.invoke(
+  const servers: Server[] = await ipcRenderer.invoke(
     'getStoreValue',
-    'clusters'
+    'servers'
   );
 
-  const newMenu: Menu = updateMenu.cluster(clusters);
+  const newMenu: Menu = updateMenu.server(servers);
   titlebar.updateMenu(newMenu);
 }
 
 fetchData();
 
-function onStoreUpdate(_: unknown, newClusters: Cluster[]) {
-  const newMenu: Menu = updateMenu.cluster(newClusters);
+function onStoreUpdate(_: unknown, newServers: Server[]) {
+  const newMenu: Menu = updateMenu.server(newServers);
   titlebar.updateMenu(newMenu);
 }
 
-ipcRenderer.send('subscribeToValue', 'clusters');
+ipcRenderer.send('subscribeToValue', 'servers');
 ipcRenderer.on('subscribeToValueReply', onStoreUpdate);

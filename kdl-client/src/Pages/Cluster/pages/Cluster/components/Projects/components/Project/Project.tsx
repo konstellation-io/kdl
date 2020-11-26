@@ -4,8 +4,8 @@ import ROUTE, { RouteClusterParams, buildRoute } from 'Constants/routes';
 import React, { FC, MouseEvent } from 'react';
 
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
-import IconFav from '@material-ui/icons/Favorite';
-import IconNoFav from '@material-ui/icons/FavoriteBorder';
+import IconFav from '@material-ui/icons/Star';
+import IconNoFav from '@material-ui/icons/StarBorder';
 import cx from 'classnames';
 import styles from './Project.module.scss';
 import { toast } from 'react-toastify';
@@ -34,34 +34,7 @@ const Project: FC<Props> = ({ project }) => {
   );
 };
 
-const UpperBg: FC<Props> = ({ project }) => (
-  <div className={styles.sup}>
-    <div className={styles.bg}>
-      <div className={styles.bgBand} />
-    </div>
-    <div className={styles.content}>
-      <p className={styles.name}>{project.name}</p>
-      {project.repository?.type === RepositoryType.INTERNAL && (
-        <div className={styles.internalTag}>Internal</div>
-      )}
-    </div>
-  </div>
-);
-
-const LowerBg: FC<Props> = ({ project }) => (
-  <div className={styles.inf}>
-    <div className={styles.bg}>
-      <div className={styles.bgBand} />
-    </div>
-    <div className={styles.content}>
-      <p className={styles.description} title={project.description}>
-        {project.description}
-      </p>
-    </div>
-  </div>
-);
-
-const Band: FC<Props> = ({ project }) => {
+const UpperBg: FC<Props> = ({ project }) => {
   const Favorite = project.favorite ? IconFav : IconNoFav;
   const FavoriteBg = project.favorite ? IconNoFav : IconFav;
 
@@ -79,18 +52,49 @@ const Band: FC<Props> = ({ project }) => {
   }
 
   return (
-    <div className={styles.band}>
-      <div className={cx(styles.label, styles[project.state])}>
-        {project.state.replace('_', ' ')}
+    <div className={styles.sup}>
+      <div className={styles.bg}>
+        <div className={styles.bgBand} />
       </div>
-      {project.error && <div className={styles.warning}>WARNING</div>}
-      <div className={styles.favorite} onClick={onToggleFav}>
-        <Favorite className={cx('icon-small', styles.fav)} />
-        <FavoriteBg className={cx('icon-small', styles.favBg)} />
+      <div className={styles.content}>
+        <div className={styles.favorite} onClick={onToggleFav}>
+          <Favorite
+            className={cx('icon-regular', styles.fav, {
+              [styles.isFav]: project.favorite,
+            })}
+          />
+          <FavoriteBg className={cx('icon-regular', styles.favBg)} />
+        </div>
+        <p className={styles.name}>{project.name}</p>
+        {project.repository?.type === RepositoryType.INTERNAL && (
+          <div className={styles.internalTag}>Internal</div>
+        )}
       </div>
     </div>
   );
 };
+
+const LowerBg: FC<Props> = ({ project }) => (
+  <div className={styles.inf}>
+    <div className={styles.bg}>
+      <div className={styles.bgBand} />
+    </div>
+    <div className={styles.content}>
+      <p className={styles.description} title={project.description}>
+        {project.description}
+      </p>
+    </div>
+  </div>
+);
+
+const Band: FC<Props> = ({ project }) => (
+  <div className={styles.band}>
+    <div className={cx(styles.label, styles[project.state])}>
+      {project.state.replace('_', ' ')}
+    </div>
+    {project.error && <div className={styles.warning}>WARNING</div>}
+  </div>
+);
 
 const Square: FC<Props> = ({ project }) => (
   <div className={styles.square}>

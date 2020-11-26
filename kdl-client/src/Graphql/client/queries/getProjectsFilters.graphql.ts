@@ -9,7 +9,8 @@ export const GET_PROJECT_FILTERS = gql`
   {
     projectFilters @client {
       name
-      states
+      selection
+      order
       nFiltered
     }
   }

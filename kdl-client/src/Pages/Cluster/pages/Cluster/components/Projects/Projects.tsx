@@ -20,13 +20,14 @@ function Projects() {
     GET_PROJECT_FILTERS
   );
 
-  const { filterProjects } = useProjectFilters();
+  const { filterProjects, sortProjects } = useProjectFilters();
 
   if (loading) return <SpinnerCircular />;
   if (error || !data || !projectFiltersData) return <ErrorMessage />;
 
   const filters = projectFiltersData.projectFilters;
-  const projects = filterProjects(data.projects, filters);
+  let projects = filterProjects(data.projects, filters);
+  projects = sortProjects(projects, filters.order);
 
   return (
     <div className={styles.container}>

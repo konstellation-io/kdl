@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
 import ClusterBar from './components/ClusterBar/ClusterBar';
-import ClusterInfo from './components/ClusterInfo/ClusterInfo';
 import Projects from './components/Projects/Projects';
+import ProjectsBar from './components/ProjectsBar/ProjectsBar';
 import { RouteClusterParams } from 'Constants/routes';
 import styles from './Cluster.module.scss';
 import { titlebar } from 'Components/TitleBar/TitleBar';
@@ -37,7 +37,7 @@ function Cluster() {
   return (
     <div className={styles.container}>
       <ClusterBar />
-      <ClusterInfo />
+      <ProjectsBar />
       <Projects />
     </div>
   );

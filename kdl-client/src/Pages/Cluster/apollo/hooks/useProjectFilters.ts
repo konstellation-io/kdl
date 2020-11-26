@@ -1,11 +1,18 @@
+import {
+  ProjectFilters,
+  ProjectOrder,
+  ProjectSelection,
+} from '../models/ProjectFilters';
+
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
-import { ProjectFilters } from '../models/ProjectFilters';
-import { ProjectState } from 'Pages/Cluster/pages/Cluster/components/ClusterInfo/components/ProjectStateIcon/ProjectStateIcon';
+import { ProjectState } from 'Graphql/types/globalTypes';
 import { projectFilters } from './../cache';
+import { sortBy } from 'lodash';
 
 export type NewFilters = {
   name?: string;
-  states?: ProjectState[];
+  selection?: ProjectSelection;
+  order?: ProjectOrder;
 };
 
 function useProjectFilters() {
@@ -18,19 +25,35 @@ function useProjectFilters() {
     });
   }
 
-  function filterByState(
+  const isProjectActive = (project: GetProjects_projects) =>
+    project.state !== ProjectState.ARCHIVED;
+  const isProjectStarred = (project: GetProjects_projects) => project.favorite;
+  const isProjectArchived = (project: GetProjects_projects) =>
+    project.state === ProjectState.ARCHIVED;
+
+  function getProjectCounts(projects: GetProjects_projects[]) {
+    const activeProjects = projects.filter(isProjectActive);
+    const starredProjects = projects.filter(isProjectStarred);
+    const archivedProjects = projects.filter(isProjectArchived);
+
+    return new Map([
+      [ProjectSelection.ALL, projects.length],
+      [ProjectSelection.ACTIVE, activeProjects.length],
+      [ProjectSelection.STARRED, starredProjects.length],
+      [ProjectSelection.ARCHIVED, archivedProjects.length],
+    ]);
+  }
+
+  function filterBySelection(
     project: GetProjects_projects,
-    states: ProjectState[]
+    selection: ProjectSelection
   ) {
-    if (states.length === 0) return true;
+    if (selection === ProjectSelection.ALL) return true;
 
     return (
-      (states.includes(ProjectState.ERROR) || !project.error) &&
-      (states.includes(ProjectState.STARTED) ||
-        project.state !== ProjectState.STARTED) &&
-      (states.includes(ProjectState.STOPPED) ||
-        project.state !== ProjectState.STOPPED) &&
-      (states.includes(ProjectState.NOT_FAVORITE) || project.favorite)
+      (selection === ProjectSelection.ARCHIVED && isProjectArchived(project)) ||
+      (selection === ProjectSelection.ACTIVE && isProjectActive(project)) ||
+      (selection === ProjectSelection.STARRED && isProjectStarred(project))
     );
   }
 
@@ -40,7 +63,7 @@ function useProjectFilters() {
   ) {
     let filteredProjects = projects
       .filter((project) => project.name.includes(filters.name))
-      .filter((project) => filterByState(project, filters.states));
+      .filter((project) => filterBySelection(project, filters.selection));
 
     projectFilters({
       ...filters,
@@ -50,7 +73,27 @@ function useProjectFilters() {
     return filteredProjects;
   }
 
-  return { updateFilters, filterProjects };
+  function sortProjects(projects: GetProjects_projects[], order: ProjectOrder) {
+    let sortedProjects: GetProjects_projects[];
+
+    switch (order) {
+      case ProjectOrder.AZ:
+        sortedProjects = sortBy(projects, (p) => p.name);
+        break;
+      case ProjectOrder.ZA:
+        sortedProjects = sortBy(projects, (p) => p.name).reverse();
+        break;
+      case ProjectOrder.CREATION:
+        sortedProjects = sortBy(projects, (p) => p.creationDate);
+        break;
+      default:
+        sortedProjects = sortBy(projects, (p) => p.name);
+    }
+
+    return sortedProjects;
+  }
+
+  return { updateFilters, filterProjects, getProjectCounts, sortProjects };
 }
 
 export default useProjectFilters;

@@ -123,6 +123,7 @@ function ClusterLogin() {
                 setError('email', {});
                 setValue('email', value);
               }}
+              Icon={EmailIcon}
               onEnterKeyPress={handleSubmit(onSubmit)}
               error={errors.email?.message}
               showClearButton

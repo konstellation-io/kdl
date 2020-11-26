@@ -19,7 +19,7 @@ module.exports = {
     description: casual.description,
     favorite: casual.boolean,
     repository: this.Repository,
-    creationDate: () => new Date(),
+    creationDate: () => (new Date()).toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
   }),

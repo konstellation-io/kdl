@@ -6,31 +6,56 @@
   display: flex;
   height: 5 * $grid-unit;
   background-color: palette(base, 900);
-  padding: 0 2 * $grid-unit 0 $grid-unit;
+  padding-left: 2.5 * $grid-unit;
   white-space: nowrap;
+
+  z-index: 3;
 }
 
+.left,
 .right {
   display: flex;
+  z-index: 3;
 }
 
 .formSearch {
   input {
     background-color: transparent;
     border: transparent;
+    border-left: solid 1px palette(lowlight, 900);
   }
 }
 
-.nClusters {
-  @include font-small;
-  color: font-color(regular);
+.clusterDetails {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  align-self: center;
+  padding-left: 0.5 * $grid-unit;
+  height: 100%;
 
-  margin-right: 2 * $grid-unit;
-}
+  .clusterName {
+    display: flex;
+    align-items: center;
+    border-right: solid 2px palette(base, 500);
 
-.user {
-  @include font-button;
-  color: font-color(lowlight);
+    .serverLabel {
+      @include font-caption;
+      color: font-color(regular);
 
-  margin-left: 2 * $grid-unit;
+      align-self: center;
+      margin-right: $grid-unit;
+    }
+
+    .clusterState {
+      @include make-triangle(2 * $grid-unit, palette(success));
+
+      margin-right: $grid-unit;
+    }
+    .clusterNameInput {
+      @include font-subheader;
+      color: font-color(light);
+    }
+  }
 }

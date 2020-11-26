@@ -66,6 +66,9 @@ function App() {
         transition={Slide}
         limit={1}
       />
+      <div id="chartjs-tooltip">
+        <table />
+      </div>
     </>
   );
 }

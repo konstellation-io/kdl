@@ -4,10 +4,14 @@ import Request from './Request';
 import { ipcMain } from 'electron';
 
 ipcMain.on('connectToRemoteCluster', (event, cluster) => {
-  const request = new Request(event, 'connectToRemoteCluster', `echo ${cluster.id}`);
+  const request = new Request(event, 'connectToRemoteCluster', `echo ${cluster.url}`);
   request.runCommand().then(success => {
+    // TODO: Get cluster name from server
+    const clusterName = 'Remote cluster';
+
     const clusterId = createCluster({
       ...cluster,
+      name: clusterName,
       state: 'SIGNED_OUT',
       type: 'remote'
     });

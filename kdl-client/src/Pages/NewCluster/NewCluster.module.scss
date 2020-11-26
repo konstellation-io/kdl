@@ -1,13 +1,40 @@
 @import 'Styles/variables';
 
-.clusters {
+.container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  pointer-events: none;
+  width: 100%;
   height: 100%;
-  margin-top: 4 * $grid-unit;
 
-  .cluster {
-    pointer-events: auto;
+  .actionBar {
+    width: 100%;
+  }
+
+  .content {
+    margin-top: 8 * $grid-unit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .subtitle {
+      margin-top: 2 * $grid-unit;
+      width: 38 * $grid-unit;
+      text-align: center;
+    }
+
+    .clusters {
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      height: 100%;
+      width: 100%;
+
+      .cluster {
+        pointer-events: auto;
+      }
+    }
   }
 }

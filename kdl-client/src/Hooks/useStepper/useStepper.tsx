@@ -1,8 +1,9 @@
-import React, { MouseEvent, useRef, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 
 import { Button } from 'kwc';
 import { cloneDeep } from 'lodash';
 import styles from './useStepper.module.scss';
+import useNavigation from 'Hooks/useNavigation';
 
 type ActionButtonProps = {
   label: string;
@@ -23,11 +24,6 @@ type Step = {
   completed: boolean;
   error: boolean;
 };
-
-enum Direction {
-  NEXT = 'next',
-  PREV = 'prev',
-}
 
 type Data = {
   id: string;
@@ -57,23 +53,11 @@ export default function useStepper({
   initialStep = 0,
 }: Params) {
   const [steps, setSteps] = useState(buildSteps(data));
-  const [actStep, setActStep] = useState(initialStep);
-  const direction = useRef(Direction.NEXT);
-
-  function nextStep() {
-    goToStep(actStep + 1);
-  }
-
-  function prevStep() {
-    goToStep(actStep - 1);
-  }
-
-  function goToStep(newStep: number) {
-    beforeGoToStep();
-
-    direction.current = newStep > actStep ? Direction.NEXT : Direction.PREV;
-    setActStep(newStep);
-  }
+  const { actStep, goToStep, nextStep, prevStep, direction } = useNavigation({
+    initialStep,
+    beforeGoToStep,
+    maxSteps: steps.length,
+  });
 
   function getActStepComponent() {
     const Component = data[actStep].Component;
@@ -133,7 +117,7 @@ export default function useStepper({
   return {
     actStep,
     goToStep,
-    direction: direction.current,
+    direction,
     getActions,
     updateState,
     getActStepComponent,

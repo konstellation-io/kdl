@@ -1,4 +1,5 @@
 import Cluster, { ClusterBaseProps } from './Cluster';
+import ROUTE, { buildRoute } from 'Constants/routes';
 
 import React from 'react';
 import useClusters from 'Hooks/useClusters';
@@ -17,7 +18,12 @@ export function LocalCluster(props: LocalClusterProps) {
   const { getClusterActions } = useClusters();
   const actions = getClusterActions(props.state, props.clusterId);
 
-  return <Cluster {...props} actions={actions} local />;
+  const clusterReady = props.state === LocalClusterStates.STARTED;
+  const onOpenUrl = clusterReady
+    ? buildRoute.cluster(ROUTE.CLUSTER, props.clusterId)
+    : null;
+
+  return <Cluster {...props} actions={actions} onOpenUrl={onOpenUrl} local />;
 }
 
 export default LocalCluster;

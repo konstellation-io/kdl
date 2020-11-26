@@ -37,7 +37,6 @@ function getStateCircle(state: ConnectionState) {
 }
 
 type FormData = {
-  clusterName: string;
   clusterUrl: string;
 };
 
@@ -53,7 +52,7 @@ function ConnectToRemoteCluster() {
     register,
     errors,
     setError,
-  } = useForm<FormData>({ defaultValues: { clusterUrl: '', clusterName: '' } });
+  } = useForm<FormData>({ defaultValues: { clusterUrl: '' } });
 
   const validateUrl = useCallback(
     (value: string) => {
@@ -82,11 +81,7 @@ function ConnectToRemoteCluster() {
 
   useEffect(() => {
     register('clusterUrl', { validate: validateUrl });
-    register('clusterName', { validate: validateName });
-    return () => {
-      unregister('clusterUrl');
-      unregister('clusterName');
-    };
+    return () => unregister('clusterUrl');
   }, [register, unregister, setValue, validateUrl, validateName]);
 
   useEffect(() => {
@@ -123,9 +118,8 @@ function ConnectToRemoteCluster() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function onSubmit({ clusterName, clusterUrl }: FormData) {
+  async function onSubmit({ clusterUrl }: FormData) {
     ipcRenderer.send('connectToRemoteCluster', {
-      name: clusterName,
       url: clusterUrl,
     });
     setConnectionState(ConnectionState.CONNECTING);
@@ -170,25 +164,6 @@ function ConnectToRemoteCluster() {
           aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis
           accumsan turpis.
         </p>
-        <div className={styles.formClusterName}>
-          <TextInput
-            label="cluster name"
-            onChange={(value: string) => {
-              setError('clusterName', {});
-              setValue('clusterName', value);
-            }}
-            onEnterKeyPress={handleSubmit(onSubmit)}
-            error={errors.clusterName?.message}
-            disabled={
-              connectionState &&
-              [ConnectionState.CONNECTING, ConnectionState.OK].includes(
-                connectionState
-              )
-            }
-            autoFocus
-            showClearButton
-          />
-        </div>
         <div className={styles.formClusterUrl}>
           <TextInput
             label="cluster url"

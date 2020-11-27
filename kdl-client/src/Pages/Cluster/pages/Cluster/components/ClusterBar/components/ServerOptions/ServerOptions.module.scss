@@ -1,0 +1,44 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.settings {
+  > div > div {
+    background-color: transparent !important;
+  }
+
+  & > div > div:last-child {
+    left: 0;
+  }
+}
+
+.selectButton {
+  background-color: palette(base, 500);
+}
+
+.urlOption {
+  display: flex;
+  align-items: center;
+  padding-left: 3 * $grid-unit;
+  background-color: palette(base, 500);
+  cursor: default;
+  box-shadow: inset 0 -2px 0 palette(base, 900);
+
+  &:hover {
+    background-color: palette(base, 500);
+  }
+
+  .title {
+    @include font-caption;
+    color: font-color(regular);
+
+    user-select: none;
+    margin-right: $grid-unit;
+  }
+  .url {
+    @include font-small;
+    color: font-color(lowlight);
+
+    user-select: none;
+  }
+}

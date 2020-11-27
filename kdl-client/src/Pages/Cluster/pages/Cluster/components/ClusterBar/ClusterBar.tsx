@@ -1,12 +1,11 @@
-import { Button, Left, Right, SearchSelect } from 'kwc';
-import ROUTE, { RouteClusterParams, buildRoute } from 'Constants/routes';
+import { ExpandableTextInput, Left, Right } from 'kwc';
 import React, { useEffect } from 'react';
 
-import IconAdd from '@material-ui/icons/Add';
+import ClusterDetails from './ClusterDetails';
+import ClusterMetrics from './components/ClusterMetrics/ClusterMetrics';
 import SettingsMenu from '../SettingsMenu/SettingsMenu';
 import styles from './ClusterBar.module.scss';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import useProjectFilters from 'Pages/Cluster/apollo/hooks/useProjectFilters';
 
 type FormData = {
@@ -14,7 +13,6 @@ type FormData = {
 };
 
 function ClusterBar() {
-  const { clusterId } = useParams<RouteClusterParams>();
   const { updateFilters } = useProjectFilters();
   const { setValue, unregister, register, watch } = useForm<FormData>({
     defaultValues: { projectName: '' },
@@ -34,25 +32,15 @@ function ClusterBar() {
 
   return (
     <div className={styles.container}>
-      <Left>
-        <SearchSelect
-          label=""
-          options={[]}
-          onChange={(value: string) => setValue('projectName', value)}
-          className={styles.formSearch}
-          placeholder="Search"
-          showSearchIcon
-          hideError
-          hideLabel
-        />
+      <Left className={styles.left}>
+        <ClusterDetails />
+        <ClusterMetrics />
       </Left>
       <Right className={styles.right}>
-        <Button
-          label="ADD PROJECT"
-          Icon={IconAdd}
-          to={buildRoute.cluster(ROUTE.NEW_PROJECT, clusterId)}
+        <ExpandableTextInput
+          onChange={(value: string) => setValue('projectName', value)}
+          className={styles.formSearch}
         />
-        <Button label="USERS" />
         <SettingsMenu />
       </Right>
     </div>

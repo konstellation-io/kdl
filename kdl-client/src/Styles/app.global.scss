@@ -6,3 +6,7 @@ h3 {
 
   margin-top: 2 * $grid-unit;
 }
+
+#chartjs-tooltip {
+  z-index: 3;
+}

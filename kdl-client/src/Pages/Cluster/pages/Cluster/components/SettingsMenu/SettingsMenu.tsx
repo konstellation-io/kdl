@@ -1,18 +1,19 @@
 import {
   BUTTON_ALIGN,
   Button,
+  CustomOptionProps,
   ModalContainer,
   ModalLayoutInfo,
-  useClickOutside,
+  Select,
+  SelectTheme,
 } from 'kwc';
 import ROUTE, { RouteClusterParams } from 'Constants/routes';
-import React, { memo, useRef, useState } from 'react';
+import React, { FunctionComponent, memo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import CloseIcon from '@material-ui/icons/Close';
 import { GetMe } from 'Graphql/queries/types/GetMe';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
-import cx from 'classnames';
 import { ipcRenderer } from 'electron';
 import { loader } from 'graphql.macro';
 import styles from './SettingsMenu.module.scss';
@@ -20,22 +21,28 @@ import { useQuery } from '@apollo/client';
 
 const GetMeQuery = loader('Graphql/queries/getMe.graphql');
 
-const BUTTON_HEIGHT = 40;
-const buttonStyle = {
-  paddingLeft: '20%',
-};
+interface SettingsButtonProps extends CustomOptionProps {
+  onClick: () => void;
+  Icon: FunctionComponent;
+}
+function SettingsButton({ label, onClick, Icon }: SettingsButtonProps) {
+  return (
+    <Button
+      label={label.toUpperCase()}
+      onClick={onClick}
+      Icon={Icon}
+      key={`button${label}`}
+      className={styles.settingButton}
+      align={BUTTON_ALIGN.LEFT}
+    />
+  );
+}
 
 function SettingsMenu() {
   const history = useHistory();
   const { data } = useQuery<GetMe>(GetMeQuery);
   const clusterId = useParams<RouteClusterParams>();
-  const [opened, setOpened] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const settingsRef = useRef(null);
-  const { addClickOutsideEvents, removeClickOutsideEvents } = useClickOutside({
-    componentRef: settingsRef,
-    action: close,
-  });
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -46,56 +53,38 @@ function SettingsMenu() {
     history.push(ROUTE.HOME);
   }
 
-  function close() {
-    setOpened(false);
-    removeClickOutsideEvents();
+  function doDisconnect() {
+    history.push(ROUTE.HOME);
   }
 
-  function open() {
-    if (!opened) {
-      setOpened(true);
-      addClickOutsideEvents();
-    }
+  function LogoutButton({ label }: CustomOptionProps) {
+    return (
+      <SettingsButton Icon={LogoutIcon} onClick={openModal} label={label} />
+    );
   }
 
-  function getBaseProps(label: string) {
-    return {
-      label: label.toUpperCase(),
-      key: `button${label}`,
-      align: BUTTON_ALIGN.LEFT,
-      style: buttonStyle,
-    };
+  function DisconnectButton({ label }: CustomOptionProps) {
+    return (
+      <SettingsButton Icon={CloseIcon} onClick={doDisconnect} label={label} />
+    );
   }
 
-  const logoutButton = (
-    <Button {...getBaseProps('Logout')} onClick={openModal} Icon={LogoutIcon} />
-  );
-  const exitButton = (
-    <Button {...getBaseProps('Exit')} to={ROUTE.HOME} Icon={CloseIcon} />
-  );
-
-  const buttons: JSX.Element[] = [exitButton, logoutButton];
-
-  const nButtons = buttons.length;
-  const optionsHeight = nButtons * BUTTON_HEIGHT;
+  const optionToButton = {
+    disconnect: DisconnectButton,
+    signOut: LogoutButton,
+  };
 
   return (
-    <div
-      className={cx(styles.container, { [styles['is-open']]: opened })}
-      onClick={open}
-      data-testid="settingsContainer"
-    >
-      <div className={styles.label} data-testid="settings-label">
-        {data?.me?.email}
-      </div>
-      <div
-        ref={settingsRef}
-        className={styles.options}
-        style={{ maxHeight: opened ? optionsHeight : 0 }}
-        data-testid="settingsContent"
-      >
-        {buttons}
-      </div>
+    <div>
+      <Select
+        label=""
+        placeholder={data?.me?.email}
+        options={Object.keys(optionToButton)}
+        theme={SelectTheme.DARK}
+        CustomOptions={optionToButton}
+        className={styles.settings}
+        showSelectAllOption={false}
+      />
       {showModal && (
         <ModalContainer
           title="YOU ARE ABOUT TO SIGN OUT THIS CLUSTER"

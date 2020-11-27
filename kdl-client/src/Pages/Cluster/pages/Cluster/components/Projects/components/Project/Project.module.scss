@@ -92,6 +92,9 @@ $small-square-base: 30px;
   .bgBand {
     bottom: 0;
   }
+  .content {
+    left: 5 * $grid-unit;
+  }
 }
 
 .inf {
@@ -147,6 +150,10 @@ $small-square-base: 30px;
 
     opacity: 1;
     transition: opacity ease 0.4s;
+
+    &.isFav {
+      color: palette(highlight);
+    }
   }
   .favBg {
     @include center;

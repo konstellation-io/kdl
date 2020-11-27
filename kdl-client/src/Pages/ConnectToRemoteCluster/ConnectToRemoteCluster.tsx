@@ -6,6 +6,7 @@ import StatusCircle, {
 } from 'Components/LottieShapes/StatusCircle/StatusCircle';
 
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
+import IconLink from '@material-ui/icons/Link';
 import SidebarBottom from 'Components/Layout/Page/DefaultPage/SidebarBottom';
 import { ipcRenderer } from 'electron';
 import styles from './ConnectToRemoteCluster.module.scss';
@@ -172,6 +173,7 @@ function ConnectToRemoteCluster() {
               setValue('clusterUrl', value);
             }}
             onEnterKeyPress={handleSubmit(onSubmit)}
+            Icon={IconLink}
             error={errors.clusterUrl?.message}
             disabled={
               connectionState &&

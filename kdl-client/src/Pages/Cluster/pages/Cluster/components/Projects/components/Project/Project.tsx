@@ -7,6 +7,7 @@ import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import IconFav from '@material-ui/icons/Star';
 import IconNoFav from '@material-ui/icons/StarBorder';
 import cx from 'classnames';
+import { formatDate } from 'Utils/format';
 import styles from './Project.module.scss';
 import { toast } from 'react-toastify';
 
@@ -83,6 +84,12 @@ const LowerBg: FC<Props> = ({ project }) => (
       <p className={styles.description} title={project.description}>
         {project.description}
       </p>
+      <div className={styles.creationDate}>
+        <p className={styles.creationDateLabel}>CREATED:</p>
+        <p className={styles.date}>
+          {formatDate(new Date(project.creationDate), true)}
+        </p>
+      </div>
     </div>
   </div>
 );

@@ -1,18 +1,17 @@
 import { InMemoryCache, makeVar } from '@apollo/client';
+import {
+  ProjectFilters,
+  ProjectOrder,
+  ProjectSelection,
+} from './models/ProjectFilters';
 
 import { Cluster } from 'Hooks/useClusters';
 import { NewProject } from './models/NewProject';
-import { ProjectFilters } from './models/ProjectFilters';
-import { ProjectState } from '../pages/Cluster/components/ClusterInfo/components/ProjectStateIcon/ProjectStateIcon';
 
 export const initialProjectFilters: ProjectFilters = {
   name: '',
-  states: [
-    ProjectState.ERROR,
-    ProjectState.NOT_FAVORITE,
-    ProjectState.STARTED,
-    ProjectState.STOPPED,
-  ],
+  selection: ProjectSelection.ACTIVE,
+  order: ProjectOrder.AZ,
   nFiltered: 0,
 };
 

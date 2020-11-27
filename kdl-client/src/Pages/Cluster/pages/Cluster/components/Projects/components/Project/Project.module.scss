@@ -92,6 +92,9 @@ $small-square-base: 30px;
   .bgBand {
     bottom: 0;
   }
+  .content {
+    left: 5 * $grid-unit;
+  }
 }
 
 .inf {
@@ -103,6 +106,9 @@ $small-square-base: 30px;
   }
   .content {
     top: $band-height / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
@@ -119,10 +125,11 @@ $small-square-base: 30px;
   @include font-small;
   color: font-color(regular);
 
+  width: 100%;
+  white-space: nowrap;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
   pointer-events: all;
   cursor: pointer;
 
@@ -147,6 +154,10 @@ $small-square-base: 30px;
 
     opacity: 1;
     transition: opacity ease 0.4s;
+
+    &.isFav {
+      color: palette(highlight);
+    }
   }
   .favBg {
     @include center;
@@ -327,5 +338,29 @@ $small-square-base: 30px;
     p {
       margin-left: 2 * $grid-unit;
     }
+  }
+}
+
+.creationDate {
+  @include font-caption;
+  color: font-color(lowlight);
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 0.5 * $grid-unit;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .creationDateLabel {
+    color: font-color(regular);
+    margin-right: $grid-unit;
+
+    transition: color ease 0.2s;
+  }
+  .date {
+    transition: color ease 0.2s;
   }
 }

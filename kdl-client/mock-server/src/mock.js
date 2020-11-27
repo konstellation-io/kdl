@@ -7,7 +7,7 @@ module.exports = {
       id: casual.uuid,
       email: 'admin@intelygenz.com'
     }),
-    projects: () => new MockList([2, 6])
+    projects: () => new MockList([4, 8])
   }),
   User: () => ({
     id: casual.uuid,
@@ -19,6 +19,7 @@ module.exports = {
     description: casual.description,
     favorite: casual.boolean,
     repository: this.Repository,
+    creationDate: () => (new Date()).toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
   }),

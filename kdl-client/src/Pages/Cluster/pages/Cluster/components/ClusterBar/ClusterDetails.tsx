@@ -3,10 +3,10 @@ import {
   GetOpenedCluster,
 } from 'Graphql/client/queries/getOpenedCluster.graphql';
 
-import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
 import React from 'react';
+import ServerOptions from './components/ServerOptions/ServerOptions';
 import { SpinnerLinear } from 'kwc';
-import styles from './ClusterInfo.module.scss';
+import styles from './ClusterBar.module.scss';
 import { useQuery } from '@apollo/client';
 
 function ClusterDetails() {
@@ -19,14 +19,9 @@ function ClusterDetails() {
     <div className={styles.clusterDetails}>
       <div className={styles.clusterName}>
         <div className={styles.clusterState} />
-        <div className={styles.clusterNameInput}>{openedCluster.name}</div>
+        <div className={styles.serverLabel}>SERVER</div>
+        <ServerOptions openedCluster={openedCluster} />
       </div>
-      {openedCluster.url && (
-        <div className={styles.clusterUrl}>
-          <p>{openedCluster.url}</p>
-          <CopyToClipboard>{openedCluster?.url || ''}</CopyToClipboard>
-        </div>
-      )}
     </div>
   );
 }

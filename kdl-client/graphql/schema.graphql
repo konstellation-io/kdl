@@ -15,6 +15,7 @@ type Project {
   favorite: Boolean!
   repository: Repository
   state: ProjectState!
+  creationDate: String!
   error: String
 }
 

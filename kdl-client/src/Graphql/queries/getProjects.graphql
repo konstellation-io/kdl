@@ -4,6 +4,7 @@ query GetProjects {
     name
     description
     favorite
+    creationDate
     repository {
       id
       type

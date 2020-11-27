@@ -20,6 +20,7 @@ export interface GetProjects_projects {
   name: string;
   description: string;
   favorite: boolean;
+  creationDate: string;
   repository: GetProjects_projects_repository | null;
   state: ProjectState;
   error: string | null;

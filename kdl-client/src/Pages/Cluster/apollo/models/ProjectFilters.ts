@@ -1,7 +1,20 @@
-import { ProjectState } from 'Pages/Cluster/pages/Cluster/components/ClusterInfo/components/ProjectStateIcon/ProjectStateIcon';
+export enum ProjectSelection {
+  ACTIVE = 'ACTIVE',
+  STARRED = 'STARRED',
+  ARCHIVED = 'ARCHIVED',
+  ALL = 'ALL',
+}
+
+export enum ProjectOrder {
+  VISITED = 'VISITED',
+  CREATION = 'CREATION',
+  AZ = 'AZ',
+  ZA = 'ZA',
+}
 
 export interface ProjectFilters {
   name: string;
-  states: ProjectState[];
+  selection: ProjectSelection;
+  order: ProjectOrder;
   nFiltered: number;
 }

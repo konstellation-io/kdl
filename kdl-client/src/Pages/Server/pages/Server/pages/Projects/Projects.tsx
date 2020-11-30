@@ -7,6 +7,7 @@ import {
 import AddProject from './components/Project/AddProject';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import Project from './components/Project/Project';
+import ProjectsBar from '../../components/ProjectsBar/ProjectsBar';
 import React from 'react';
 import { loader } from 'graphql.macro';
 import styles from './Projects.module.scss';
@@ -30,14 +31,17 @@ function Projects() {
   projects = sortProjects(projects, filters.order);
 
   return (
-    <div className={styles.container}>
-      {[
-        ...projects.map((project) => (
-          <Project key={project.id} project={project} />
-        )),
-        <AddProject key="add-project" />,
-      ]}
-    </div>
+    <>
+      <ProjectsBar />
+      <div className={styles.container}>
+        {[
+          ...projects.map((project) => (
+            <Project key={project.id} project={project} />
+          )),
+          <AddProject key="add-project" />,
+        ]}
+      </div>
+    </>
   );
 }
 

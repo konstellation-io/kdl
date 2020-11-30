@@ -6,6 +6,8 @@ enum ROUTE {
   CONNECT_TO_REMOTE_SERVER = '/connect-to-remote-server',
   SERVER_LOGIN = '/server-login/:serverId',
   SERVER = '/server/:serverId',
+  SERVER_USERS = '/server/:serverId/users',
+  NEW_SERVER_USER = '/server/:serverId/new-user',
   NEW_PROJECT = '/server/:serverId/new-project',
   PROJECT = '/server/:serverId/project/:projectId',
 }

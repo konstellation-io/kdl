@@ -6,6 +6,12 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum AccessLevel {
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  VIEWER = 'VIEWER',
+}
+
 export enum ProjectState {
   ARCHIVED = 'ARCHIVED',
   STARTED = 'STARTED',
@@ -15,6 +21,20 @@ export enum ProjectState {
 export enum RepositoryType {
   EXTERNAL = 'EXTERNAL',
   INTERNAL = 'INTERNAL',
+}
+
+export interface AddUserInput {
+  email: string;
+  accessLevel: AccessLevel;
+}
+
+export interface RemoveUsersInput {
+  userIds: string[];
+}
+
+export interface UpdateAccessLevelInput {
+  userIds: string[];
+  accessLevel: AccessLevel;
 }
 
 //==============================================================

@@ -1,13 +1,13 @@
+import ROUTE, { RouteServerParams } from 'Constants/routes';
 import React, { useEffect } from 'react';
+import { Route, Switch, useParams } from 'react-router-dom';
 
-import Projects from './components/Projects/Projects';
-import ProjectsBar from './components/ProjectsBar/ProjectsBar';
-import { RouteServerParams } from 'Constants/routes';
+import Projects from './pages/Projects/Projects';
 import ServerBar from './components/ServerBar/ServerBar';
+import Users from './pages/Users/Users';
 import styles from './Server.module.scss';
 import { titlebar } from 'Components/TitleBar/TitleBar';
 import useOpenedServer from '../../apollo/hooks/useOpenedServer';
-import { useParams } from 'react-router-dom';
 import useServers from 'Hooks/useServers';
 
 function Server() {
@@ -37,8 +37,10 @@ function Server() {
   return (
     <div className={styles.container}>
       <ServerBar />
-      <ProjectsBar />
-      <Projects />
+      <Switch>
+        <Route exact path={ROUTE.SERVER_USERS} component={Users} />
+        <Route exact path={ROUTE.SERVER} component={Projects} />
+      </Switch>
     </div>
   );
 }

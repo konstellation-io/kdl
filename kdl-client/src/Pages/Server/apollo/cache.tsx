@@ -4,6 +4,7 @@ import {
   ProjectOrder,
   ProjectSelection,
 } from './models/ProjectFilters';
+import { UserSelection, UserSettings } from './models/UserSettings';
 
 import { NewProject } from './models/NewProject';
 import { Server } from 'Hooks/useServers';
@@ -31,9 +32,19 @@ export const initialNewProject: NewProject = {
   },
 };
 
+const initialStateUserSettings: UserSettings = {
+  selectedUserIds: [],
+  userSelection: UserSelection.NONE,
+  filters: {
+    email: null,
+    accessLevel: null,
+  },
+};
+
 export const projectFilters = makeVar(initialProjectFilters);
 export const newProject = makeVar(initialNewProject);
 export const openedServer = makeVar<Server | null>(null);
+export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -42,7 +53,9 @@ const cache = new InMemoryCache({
         projectFilters: { read: () => projectFilters() },
         newProject: { read: () => newProject() },
         openedServer: { read: () => openedServer() },
+        userSettings: { read: () => userSettings() },
         projects: { merge: false },
+        users: { merge: false },
       },
     },
   },

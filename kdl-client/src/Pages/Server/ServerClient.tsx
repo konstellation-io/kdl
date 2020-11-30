@@ -3,7 +3,8 @@ import React, { useEffect, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import NewProject from './pages/NewProject/NewProject';
-import Project from './pages/Project/Project';
+import NewUser from './pages/NewUser/NewUser';
+import Project from './pages/Server/pages/Project/Project';
 import ROUTE from 'Constants/routes';
 import Server from './pages/Server/Server';
 import cache from './apollo/cache';
@@ -28,9 +29,10 @@ function ServerClient() {
   return (
     <ApolloProvider client={client.current}>
       <Switch>
-        <Route exact path={ROUTE.SERVER} component={Server} />
-        <Route path={ROUTE.NEW_PROJECT} component={NewProject} />
+        <Route exact path={ROUTE.NEW_PROJECT} component={NewProject} />
+        <Route exact path={ROUTE.NEW_SERVER_USER} component={NewUser} />
         <Route exact path={ROUTE.PROJECT} component={Project} />
+        <Route path={ROUTE.SERVER} component={Server} />
       </Switch>
     </ApolloProvider>
   );

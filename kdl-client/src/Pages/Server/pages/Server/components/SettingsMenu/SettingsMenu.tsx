@@ -71,7 +71,7 @@ function SettingsMenu() {
 
   const optionToButton = {
     disconnect: DisconnectButton,
-    signOut: LogoutButton,
+    'sign out': LogoutButton,
   };
 
   return (

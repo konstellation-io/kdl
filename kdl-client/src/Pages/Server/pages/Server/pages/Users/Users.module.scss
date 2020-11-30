@@ -1,0 +1,34 @@
+@import 'Styles/variables';
+@import 'Styles/colors';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: palette(base, 600);
+}
+
+.sectionTitle {
+  color: font-color(lowlight);
+  line-height: 10 * $grid-unit;
+  text-align: left;
+  padding-left: 3 * $grid-unit;
+  background-color: palette(base, 500);
+}
+
+.modal {
+  width: 95 * $grid-unit;
+}
+
+.justify {
+  margin: 4 * $grid-unit 0 -$grid-unit 0;
+  padding: 0 $grid-unit;
+
+  textarea {
+    min-width: 718px !important;
+    max-width: 718px !important;
+    max-height: 200px !important;
+    min-height: 65px !important;
+  }
+}

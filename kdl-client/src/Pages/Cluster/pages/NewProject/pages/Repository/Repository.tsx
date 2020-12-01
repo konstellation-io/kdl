@@ -1,65 +1,56 @@
-import { Button, SpinnerCircular } from 'kwc';
+import { SpinnerCircular } from 'kwc';
 import {
   GET_NEW_PROJECT,
   GetNewProject,
 } from 'Graphql/client/queries/getNewProject.graphql';
 
 import React from 'react';
-import RepositoryExternal from './RepositoryExternal';
-import RepositoryInternal from './RepositoryInternal';
-import RepositorySelector from './components/RepositorySelector/RepositorySelector';
 import { RepositoryType } from 'Graphql/types/globalTypes';
-import styles from './Repository.module.scss';
 import useNewProject from 'Pages/Cluster/apollo/hooks/useNewProject';
 import { useQuery } from '@apollo/client';
+import styles from './Repository.module.scss';
+import RepositoryOption from './components/RepositoryOption/RepositoryOption';
+import { LOCATION } from './components/RepositoryTypeComponent/RepositoryTypeComponent';
+import RepositoryTypeComponent from './components/RepositoryTypeComponent/RepositoryTypeComponent';
 
-function Repository() {
-  const { updateValue, updateError, clearError } = useNewProject('repository');
+function Repository(params: any) {
+  const { showErrors } = params;
+  const { updateValue, clearError } = useNewProject('repository');
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
 
   if (!data) return <SpinnerCircular />;
   const {
     values: { type },
+    errors,
   } = data.newProject.repository;
-
-  if (!type)
-    return (
-      <RepositorySelector
-        setRepositoryType={(value: RepositoryType) =>
-          updateValue('type', value)
-        }
-      />
-    );
-
-  const repositoryType = type;
-  const title =
-    repositoryType === RepositoryType.INTERNAL
-      ? 'INTERNAL REPOSITORY'
-      : 'EXTERNAL REPOSITORY';
-
-  const Form =
-    repositoryType === RepositoryType.INTERNAL
-      ? RepositoryInternal
-      : RepositoryExternal;
 
   return (
     <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        <p className={styles.title}>{title}</p>
-        <Button
-          label="CHANGE"
-          onClick={() => {
-            updateValue('type', null);
-            updateValue('url', '');
+      <div className={styles.repositories}>
+        <RepositoryOption
+          title="External Repository"
+          subtitle="Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis."
+          actionLabel="USE EXTERNAL"
+          isSelected={type === RepositoryType.EXTERNAL}
+          onSelect={() => {
+            clearError('type');
+            updateValue('type', RepositoryType.EXTERNAL);
           }}
+          Repository={<RepositoryTypeComponent squareLocation={LOCATION.OUT} />}
+        />
+        <RepositoryOption
+          title="Internal Repository"
+          subtitle="Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae ullamcorper metus. Sed sollicitudin ipsum quis nunc sollicitudin ultrices."
+          actionLabel="USE INTERNAL"
+          isSelected={type === RepositoryType.INTERNAL}
+          onSelect={() => {
+            clearError('type');
+            updateValue('type', RepositoryType.INTERNAL);
+          }}
+          Repository={<RepositoryTypeComponent squareLocation={LOCATION.IN} />}
         />
       </div>
-      <Form
-        updateValue={updateValue}
-        updateError={updateError}
-        clearError={clearError}
-        data={data.newProject}
-      />
+      {showErrors && <div className={styles.errorMessage}>{errors.type}</div>}
     </div>
   );
 }

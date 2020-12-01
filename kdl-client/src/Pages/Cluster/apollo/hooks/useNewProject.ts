@@ -1,4 +1,8 @@
 import {
+  ExternalRepositoryValues,
+  ExternalRepositoryErrors,
+  InternalRepositoryValues,
+  InternalRepositoryErrors,
   InformationErrors,
   InformationValues,
   NewProject,
@@ -11,7 +15,11 @@ import { cloneDeep } from 'lodash';
 
 function useNewProject(section: keyof NewProject) {
   function updateValue(
-    key: keyof InformationValues | keyof RepositoryValues,
+    key:
+      | keyof InformationValues
+      | keyof RepositoryValues
+      | keyof ExternalRepositoryValues
+      | keyof InternalRepositoryValues,
     value: any
   ) {
     const newState = cloneDeep(newProject());
@@ -22,8 +30,12 @@ function useNewProject(section: keyof NewProject) {
   }
 
   function updateError(
-    key: keyof InformationErrors | keyof RepositoryErrors,
-    value: string
+    key:
+      | keyof InformationErrors
+      | keyof RepositoryErrors
+      | keyof ExternalRepositoryErrors
+      | keyof InternalRepositoryErrors,
+    value: any
   ) {
     const newState = cloneDeep(newProject());
     // @ts-ignore

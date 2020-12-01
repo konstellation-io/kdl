@@ -18,16 +18,32 @@ export const initialProjectFilters: ProjectFilters = {
 export const initialNewProject: NewProject = {
   information: {
     values: { name: '', description: '' },
-    errors: { description: '' },
+    errors: {
+      name: 'This field is mandatory, please fill it.',
+      description: 'Please, write a description is important for the project.',
+    },
   },
   repository: {
     values: {
       type: null,
-      slug: '',
-      url: '',
-      skipTest: false,
     },
-    errors: { slug: '', url: '', connection: '' },
+    errors: { type: 'Please choose a repo type' },
+  },
+  externalRepository: {
+    values: {
+      url: '',
+      isConnectionTested: false,
+      hasConnectionError: '',
+      warning: false,
+    },
+    errors: {
+      url: '',
+      warning: 'not accepted',
+    },
+  },
+  internalRepository: {
+    values: { slug: '', url: '' },
+    errors: { slug: '' },
   },
 };
 

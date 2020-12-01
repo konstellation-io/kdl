@@ -47,35 +47,28 @@ const buildSteps = (data: Data[]): Step[] =>
 type Params = {
   data: Data[];
   initialStep?: number;
-  beforeGoToStep?: () => void;
-  cancelRoute?: string;
-  onSubmit?: Function;
-  actions: any;
 };
-export default function useStepper({
-  data,
-  beforeGoToStep,
-  initialStep = 0,
-  actions,
-}: Params) {
+export default function useStepper({ data, initialStep = 0 }: Params) {
   const [steps, setSteps] = useState(buildSteps(data));
   const { actStep, goToStep, nextStep, prevStep, direction } = useNavigation({
     initialStep,
-    beforeGoToStep,
     maxSteps: steps.length,
   });
 
-  const _actions = createActions(actions, prevStep, nextStep, steps);
-
   function getActStepComponent() {
     const Component = data[actStep].Component;
-    return <Component />;
+    const showErrors = steps[actStep].error;
+    return <Component showErrors={showErrors} />;
   }
 
-  function updateState(completed: boolean, error: boolean) {
+  function updateState(
+    completed: boolean,
+    error: boolean,
+    stepNumber: number = actStep
+  ) {
     const newSteps = cloneDeep(steps);
-    newSteps[actStep] = {
-      ...newSteps[actStep],
+    newSteps[stepNumber] = {
+      ...newSteps[stepNumber],
       completed,
       error,
     };
@@ -83,79 +76,14 @@ export default function useStepper({
     setSteps(newSteps);
   }
 
-  function getActions() {
-    switch (actStep) {
-      case 0:
-        return [
-          _actions.get(ActionButtonTypes.Cancel),
-          _actions.get(ActionButtonTypes.Next),
-        ];
-      case data.length - 1:
-        return [
-          _actions.get(ActionButtonTypes.Back),
-          _actions.get(ActionButtonTypes.Complete),
-        ];
-      default:
-        return [
-          _actions.get(ActionButtonTypes.Back),
-          _actions.get(ActionButtonTypes.Next),
-        ];
-    }
-  }
-
   return {
     actStep,
     goToStep,
     direction,
-    getActions,
+    nextStep,
+    prevStep,
     updateState,
     getActStepComponent,
     steps,
   };
 }
-
-const createActions = (
-  actions: any,
-  onBackClick: any,
-  onNextClick: any,
-  steps: any
-) => {
-  const hasError = steps.some((step: any) => !!step.error);
-  console.log('ciao', hasError);
-  const _actions = new Map();
-  const backButton = actions.find(
-    ({ key }: any) => key === ActionButtonTypes.Back
-  );
-  const nextButton = actions.find(
-    ({ key }: any) => key === ActionButtonTypes.Next
-  );
-  const completeButton = actions.find(
-    ({ key }: any) => key === ActionButtonTypes.Complete
-  );
-  _actions.set(
-    ActionButtonTypes.Back,
-    React.cloneElement(backButton, {
-      ...backButton.props,
-      onClick: onBackClick,
-    })
-  );
-  _actions.set(
-    ActionButtonTypes.Next,
-    React.cloneElement(nextButton, {
-      ...nextButton.props,
-      onClick: onNextClick,
-    })
-  );
-  _actions.set(
-    ActionButtonTypes.Complete,
-    React.cloneElement(completeButton, {
-      ...completeButton.props,
-      disabled: hasError,
-    })
-  );
-  _actions.set(
-    ActionButtonTypes.Cancel,
-    actions.find(({ key }: any) => key === ActionButtonTypes.Cancel)
-  );
-  return _actions;
-};

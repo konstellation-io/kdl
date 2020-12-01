@@ -1,11 +1,16 @@
-import { CHECK, TextInput } from 'kwc';
+import { CHECK, SpinnerCircular, TextInput } from 'kwc';
 import React, { useEffect } from 'react';
 
-import { GetNewProject_newProject } from 'Graphql/client/queries/getNewProject.graphql';
+import {
+  GET_NEW_PROJECT,
+  GetNewProject,
+} from 'Graphql/client/queries/getNewProject.graphql';
 import { RouteClusterParams } from 'Constants/routes';
-import styles from './Repository.module.scss';
+import styles from './InternalRepository.module.scss';
 import useClusters from 'Hooks/useClusters';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 
 function validateProjectSlug(value: string): string | boolean {
   return CHECK.getValidationError([
@@ -19,54 +24,53 @@ function validateProjectSlug(value: string): string | boolean {
     CHECK.isSlug(value),
   ]);
 }
-
 type Props = {
-  updateValue: Function;
-  updateError: Function;
-  clearError: Function;
-  data: GetNewProject_newProject;
+  showErrors: boolean;
 };
-function RepositoryInternal({
-  updateValue,
-  updateError,
-  clearError,
-  data,
-}: Props) {
+function InternalRepository({ showErrors }: Props) {
+  const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
   const { clusterId } = useParams<RouteClusterParams>();
-  const {
-    values: { slug, url },
-    errors,
-  } = data.repository;
   const { getCluster } = useClusters();
+  const { updateValue, updateError, clearError } = useNewProject(
+    'internalRepository'
+  );
+  const { values } = data?.newProject.internalRepository || {};
+  const { errors } = data?.newProject.internalRepository || {};
+
+  const slug = values?.slug || '';
+  const url = values?.url || '';
+  const slugError = errors?.slug;
+
   const cluster = getCluster(clusterId);
 
   useEffect(() => {
     updateValue('url', `${cluster?.url}.${slug}`);
   }, [updateValue, slug, cluster]);
 
+  if (!data) return <SpinnerCircular />;
+
   const slugOk = validateProjectSlug(slug);
 
   return (
     <div className={styles.repositoryInternal}>
+      <div className={styles.url}>
+        <p className={styles.urlTitle}>repository url</p>
+        <p className={styles.urlContent}>{`${url}/`}</p>
+      </div>
       <TextInput
         label="repository slug"
+        customClassname={styles.slug}
         onChange={(value: string) => {
           updateValue('slug', value);
           clearError('slug');
         }}
-        onBlur={() =>
-          slug && updateError('slug', slugOk === true ? '' : slugOk)
-        }
+        onBlur={() => updateError('slug', slugOk === true ? '' : slugOk)}
         formValue={slug}
-        error={errors.slug}
+        error={showErrors ? slugError : ''}
         showClearButton
       />
-      <div className={styles.url}>
-        <p className={styles.urlTitle}>REPOSITORY URL</p>
-        <p className={styles.urlContent}>{url}</p>
-      </div>
     </div>
   );
 }
 
-export default RepositoryInternal;
+export default InternalRepository;

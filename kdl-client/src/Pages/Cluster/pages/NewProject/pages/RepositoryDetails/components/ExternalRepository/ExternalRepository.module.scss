@@ -1,0 +1,19 @@
+@import 'Styles/colors';
+@import 'Styles/variables';
+@import 'Styles/mixins';
+
+.container {
+  height: 100%;
+
+  .formUrlRow {
+    margin-top: 3.75 * $grid-unit;
+    display: flex;
+    align-items: center;
+    .formUrl {
+      width: 60%;
+    }
+    .testButton {
+      margin-left: 2.5 * $grid-unit;
+    }
+  }
+}

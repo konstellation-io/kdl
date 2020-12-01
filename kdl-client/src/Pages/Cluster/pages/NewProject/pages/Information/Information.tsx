@@ -10,15 +10,26 @@ import styles from './Information.module.scss';
 import useNewProject from 'Pages/Cluster/apollo/hooks/useNewProject';
 import { useQuery } from '@apollo/client';
 
-function Information() {
-  const { updateValue } = useNewProject('information');
-  const { updateValue: updateRepositoryValue } = useNewProject('repository');
+const limits = {
+  maxHeight: 500,
+  minHeight: 150,
+};
+
+type Props = {
+  showErrors: boolean;
+};
+function Information({ showErrors }: Props) {
+  const { updateValue, updateError, clearError } = useNewProject('information');
+  const { updateValue: updateInternalRepositoryValue } = useNewProject(
+    'internalRepository'
+  );
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
 
   if (!data) return <SpinnerCircular />;
 
   const {
     values: { name, description },
+    errors: { name: errorName, description: errorDescription },
   } = data.newProject.information;
 
   return (
@@ -27,23 +38,40 @@ function Information() {
         label="project name"
         onChange={(v: string) => {
           updateValue('name', v);
-          updateRepositoryValue('slug', generateSlug(v));
+          clearError('name');
+        }}
+        onBlur={() => {
+          updateInternalRepositoryValue('slug', generateSlug(name));
+          updateError(
+            'name',
+            name.length === 0 ? 'This field is mandatory, please fill it.' : ''
+          );
         }}
         formValue={name}
         autoFocus
         showClearButton
+        error={showErrors ? errorName : ''}
       />
       <TextInput
         label="project description"
-        formValue={description || ''}
-        onChange={(v: string) => updateValue('description', v)}
-        limits={{
-          maxHeight: 500,
-          minHeight: 150,
+        formValue={description}
+        onChange={(v: string) => {
+          updateValue('description', v);
+          clearError('description');
         }}
+        onBlur={() => {
+          updateError(
+            'description',
+            description.length === 0
+              ? 'Please, write a description is important for the project'
+              : ''
+          );
+        }}
+        limits={limits}
         showClearButton
         textArea
         lockHorizontalGrowth
+        error={showErrors ? errorDescription : ''}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 {
-  "name": "kdl-client",
+  "name": "konstellation-dev-lab",
   "description": "Konstellation Development Lab desktop application",
   "version": "1.8.0",
   "author": {
@@ -89,10 +89,16 @@
     },
     "linux": {
       "category": "Utility",
-      "target": ["AppImage", "snap"],
+      "target": [
+        "AppImage",
+        "snap"
+      ],
       "maintainer": "Intelygenz",
-      "executableName": "Konstellation Dev Lab",
+      "executableName": "konstellation-dev-lab",
       "icon": "build/icons/512x512.png"
+    },
+    "snap": {
+      "confinement": "devmode"
     },
     "win": {
       "icon": "build/icons/512x512.png",

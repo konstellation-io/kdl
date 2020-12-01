@@ -20,12 +20,22 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v1
+        if: startsWith(matrix.os, 'ubuntu')
+        with:
+          snapcraft_token: ${{ secrets.snapcraft_token }}
 
       - name: Build/release Electron app 💽
         uses: samuelmeuli/action-electron-builder@v1
         with:
           package_root: kdl-client
           github_token: ${{ secrets.github_token }}
+          windows_certs: ${{ secrets.windows_certs }}
+          windows_certs_password: ${{ secrets.windows_certs_password }}
+          mac_certs: ${{ secrets.mac_certs }}
+          mac_certs_password: ${{ secrets.mac_certs_password }}
           release: true
         env:
           SASS_PATH: src

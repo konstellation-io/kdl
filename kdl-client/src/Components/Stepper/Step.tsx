@@ -1,8 +1,9 @@
 import React, { MouseEvent } from 'react';
 
 import IconCompleted from '@material-ui/icons/Check';
-import IconError from '@material-ui/icons/Error';
+import IconDisabled from '@material-ui/icons/NotInterested';
 import IconIncomplete from '@material-ui/icons/Schedule';
+import IconActive from '@material-ui/icons/Create';
 import cx from 'classnames';
 import styles from './Stepper.module.scss';
 
@@ -12,16 +13,20 @@ type Props = {
   completed: boolean;
   active: boolean;
   visited: boolean;
+  disabled: boolean;
   onClick: (e: MouseEvent<HTMLDivElement>) => void;
 };
-function Step({ label, completed, error, active, visited, onClick }: Props) {
+function Step({ label, completed, active, visited, onClick, disabled }: Props) {
   let Icon;
   switch (true) {
     case completed:
       Icon = IconCompleted;
       break;
-    case error:
-      Icon = IconError;
+    case disabled:
+      Icon = IconDisabled;
+      break;
+    case active:
+      Icon = IconActive;
       break;
     default:
       Icon = IconIncomplete;
@@ -31,16 +36,23 @@ function Step({ label, completed, error, active, visited, onClick }: Props) {
     <div
       className={cx(styles.step, {
         [styles.completed]: completed,
-        [styles.error]: error,
         [styles.active]: active,
         [styles.visited]: visited,
+        [styles.disabled]: !completed && disabled,
       })}
       onClick={onClick}
     >
       <div className={styles.circle}>
         <Icon className="icon-small" />
       </div>
-      <p className={styles.label}>{label}</p>
+      <p
+        className={cx(styles.label, {
+          [styles.disabled]: !completed && disabled,
+          [styles.active]: active,
+        })}
+      >
+        {label}
+      </p>
     </div>
   );
 }

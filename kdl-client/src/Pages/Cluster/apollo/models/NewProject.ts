@@ -6,20 +6,47 @@ export interface InformationValues {
 }
 
 export interface InformationErrors {
+  name: string;
   description: string;
 }
 
 export interface RepositoryValues {
   type: RepositoryType | null;
-  slug: string;
-  url: string;
-  skipTest: boolean;
 }
 
 export interface RepositoryErrors {
-  slug: string;
+  type: string;
+}
+
+export interface ExternalRepositoryValues {
   url: string;
-  connection: string;
+  isConnectionTested: boolean;
+  hasConnectionError: string;
+  warning: boolean;
+}
+
+export interface ExternalRepositoryErrors {
+  url: string;
+  warning: string;
+}
+
+export interface InternalRepositoryValues {
+  url: string;
+  slug: string;
+}
+
+export interface InternalRepositoryErrors {
+  slug: string;
+}
+
+export interface NewProject_ExternalRepository {
+  values: ExternalRepositoryValues;
+  errors: ExternalRepositoryErrors;
+}
+
+export interface NewProject_InternalRepository {
+  values: InternalRepositoryValues;
+  errors: InternalRepositoryErrors;
 }
 
 export interface NewProject_Information {
@@ -35,4 +62,6 @@ export interface NewProject_Repository {
 export interface NewProject {
   information: NewProject_Information;
   repository: NewProject_Repository;
+  externalRepository: NewProject_ExternalRepository;
+  internalRepository: NewProject_InternalRepository;
 }

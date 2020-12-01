@@ -43,7 +43,6 @@ const buildSteps = (data: Data[]): Step[] =>
     completed: false,
     error: false,
   }));
-}
 
 type Params = {
   data: Data[];

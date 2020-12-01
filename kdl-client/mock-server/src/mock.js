@@ -30,5 +30,11 @@ module.exports = {
   Repository: () => ({
     id: casual.uuid,
     type: casual.random_element(['INTERNAL', 'EXTERNAL'])
+  }),
+  SSHKey: () => ({
+    public: casual.uuid,
+    private: casual.uuid,
+    creationDate: new Date().toUTCString(),
+    lastActivity: new Date().toUTCString()
   })
 };

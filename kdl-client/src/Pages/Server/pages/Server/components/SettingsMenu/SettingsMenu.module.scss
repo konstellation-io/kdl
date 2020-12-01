@@ -17,3 +17,18 @@
   white-space: initial;
   text-align: left;
 }
+
+.separator {
+  @include font-caption;
+  color: font-color(regular);
+
+  cursor: default;
+  background-color: palette(base);
+
+  border-top: 2px solid palette(base, 900);
+
+  &:hover {
+    background-color: palette(base);
+    color: font-color(regular);
+  }
+}

@@ -10,7 +10,7 @@ export enum LOCATION {
 type Props = {
   squareLocation: LOCATION;
 };
-function Repository({ squareLocation }: Props) {
+function RepositoryTypeComponent({ squareLocation }: Props) {
   return (
     <div className={cx(styles.square, styles[squareLocation])}>
       <div className={styles.s4} />
@@ -21,4 +21,4 @@ function Repository({ squareLocation }: Props) {
   );
 }
 
-export default Repository;
+export default RepositoryTypeComponent;

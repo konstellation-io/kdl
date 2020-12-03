@@ -18,24 +18,25 @@ import styles from './NewProject.module.scss';
 import useNewProject from 'Pages/Cluster/apollo/hooks/useNewProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import useStepper from 'Hooks/useStepper/useStepper';
+import useStepper, { ActionButton } from 'Hooks/useStepper/useStepper';
+import RepositoryDetails from './pages/RepositoryDetails/RepositoryDetails';
+import { RepositoryType } from '../../../../Graphql/types/globalTypes';
 
 enum Steps {
   INFORMATION,
   REPOSITORY,
+  REPOSITORY_DETAILS,
   SUMMARY,
 }
 
 enum StepNames {
   INFORMATION = 'information',
   REPOSITORY = 'repository',
+  DETAILS = 'repository details',
+  EXTERNAL = 'externalRepository',
+  INTERNAL = 'internalRepository',
   SUMMARY = 'summary',
 }
-
-const stepsWithData: [StepNames.INFORMATION, StepNames.REPOSITORY] = [
-  StepNames.INFORMATION,
-  StepNames.REPOSITORY,
-];
 
 const stepperSteps = [
   {
@@ -47,16 +48,26 @@ const stepperSteps = [
     Component: Repository,
   },
   {
+    id: StepNames.DETAILS,
+    Component: RepositoryDetails,
+  },
+  {
     id: StepNames.SUMMARY,
     Component: Summary,
   },
 ];
-
 function NewProject() {
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
   const { clusterId } = useParams<RouteClusterParams>();
   const { clearAll } = useNewProject('information');
   const cancelRoute = buildRoute.cluster(ROUTE.CLUSTER, clusterId);
+  const type = data?.newProject.repository.values.type || null;
+
+  const stepsWithData: [
+    StepNames.INFORMATION,
+    StepNames.REPOSITORY,
+    RepositoryType | null
+  ] = [StepNames.INFORMATION, StepNames.REPOSITORY, type];
 
   // We want to execute this on on component unmount
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,17 +76,63 @@ function NewProject() {
   const {
     direction,
     goToStep,
-    getActStepComponent,
-    getActions,
     actStep,
+    getActStepComponent,
     updateState,
+    nextStep,
+    prevStep,
     steps,
   } = useStepper({
     data: stepperSteps,
-    beforeGoToStep,
-    cancelRoute,
-    onSubmit,
   });
+
+  useEffect(() => {
+    updateState(false, true, Steps.REPOSITORY_DETAILS);
+  }, [type]);
+
+  function getActions() {
+    const onNextClick = () => {
+      if (validateStep()) nextStep();
+    };
+    switch (actStep) {
+      case 0:
+        return [
+          <ActionButton label="CANCEL" to={cancelRoute} />,
+          <ActionButton label="NEXT" primary onClick={onNextClick} />,
+        ];
+      case stepperSteps.length - 1:
+        return [
+          <ActionButton label="BACK" onClick={prevStep} />,
+          <ActionButton label="CREATE" onClick={onSubmit} primary />,
+        ];
+      default:
+        return [
+          <ActionButton label="BACK" onClick={prevStep} />,
+          <ActionButton
+            label="NEXT"
+            primary
+            disabled={isNextDisabled()}
+            onClick={onNextClick}
+          />,
+        ];
+    }
+  }
+
+  function isNextDisabled() {
+    if (
+      data &&
+      data.newProject.externalRepository &&
+      actStep === Steps.REPOSITORY_DETAILS &&
+      type === RepositoryType.EXTERNAL
+    ) {
+      const {
+        errors: { warning },
+      } = data.newProject.externalRepository;
+
+      return warning !== '';
+    }
+    return false;
+  }
 
   function onSubmit() {
     console.log('CREATE PROJECT');
@@ -84,9 +141,10 @@ function NewProject() {
   if (!data) return <SpinnerCircular />;
 
   // Updates completed and error step states
-  function beforeGoToStep() {
-    if (data && actStep !== Steps.SUMMARY) {
-      const actStepData = data.newProject[stepsWithData[actStep]];
+  function validateStep() {
+    const stepData = stepsWithData[actStep];
+    if (data && stepData !== null && actStep !== Steps.SUMMARY) {
+      const actStepData = data.newProject[stepData];
 
       const error =
         actStepData.errors && Object.values(actStepData.errors).some((e) => e);
@@ -94,10 +152,12 @@ function NewProject() {
       const values = Object.values(actStepData.values).filter(
         (v) => typeof v !== 'boolean'
       );
-      const completed = values && values.every((v) => !!v);
+      const completed = values && values.every((v) => !!v) && !error;
 
       updateState(completed, error);
+      return !error;
     }
+    return true;
   }
 
   return (
@@ -115,9 +175,14 @@ function NewProject() {
                 label: capitalize(s.id),
                 completed: s.completed,
                 error: s.error,
+                active: actStep === idx,
+                visited: actStep >= idx,
+                disabled: idx > actStep + 1,
               }))}
               activeStep={actStep}
-              goToStep={goToStep}
+              onStepClick={(stepId: any) => {
+                if (validateStep()) goToStep(stepId);
+              }}
             />
           </div>
         </div>

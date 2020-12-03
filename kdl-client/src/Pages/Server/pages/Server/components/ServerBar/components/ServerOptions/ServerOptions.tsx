@@ -50,18 +50,18 @@ function ServerOptions({ openedServer }: Props) {
     return <ServerButton Icon={IconProjects} to={projectsUrl} label={label} />;
   }
 
-  const usersUrl = buildRoute.server(ROUTE.SERVER, openedServer.id);
+  const usersUrl = buildRoute.server(ROUTE.SERVER_USERS, openedServer.id);
   function UsersButton({ label }: CustomOptionProps) {
     return <ServerButton Icon={IconUsers} to={usersUrl} label={label} />;
   }
 
   const optionToButton = {
     [openedServer.url || '']: UrlOption,
-    proyects: ProjectsButton,
-    signOut: UsersButton,
+    projects: ProjectsButton,
+    users: UsersButton,
   };
 
-  const options = ['proyects', 'signOut'];
+  const options = ['projects', 'users'];
   if (openedServer.url) options.unshift(openedServer.url);
 
   return (

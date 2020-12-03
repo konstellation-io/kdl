@@ -26,8 +26,6 @@ function App() {
     <>
       <Router history={history}>
         <Switch>
-          {/* <Route default component={InstallLocalServer} /> */}
-
           {noServers && (
             <Redirect exact from={ROUTE.HOME} to={ROUTE.NEW_SERVER} />
           )}

@@ -45,14 +45,7 @@ function Step({ label, completed, active, visited, onClick, disabled }: Props) {
       <div className={styles.circle}>
         <Icon className="icon-small" />
       </div>
-      <p
-        className={cx(styles.label, {
-          [styles.disabled]: !completed && disabled,
-          [styles.active]: active,
-        })}
-      >
-        {label}
-      </p>
+      <p className={cx(styles.label)}>{label}</p>
     </div>
   );
 }

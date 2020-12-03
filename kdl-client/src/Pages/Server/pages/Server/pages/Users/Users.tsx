@@ -23,7 +23,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   RemoveUsers,
   RemoveUsersVariables,
-  RemoveUsers_removeUsers,
 } from 'Graphql/mutations/types/RemoveUsers';
 import {
   UpdateAccessLevel,

@@ -50,6 +50,8 @@ enum Actions {
   ADMIN = 'ADMIN',
 }
 
+const types = Object.values(Actions);
+
 type Props = {
   onDeleteUsers: () => void;
   onUpdateUsers: (newAccessLevel: AccessLevel) => void;
@@ -58,8 +60,6 @@ function UserActions({ onDeleteUsers, onUpdateUsers }: Props) {
   const { changeUserSelection } = useUserSettings();
 
   const { data: localData } = useQuery<GetUserSettings>(GET_USER_SETTINGS);
-
-  const types = Object.values(Actions);
 
   const nSelections = localData?.userSettings.selectedUserIds.length || 0;
   const userSelection = get(

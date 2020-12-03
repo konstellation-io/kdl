@@ -12,8 +12,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 
-function validateProjectSlug(value: string): string | boolean {
-  return CHECK.getValidationError([
+function validateProjectSlug(value: string): string {
+  const error = CHECK.getValidationError([
     CHECK.isLowerCase(value),
     CHECK.matches(value, /^[a-z]/, 'Slug must start with a lowercase letter'),
     CHECK.matches(value, /.{3,}/, 'Slug must contain at least 3 characters'),
@@ -23,6 +23,7 @@ function validateProjectSlug(value: string): string | boolean {
     ),
     CHECK.isSlug(value),
   ]);
+  return error === true ? '' : (error as string);
 }
 type Props = {
   showErrors: boolean;
@@ -64,7 +65,7 @@ function InternalRepository({ showErrors }: Props) {
           updateValue('slug', value);
           clearError('slug');
         }}
-        onBlur={() => updateError('slug', slugOk === true ? '' : slugOk)}
+        onBlur={() => updateError('slug', slugOk)}
         formValue={slug}
         error={showErrors ? slugError : ''}
         showClearButton

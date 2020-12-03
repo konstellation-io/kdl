@@ -20,7 +20,7 @@ function useNewProject(section: keyof NewProject) {
       | keyof RepositoryValues
       | keyof ExternalRepositoryValues
       | keyof InternalRepositoryValues,
-    value: any
+    value: string | boolean
   ) {
     const newState = cloneDeep(newProject());
     // @ts-ignore
@@ -35,7 +35,7 @@ function useNewProject(section: keyof NewProject) {
       | keyof RepositoryErrors
       | keyof ExternalRepositoryErrors
       | keyof InternalRepositoryErrors,
-    value: any
+    value: string
   ) {
     const newState = cloneDeep(newProject());
     // @ts-ignore

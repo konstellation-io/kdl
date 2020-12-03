@@ -10,8 +10,9 @@ import styles from './ExternalRepository.module.scss';
 import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 import { useQuery } from '@apollo/client';
 
-function validateUrl(value: string): string | boolean {
-  return CHECK.getValidationError([CHECK.isDomainValid(value)]);
+function validateUrl(value: string): string {
+  const error = CHECK.getValidationError([CHECK.isDomainValid(value)]);
+  return error === true ? '' : (error as string);
 }
 
 type Props = {
@@ -64,7 +65,7 @@ function ExternalRepository({ showErrors }: Props) {
             clearError('url');
           }}
           onBlur={() => {
-            updateError('url', isValidUrl === true ? '' : isValidUrl);
+            updateError('url', isValidUrl);
             updateError('warning', 'not accepted');
           }}
           error={url && urlError}
@@ -77,7 +78,7 @@ function ExternalRepository({ showErrors }: Props) {
           primary
           className={styles.testButton}
           onClick={validateConnection}
-          disabled={isValidUrl !== true}
+          disabled={isValidUrl !== ''}
           loading={loading}
         />
       </div>

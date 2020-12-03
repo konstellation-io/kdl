@@ -66,9 +66,8 @@ function Users() {
     RemoveUsersMutation,
     {
       update: (cache, result) => {
-        if (result.data !== undefined && result.data !== null) {
-          const removedUsers = result.data
-            .removeUsers as RemoveUsers_removeUsers[];
+        if (result.data) {
+          const removedUsers = result.data.removeUsers;
           const cacheResult = cache.readQuery<GetUsers>({
             query: GetUsersQuery,
           });

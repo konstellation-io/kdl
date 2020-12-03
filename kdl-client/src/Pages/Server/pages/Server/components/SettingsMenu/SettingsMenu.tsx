@@ -78,7 +78,7 @@ function SettingsMenu() {
     return (
       <Button
         label={label.toUpperCase()}
-        key={`separator`}
+        key="separator"
         className={styles.separator}
         align={BUTTON_ALIGN.LEFT}
       />

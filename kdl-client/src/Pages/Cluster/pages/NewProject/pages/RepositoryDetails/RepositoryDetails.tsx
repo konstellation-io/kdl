@@ -1,4 +1,4 @@
-import { Button, SpinnerCircular } from 'kwc';
+import { SpinnerCircular } from 'kwc';
 import {
   GET_NEW_PROJECT,
   GetNewProject,

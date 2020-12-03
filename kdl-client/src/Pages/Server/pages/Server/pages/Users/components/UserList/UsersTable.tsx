@@ -137,7 +137,7 @@ function UsersTable({ users, contextMenuActions }: Props) {
     useSortBy,
     useRowSelect,
     (hooks) => {
-      hooks.visibleColumns.push((columns) => [
+      hooks.visibleColumns.push((cols) => [
         {
           id: 'selection',
           Header: ({ getToggleAllRowsSelectedProps }) => (
@@ -150,13 +150,13 @@ function UsersTable({ users, contextMenuActions }: Props) {
             <TableColCheck {...row.getToggleRowSelectedProps()} />
           ),
         },
-        ...columns,
+        ...cols,
         {
           id: 'options',
           Cell: ({ row }: { row: Row }) => (
             <ContextMenu
               actions={contextMenuActions}
-              contextObject={(row.original as Row).id}
+              contextObject={get(row, 'original.id', '')}
               openOnLeftClick
             >
               <div className={styles.options}>
@@ -181,12 +181,12 @@ function UsersTable({ users, contextMenuActions }: Props) {
   }, [userSelection, toggleAllRowsSelected]);
 
   useEffect(() => {
-    const actSelectedUsers = localData?.userSettings.selectedUserIds;
+    const actSelectionUsers = localData?.userSettings.selectedUserIds;
     const newSelectedUsersPos = Object.entries(selectedRowIds)
       .filter(([_, isSelected]) => isSelected)
       .map(([rowId, _]) => rowId);
 
-    if (actSelectedUsers?.length !== newSelectedUsersPos.length) {
+    if (actSelectionUsers?.length !== newSelectedUsersPos.length) {
       let newUserSelection: UserSelection;
 
       switch (newSelectedUsersPos.length) {

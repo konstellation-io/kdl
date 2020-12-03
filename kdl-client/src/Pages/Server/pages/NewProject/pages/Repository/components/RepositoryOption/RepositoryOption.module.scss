@@ -5,11 +5,12 @@
 .container {
   width: 27 * $grid-unit;
   height: 100%;
-  padding: 0 3 * $grid-unit;
-
+  padding: 4.5 * $grid-unit;
+  border: 1px solid transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 
   .title {
     @include font-body;
@@ -27,5 +28,11 @@
   .button {
     margin-top: 4 * $grid-unit;
     width: 100%;
+  }
+  &.selected {
+    border: 1px solid palette(highlight);
+  }
+  &:nth-child(2) {
+    margin-left: $grid-unit * 2;
   }
 }

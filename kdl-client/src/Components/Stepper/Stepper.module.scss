@@ -77,10 +77,15 @@ $separator-padding: 3 * $grid-unit;
     @include font-caption;
     color: font-color(lowlight);
     text-transform: uppercase;
-
     margin: 0 0 0 $grid-unit;
-
     transition: color linear 0.3s;
+  }
+
+  &.disabled .label {
+    color: palette(base, 400);
+  }
+  &.active .label {
+    color: palette(highlight);
   }
 
   &.completed {
@@ -97,31 +102,24 @@ $separator-padding: 3 * $grid-unit;
     }
   }
 
-  &.error {
-    .circle {
-      background-color: palette(error);
-      border-color: palette(base);
-
-      > svg {
-        color: font-color(dark);
-      }
-    }
-
-    &.active .circle {
-      border-color: font-color(light);
-    }
-
-    &:hover .circle {
-      background-color: palette(error, 300);
-    }
-  }
-
   &.active {
     pointer-events: none;
 
     .circle {
       color: palette(highlight);
       border-color: palette(highlight);
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    .circle {
+      background-color: font-color(dark);
+      border-color: palette(base, 400);
+
+      > svg {
+        color: palette(base, 400);
+      }
     }
   }
 }

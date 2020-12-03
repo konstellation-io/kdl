@@ -1,32 +1,27 @@
 import {
   GET_NEW_PROJECT,
   GetNewProject,
+  GetNewProject_newProject_externalRepository,
 } from 'Graphql/client/queries/getNewProject.graphql';
 import React, { FC } from 'react';
 
 import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
-import { GetMe } from 'Graphql/queries/types/GetMe';
-import IconEmail from '@material-ui/icons/Email';
 import IconLink from '@material-ui/icons/Link';
+import { RepositoryType } from '../../../../../../Graphql/types/globalTypes';
 import { SpinnerCircular } from 'kwc';
 import cx from 'classnames';
-import { loader } from 'graphql.macro';
 import styles from './Summary.module.scss';
 import { useQuery } from '@apollo/client';
-
-const GetMeQuery = loader('Graphql/queries/getMe.graphql');
-
-const Incomplete: FC = () => <p className={styles.incomplete}>Incomplete</p>;
 
 type FieldProps = {
   children: JSX.Element | JSX.Element[];
   title: string;
   incomplete?: boolean;
 };
-const Field: FC<FieldProps> = ({ title, children, incomplete = false }) => (
+const Field: FC<FieldProps> = ({ title, children }) => (
   <div className={styles.field}>
     <p className={styles.label}>{title}</p>
-    <div>{incomplete ? <Incomplete /> : children}</div>
+    {children}
   </div>
 );
 
@@ -43,39 +38,27 @@ const Section: FC<SectionProps> = ({ title, children }) => (
 
 function Summary() {
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
-  const { data: dataMe } = useQuery<GetMe>(GetMeQuery);
 
-  if (!data || !dataMe) return <SpinnerCircular />;
+  if (!data) return <SpinnerCircular />;
 
-  const {
-    information: {
-      values: { name, description },
-    },
-    repository: {
-      values: { url, skipTest, type },
-      errors: { connection },
-    },
-  } = data.newProject;
+  const { information, repository } = data.newProject;
+  const type = repository?.values?.type || RepositoryType.EXTERNAL;
+  const isExternalRepo = type === RepositoryType.EXTERNAL;
+  const { name, description } = information.values;
+  const repoTypeDetails = data.newProject[type];
+  const { url } = repoTypeDetails.values;
 
   function getRepositoryCheckMessage() {
-    let text = '';
+    const hasConnectionError =
+      (repoTypeDetails as GetNewProject_newProject_externalRepository).values
+        .hasConnectionError !== '';
 
-    switch (true) {
-      case skipTest:
-        text = 'Connection test skipped';
-        break;
-      case connection !== '':
-        text = connection;
-        break;
-      default:
-        text = 'Connection ok';
-    }
+    const text = hasConnectionError ? 'connection error' : 'connection ok';
 
     return (
       <div
         className={cx(styles.check, {
-          [styles.skip]: skipTest,
-          [styles.error]: connection !== '',
+          [styles.error]: hasConnectionError,
         })}
       >
         {text}
@@ -86,30 +69,21 @@ function Summary() {
   return (
     <div className={styles.container}>
       <Section title="Information">
-        <Field title="PROJECT NAME" incomplete={name === ''}>
+        <Field title="PROJECT NAME">
           <p className={styles.name}>{name}</p>
         </Field>
-        <Field title="PROJECT DESCRIPTION" incomplete={description === ''}>
-          <p className={styles.description}>{description}</p>
-        </Field>
-      </Section>
-      <Section title="Repository">
-        <Field title="TYPE" incomplete={type === null}>
-          <p className={styles.description}>{type}</p>
-        </Field>
-        <Field title="URL" incomplete={url === ''}>
+        <Field title="REPOSITORY URL">
           <div className={styles.repository}>
-            <IconLink className="icon-regular" />
-            <p>{url}</p>
-            <CopyToClipboard>{url}</CopyToClipboard>
+            <div className={styles.urlContainer}>
+              <IconLink className="icon-regular" />
+              <p className={styles.url}>{url}</p>
+              <CopyToClipboard>{url}</CopyToClipboard>
+            </div>
+            {isExternalRepo && getRepositoryCheckMessage()}
           </div>
-          {getRepositoryCheckMessage()}
         </Field>
-        <Field title="EMAIL">
-          <div className={styles.email}>
-            <IconEmail className="icon-regular" />
-            <p>{dataMe.me.email}</p>
-          </div>
+        <Field title="PROJECT DESCRIPTION">
+          <div className={styles.descriptionContainer}>{description}</div>
         </Field>
       </Section>
     </div>

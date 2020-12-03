@@ -13,8 +13,8 @@ export enum ProjectState {
 }
 
 export enum RepositoryType {
-  EXTERNAL = 'EXTERNAL',
-  INTERNAL = 'INTERNAL',
+  EXTERNAL = 'externalRepository',
+  INTERNAL = 'internalRepository',
 }
 
 //==============================================================

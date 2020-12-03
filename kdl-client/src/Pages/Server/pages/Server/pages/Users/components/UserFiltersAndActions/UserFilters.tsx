@@ -12,6 +12,8 @@ import useUserSettings from '../../../../../../apollo/hooks/useUserSettings';
 
 const GetUsersQuery = loader('Graphql/queries/getUsers.graphql');
 
+const types = Object.values(AccessLevel);
+
 type FormData = {
   userEmail?: string;
   userType?: AccessLevel;
@@ -32,7 +34,6 @@ function UserFilters() {
   } = useForm<FormData>();
 
   const users = [...new Set(data?.users.map((user) => user.email))];
-  const types = Object.values(AccessLevel);
 
   useEffect(() => {
     register('userEmail');

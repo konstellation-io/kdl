@@ -10,8 +10,11 @@ import { useQuery } from '@apollo/client';
 import ExternalRepository from './components/ExternalRepository/ExternalRepository';
 import InternalRepository from './components/InternalRepository/InternalRepository';
 
-function RepositoryDetails(params: any) {
-  const { showErrors } = params;
+type Props = {
+  showErrors: boolean;
+};
+
+function RepositoryDetails({ showErrors }: Props) {
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
 
   if (!data) return <SpinnerCircular />;

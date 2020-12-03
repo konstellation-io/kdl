@@ -126,14 +126,9 @@ function NewProject() {
       type === RepositoryType.EXTERNAL
     ) {
       const {
-        values: { isConnectionTested },
         errors: { warning },
       } = data.newProject.externalRepository;
-      console.log(
-        !isConnectionTested || warning !== '',
-        isConnectionTested,
-        warning
-      );
+
       return warning !== '';
     }
     return false;

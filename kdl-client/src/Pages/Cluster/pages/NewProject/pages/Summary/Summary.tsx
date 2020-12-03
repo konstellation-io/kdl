@@ -49,8 +49,6 @@ function Summary() {
   const repoTypeDetails = data.newProject[type];
   const { url } = repoTypeDetails.values;
 
-  console.log(data);
-
   function getRepositoryCheckMessage() {
     const hasConnectionError =
       (repoTypeDetails as GetNewProject_newProject_externalRepository).values

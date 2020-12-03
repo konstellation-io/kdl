@@ -78,7 +78,6 @@ function FAQBox({
               theme={toButtonTheme.get(theme)}
               onClick={action.onClick}
               disabled={action.needConfirmation && !confirmed}
-              className={styles.actionButton}
               height={30}
               primary
             />

@@ -34,38 +34,6 @@ function RepositoryDetails({ showErrors }: Props) {
       )}
     </div>
   );
-
-  // const repositoryType = type;
-  // const title =
-  //   repositoryType === RepositoryType.INTERNAL
-  //     ? 'INTERNAL REPOSITORY'
-  //     : 'EXTERNAL REPOSITORY';
-  //
-  // const Form =
-  //   repositoryType === RepositoryType.INTERNAL
-  //     ? RepositoryInternal
-  //     : RepositoryExternal;
-  //
-  // return (
-  //   <div className={styles.container}>
-  //     <div className={styles.titleContainer}>
-  //       <p className={styles.title}>{title}</p>
-  //       <Button
-  //         label="CHANGE"
-  //         onClick={() => {
-  //           updateValue('type', null);
-  //           updateValue('url', '');
-  //         }}
-  //       />
-  //     </div>
-  //     <Form
-  //       updateValue={updateValue}
-  //       updateError={updateError}
-  //       clearError={clearError}
-  //       data={data.newProject}
-  //     />
-  //   </div>
-  // );
 }
 
 export default RepositoryDetails;

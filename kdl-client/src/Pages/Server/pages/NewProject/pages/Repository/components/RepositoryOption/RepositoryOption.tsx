@@ -1,15 +1,16 @@
 import React, { MouseEvent } from 'react';
 
 import { Button } from 'kwc';
-import containerStyles from '../RepositorySelector/RepositorySelector.module.scss';
+import containerStyles from '../../Repository.module.scss';
 import cx from 'classnames';
-import repositoryStyles from '../Repository/Repository.module.scss';
+import repositoryStyles from '../RepositoryTypeComponent/Repository.module.scss';
 import styles from './RepositoryOption.module.scss';
 
 type Props = {
   title: string;
   subtitle: string;
   actionLabel: string;
+  isSelected: boolean;
   onSelect: (e?: MouseEvent<HTMLDivElement> | undefined) => void;
   Repository: JSX.Element;
 };
@@ -18,6 +19,7 @@ function RepositoryOption({
   title,
   subtitle,
   actionLabel,
+  isSelected,
   onSelect,
   Repository,
 }: Props) {
@@ -26,14 +28,18 @@ function RepositoryOption({
       className={cx(
         styles.container,
         repositoryStyles.hoverContainer,
-        containerStyles.server
+        containerStyles.server,
+        {
+          [styles.selected]: isSelected,
+        }
       )}
+      onClick={onSelect}
     >
       <div>{Repository}</div>
       <p className={styles.title}>{title}</p>
       <p className={styles.subtitle}>{subtitle}</p>
       <div className={styles.button}>
-        <Button label={actionLabel} onClick={onSelect} primary />
+        <Button label={actionLabel} primary />
       </div>
     </div>
   );

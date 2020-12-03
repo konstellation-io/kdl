@@ -2,12 +2,21 @@ type Query {
   me: User!
   projects: [Project!]!
   users: [User!]!
+  sshKey: SSHKey!
 }
 
 type Mutation {
   addUser(input: AddUserInput!): User!
   removeUsers(input: RemoveUsersInput!): [User!]!
   updateAccessLevel(input: UpdateAccessLevelInput!): [User!]!
+  regenerateSSHKey: SSHKey!
+}
+
+type SSHKey {
+  public: String!
+  private: String!
+  creationDate: String!
+  lastActivity: String
 }
 
 type User {

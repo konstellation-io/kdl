@@ -7,12 +7,13 @@ import {
   Select,
   SelectTheme,
 } from 'kwc';
-import ROUTE, { RouteServerParams } from 'Constants/routes';
+import ROUTE, { RouteServerParams, buildRoute } from 'Constants/routes';
 import React, { FunctionComponent, memo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import CloseIcon from '@material-ui/icons/Close';
 import { GetMe } from 'Graphql/queries/types/GetMe';
+import KeyIcon from '@material-ui/icons/VpnKey';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import { ipcRenderer } from 'electron';
 import { loader } from 'graphql.macro';
@@ -41,7 +42,7 @@ function SettingsButton({ label, onClick, Icon }: SettingsButtonProps) {
 function SettingsMenu() {
   const history = useHistory();
   const { data } = useQuery<GetMe>(GetMeQuery);
-  const serverId = useParams<RouteServerParams>();
+  const { serverId } = useParams<RouteServerParams>();
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => setShowModal(true);
@@ -57,6 +58,10 @@ function SettingsMenu() {
     history.push(ROUTE.HOME);
   }
 
+  function goToUserSSHKeys() {
+    history.push(buildRoute.server(ROUTE.USER_SSH_KEY, serverId));
+  }
+
   function LogoutButton({ label }: CustomOptionProps) {
     return (
       <SettingsButton Icon={LogoutIcon} onClick={openModal} label={label} />
@@ -69,9 +74,28 @@ function SettingsMenu() {
     );
   }
 
+  function UserSettingsSeparator({ label }: CustomOptionProps) {
+    return (
+      <Button
+        label={label.toUpperCase()}
+        key="separator"
+        className={styles.separator}
+        align={BUTTON_ALIGN.LEFT}
+      />
+    );
+  }
+
+  function SSHKeyButton({ label }: CustomOptionProps) {
+    return (
+      <SettingsButton Icon={KeyIcon} onClick={goToUserSSHKeys} label={label} />
+    );
+  }
+
   const optionToButton = {
     disconnect: DisconnectButton,
     'sign out': LogoutButton,
+    'user settings': UserSettingsSeparator,
+    'ssh key': SSHKeyButton,
   };
 
   return (
@@ -84,6 +108,7 @@ function SettingsMenu() {
         CustomOptions={optionToButton}
         className={styles.settings}
         showSelectAllOption={false}
+        shouldSort={false}
       />
       {showModal && (
         <ModalContainer

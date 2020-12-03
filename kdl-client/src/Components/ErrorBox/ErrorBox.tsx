@@ -9,7 +9,7 @@ import cx from 'classnames';
 import { shell } from 'electron';
 import styles from './ErrorBox.module.scss';
 
-const MAIL_SUBJECT = 'LocalClusterRequirements';
+const MAIL_SUBJECT = 'LocalServerRequirements';
 
 function getHeight(opened: boolean) {
   return opened ? 'auto' : 40;

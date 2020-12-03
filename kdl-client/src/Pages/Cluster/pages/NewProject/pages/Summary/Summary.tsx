@@ -59,7 +59,7 @@ function Summary() {
     return (
       <div
         className={cx(styles.check, {
-          [styles.error]: hasConnectionError, //connection !== '',
+          [styles.error]: hasConnectionError,
         })}
       >
         {text}

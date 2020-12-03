@@ -24,8 +24,7 @@
     color: font-color(light);
   }
   .url {
-    font-weight: 500;
-    font-size: 1.75 * $grid-unit;
+    @include font-body;
     color: font-color(light);
     margin-left: $grid-unit;
   }
@@ -43,11 +42,11 @@
     }
   }
   .descriptionContainer {
+    @include font-body;
     margin: 2.5 * $grid-unit 0;
     background-color: palette(base, 600);
-    color: palette(lowlight, 200);
+    color: font-color(lowlight);
     padding: 3 * $grid-unit;
-    font-size: 1.75 * $grid-unit;
   }
 
   .check {

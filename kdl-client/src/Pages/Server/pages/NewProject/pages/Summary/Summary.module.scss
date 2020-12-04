@@ -47,24 +47,6 @@
     background-color: palette(base, 600);
     color: font-color(lowlight);
     padding: 3 * $grid-unit;
-  }
-
-  .check {
-    @include font-small;
-    color: palette(success);
-
-    @include circle-before(palette(success));
-
-    padding-left: 2 * $grid-unit;
-    line-height: 3 * $grid-unit;
-    margin: 0 $grid-unit / 2;
-
-    &.error {
-      color: palette(alert);
-
-      &:before {
-        background-color: palette(alert);
-      }
-    }
+    white-space: pre-line;
   }
 }

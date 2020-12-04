@@ -6,13 +6,27 @@ export enum LOCATION {
   IN = 'in',
   OUT = 'out',
 }
+export enum SIZE {
+  SMALL = 'small',
+  MEDIUM = 'medium',
+}
 
 type Props = {
   squareLocation: LOCATION;
+  size?: SIZE;
+  shouldAnimate?: boolean;
 };
-function RepositoryTypeComponent({ squareLocation }: Props) {
+function RepositoryTypeComponent({
+  squareLocation,
+  size = SIZE.MEDIUM,
+  shouldAnimate = true,
+}: Props) {
   return (
-    <div className={cx(styles.square, styles[squareLocation])}>
+    <div
+      className={cx(styles.square, styles[squareLocation], styles[size], {
+        [styles.notAnimate]: !shouldAnimate,
+      })}
+    >
       <div className={styles.s4} />
       <div className={styles.s3} />
       <div className={styles.s2} />

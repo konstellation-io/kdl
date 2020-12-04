@@ -55,12 +55,14 @@ function Summary() {
       (repoTypeDetails as GetNewProject_newProject_externalRepository).values
         .hasConnectionError !== '';
 
-    const text = hasConnectionError ? 'connection error' : 'connection ok';
-    const type = hasConnectionError
+    const messageText = hasConnectionError
+      ? 'connection error'
+      : 'connection ok';
+    const messageType = hasConnectionError
       ? CircledInfoMessageTypes.ERROR
       : CircledInfoMessageTypes.SUCCESS;
 
-    return <CircledInfoMessage type={type} text={text} />;
+    return <CircledInfoMessage type={messageType} text={messageText} />;
   }
 
   return (

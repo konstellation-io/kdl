@@ -20,7 +20,7 @@ function ServerClient() {
 
   const client = useRef(
     new ApolloClient({
-      uri: 'http://dev.kdl.local:4000/graphql',
+      uri: 'http://localhost:4000/graphql',
       credentials: 'include',
       cache,
     })

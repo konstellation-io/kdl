@@ -4,8 +4,8 @@ import styles from './CircledInfoMessage.module.scss';
 import cx from 'classnames';
 
 export enum CircledInfoMessageTypes {
-  SUCCESS,
-  ERROR,
+  SUCCESS = 'success',
+  ERROR = 'error',
 }
 
 type Props = {
@@ -20,12 +20,7 @@ const CircledInfoMessage: React.FC<Props> = ({
   children,
 }) => {
   return (
-    <div
-      className={cx(styles.circledMessage, {
-        [styles.success]: type === CircledInfoMessageTypes.SUCCESS,
-        [styles.error]: type === CircledInfoMessageTypes.ERROR,
-      })}
-    >
+    <div className={cx(styles.circledMessage, styles[type])}>
       {text}
       {children}
     </div>

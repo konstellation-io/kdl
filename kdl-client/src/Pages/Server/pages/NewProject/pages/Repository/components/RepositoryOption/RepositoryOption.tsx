@@ -38,9 +38,6 @@ function RepositoryOption({
       <div>{Repository}</div>
       <p className={styles.title}>{title}</p>
       <p className={styles.subtitle}>{subtitle}</p>
-      <div className={styles.button}>
-        <Button label={actionLabel} primary />
-      </div>
     </div>
   );
 }

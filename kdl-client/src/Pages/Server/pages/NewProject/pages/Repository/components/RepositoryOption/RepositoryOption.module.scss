@@ -15,19 +15,14 @@
   .title {
     @include font-body;
     color: font-color(light);
-
-    height: 5 * $grid-unit;
-    margin-top: 7 * $grid-unit;
+    margin-top: 6 * $grid-unit;
+    margin-bottom: 0;
   }
 
   .subtitle {
     @include font-small;
     color: font-color(regular);
-  }
-
-  .button {
-    margin-top: 4 * $grid-unit;
-    width: 100%;
+    margin-top: $grid-unit;
   }
   &.selected {
     border: 1px solid palette(highlight);

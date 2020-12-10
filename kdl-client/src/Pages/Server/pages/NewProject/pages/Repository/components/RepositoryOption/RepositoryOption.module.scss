@@ -5,12 +5,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  background-color: palette(base, 800);
   .repoContainer {
+    background-color: palette(base, 800);
     width: 27 * $grid-unit;
-    height: 100%;
     padding: 4.5 * $grid-unit;
     border: 1px solid transparent;
+    transition: border ease 0.4s;
     display: flex;
     flex-direction: column;
     align-items: center;

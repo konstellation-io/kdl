@@ -226,11 +226,14 @@ function NewProject() {
                   error: s.error,
                   active: actStep === idx,
                   visited: actStep >= idx,
-                  disabled: idx > actStep + 1,
+                  disabled:
+                    idx > actStep + 1 &&
+                    (steps[idx - 1]?.error || !steps[idx - 1]?.completed),
                 }))}
                 activeStep={actStep}
-                onStepClick={(stepId: any) => {
-                  if (validateStep()) goToStep(stepId);
+                onStepClick={(stepIndex: number) => {
+                  if (actStep > stepIndex || validateStep())
+                    goToStep(stepIndex);
                 }}
               />
             </div>

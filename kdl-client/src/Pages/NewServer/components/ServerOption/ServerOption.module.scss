@@ -1,0 +1,30 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.container {
+  width: 27 * $grid-unit;
+  height: 100%;
+  padding: 0 3 * $grid-unit;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    @include font-body;
+    color: font-color(light);
+
+    height: 5 * $grid-unit;
+  }
+
+  .subtitle {
+    @include font-small;
+    color: font-color(regular);
+  }
+
+  .button {
+    margin-top: 4 * $grid-unit;
+    width: 100%;
+  }
+}

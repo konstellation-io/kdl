@@ -1,6 +1,7 @@
 @import 'Styles/colors';
 @import 'Styles/variables';
 @import 'Styles/mixins';
+@import 'Styles/shadows';
 
 $sidebar-width: 40 * $grid-unit;
 
@@ -18,6 +19,9 @@ $sidebar-width: 40 * $grid-unit;
 }
 
 .sidebar {
+  @include shadow(4);
+  z-index: 1;
+
   width: $sidebar-width;
   flex-shrink: 0;
   display: flex;
@@ -50,4 +54,5 @@ $sidebar-width: 40 * $grid-unit;
 
 .children {
   flex-grow: 1;
+  overflow: auto;
 }

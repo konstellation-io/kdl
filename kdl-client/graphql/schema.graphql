@@ -1,11 +1,50 @@
 type Query {
   me: User!
   projects: [Project!]!
+  users: [User!]!
+  sshKey: SSHKey!
+}
+
+type Mutation {
+  addUser(input: AddUserInput!): User!
+  removeUsers(input: RemoveUsersInput!): [User!]!
+  updateAccessLevel(input: UpdateAccessLevelInput!): [User!]!
+  regenerateSSHKey: SSHKey!
+}
+
+type SSHKey {
+  public: String!
+  private: String!
+  creationDate: String!
+  lastActivity: String
 }
 
 type User {
   id: ID!
   email: String!
+  creationDate: String!
+  accessLevel: AccessLevel!
+  lastActivity: String
+}
+
+enum AccessLevel {
+  VIEWER
+  MANAGER
+  ADMIN
+}
+
+input RemoveUsersInput {
+  userIds: [ID!]!
+}
+
+input AddUserInput {
+  email: String!
+  accessLevel: AccessLevel!
+}
+
+input UpdateAccessLevelInput {
+  userIds: [ID!]!
+  accessLevel: AccessLevel!
 }
 
 type Project {
@@ -15,6 +54,7 @@ type Project {
   favorite: Boolean!
   repository: Repository
   state: ProjectState!
+  creationDate: String!
   error: String
 }
 
@@ -31,4 +71,5 @@ enum RepositoryType {
 enum ProjectState {
   STARTED
   STOPPED
+  ARCHIVED
 }

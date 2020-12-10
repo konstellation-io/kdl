@@ -1,8 +1,8 @@
 import * as LINK from 'Constants/konstellationLinks';
 
-import { Cluster, ClusterType } from 'Hooks/useClusters';
 import { MenuItemConstructorOptions, remote, shell } from 'electron';
 import ROUTE, { buildRoute } from 'Constants/routes';
+import { Server, ServerType } from 'Hooks/useServers';
 
 import history from 'browserHistory';
 
@@ -13,31 +13,33 @@ const { Menu } = remote;
 // TODO: fix typings
 
 export const updateMenu = {
-  cluster: (clusters: Cluster[]) => {
-    const localCluster = clusters.find((c) => c.type === ClusterType.LOCAL);
-    const remoteClusters = clusters.filter(
-      (c) => c.type === ClusterType.REMOTE
-    );
+  server: (servers: Server[]) => {
+    const localServer = servers.find((c) => c.type === ServerType.LOCAL);
+    const remoteServers = servers.filter((c) => c.type === ServerType.REMOTE);
 
     // @ts-ignore
-    const clustersMenu: MenuItemConstructorOptions = template[0].submenu[2];
+    const serversMenu: MenuItemConstructorOptions = template[0].submenu[2];
 
-    if (clusters.length !== 0) {
-      clustersMenu.enabled = true;
+    if (servers.length !== 0) {
+      serversMenu.enabled = true;
       // @ts-ignore
       template[0].submenu[1].enabled = true;
     }
 
     // @ts-ignore
-    const clustersSubMenu: MenuItemConstructorOptions[] = clustersMenu.submenu;
-    clustersSubMenu.length = 0;
+    const serversSubMenu: MenuItemConstructorOptions[] = serversMenu.submenu;
+    serversSubMenu.length = 0;
 
-    if (localCluster) {
-      clustersSubMenu.push(
+    if (localServer) {
+      // @ts-ignore
+      const addServerMenu: MenuItemConstructorOptions = template[0].submenu[0];
+      addServerMenu.click = () => history.push(ROUTE.CONNECT_TO_REMOTE_SERVER);
+
+      serversSubMenu.push(
         {
-          label: localCluster.name,
+          label: localServer.name,
           click: () =>
-            history.push(buildRoute.cluster(ROUTE.CLUSTER, localCluster.id)),
+            history.push(buildRoute.server(ROUTE.SERVER, localServer.id)),
         },
         {
           type: 'separator',
@@ -45,11 +47,10 @@ export const updateMenu = {
       );
     }
 
-    remoteClusters.forEach((cluster) => {
-      clustersSubMenu.push({
-        label: cluster.name,
-        click: () =>
-          history.push(buildRoute.cluster(ROUTE.CLUSTER, cluster.id)),
+    remoteServers.forEach((server) => {
+      serversSubMenu.push({
+        label: server.name,
+        click: () => history.push(buildRoute.server(ROUTE.SERVER, server.id)),
       });
     });
 
@@ -59,19 +60,19 @@ export const updateMenu = {
 
 const template: MenuItemConstructorOptions[] = [
   {
-    label: 'Cluster',
+    label: 'Server',
     submenu: [
       {
-        label: 'Add Cluster',
-        click: () => history.push(ROUTE.NEW_CLUSTER),
+        label: 'Add Server',
+        click: () => history.push(ROUTE.NEW_SERVER),
       },
       {
-        label: 'View all Clusters',
+        label: 'View all Servers',
         enabled: false,
         click: () => history.push(ROUTE.HOME),
       },
       {
-        label: 'Go to Cluster...',
+        label: 'Go to Server...',
         enabled: false,
         submenu: [],
       },

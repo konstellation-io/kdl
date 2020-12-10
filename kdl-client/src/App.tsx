@@ -3,22 +3,22 @@ import 'Components/TitleBar/TitleBar';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
 
-import CheckLocalClusterRequirements from 'Pages/CheckLocalClusterRequirements/CheckLocalClusterRequirements';
-import ClusterClient from 'Pages/Cluster/ClusterClient';
-import ClusterLogin from 'Pages/ClusterLogin/ClusterLogin';
-import Clusters from 'Pages/Clusters/Clusters';
-import ConnectToRemoteCluster from 'Pages/ConnectToRemoteCluster/ConnectToRemoteCluster';
-import InstallLocalCluster from 'Pages/InstallLocalCluster/InstallLocalCluster';
-import NewCluster from 'Pages/NewCluster/NewCluster';
+import CheckLocalServerRequirements from 'Pages/CheckLocalServerRequirements/CheckLocalServerRequirements';
+import ConnectToRemoteServer from 'Pages/ConnectToRemoteServer/ConnectToRemoteServer';
+import InstallLocalServer from 'Pages/InstallLocalServer/InstallLocalServer';
+import NewServer from 'Pages/NewServer/NewServer';
 import ROUTE from 'Constants/routes';
 import React from 'react';
+import ServerClient from 'Pages/Server/ServerClient';
+import ServerLogin from 'Pages/ServerLogin/ServerLogin';
+import Servers from 'Pages/Servers/Servers';
 import { SpinnerCircular } from 'kwc';
 import history from './browserHistory';
-import useClusters from 'Hooks/useClusters';
+import useServers from 'Hooks/useServers';
 
 function App() {
-  const { clusters, loading } = useClusters();
-  const noClusters = clusters.length === 0;
+  const { servers, loading } = useServers();
+  const noServers = servers.length === 0;
 
   if (loading) return <SpinnerCircular />;
 
@@ -26,31 +26,29 @@ function App() {
     <>
       <Router history={history}>
         <Switch>
-          {/* <Route default component={InstallLocalCluster} /> */}
-
-          {noClusters && (
-            <Redirect exact from={ROUTE.HOME} to={ROUTE.NEW_CLUSTER} />
+          {noServers && (
+            <Redirect exact from={ROUTE.HOME} to={ROUTE.NEW_SERVER} />
           )}
 
-          <Route path={ROUTE.CLUSTER} component={ClusterClient} />
-          <Route exact path={ROUTE.NEW_CLUSTER} component={NewCluster} />
+          <Route path={ROUTE.SERVER} component={ServerClient} />
+          <Route exact path={ROUTE.NEW_SERVER} component={NewServer} />
           <Route
             exact
-            path={ROUTE.CHECK_LOCAL_CLUSTER_REQUIREMENTS}
-            component={CheckLocalClusterRequirements}
+            path={ROUTE.CHECK_LOCAL_SERVER_REQUIREMENTS}
+            component={CheckLocalServerRequirements}
           />
           <Route
             exact
-            path={ROUTE.INSTALL_LOCAL_CLUSTER}
-            component={InstallLocalCluster}
+            path={ROUTE.INSTALL_LOCAL_SERVER}
+            component={InstallLocalServer}
           />
           <Route
             exact
-            path={ROUTE.CONNECT_TO_REMOTE_CLUSTER}
-            component={ConnectToRemoteCluster}
+            path={ROUTE.CONNECT_TO_REMOTE_SERVER}
+            component={ConnectToRemoteServer}
           />
-          <Route exact path={ROUTE.CLUSTER_LOGIN} component={ClusterLogin} />
-          <Route default path={ROUTE.HOME} component={Clusters} />
+          <Route exact path={ROUTE.SERVER_LOGIN} component={ServerLogin} />
+          <Route default path={ROUTE.HOME} component={Servers} />
         </Switch>
       </Router>
       <ToastContainer
@@ -66,6 +64,9 @@ function App() {
         transition={Slide}
         limit={1}
       />
+      <div id="chartjs-tooltip">
+        <table />
+      </div>
     </>
   );
 }

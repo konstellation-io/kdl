@@ -1,10 +1,18 @@
-import React, { MouseEvent, useRef, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 
 import { Button } from 'kwc';
 import { cloneDeep } from 'lodash';
 import styles from './useStepper.module.scss';
+import useNavigation from 'Hooks/useNavigation';
 
-type ActionButtonProps = {
+export enum ActionButtonTypes {
+  Back = 'Back',
+  Next = 'Next',
+  Complete = 'Complete',
+  Cancel = 'Cancel',
+}
+
+export type ActionButtonProps = {
   label: string;
   onClick?: (e?: MouseEvent<HTMLDivElement> | undefined) => void;
   to?: string;
@@ -12,7 +20,7 @@ type ActionButtonProps = {
   disabled?: boolean;
 };
 
-const ActionButton = (props: ActionButtonProps) => (
+export const ActionButton = (props: ActionButtonProps) => (
   <div className={styles.actionButton}>
     <Button {...props} />
   </div>
@@ -24,66 +32,43 @@ type Step = {
   error: boolean;
 };
 
-enum Direction {
-  NEXT = 'next',
-  PREV = 'prev',
-}
-
 type Data = {
   id: string;
   Component: any;
 };
 
-function buildSteps(data: Data[]): Step[] {
-  return data.map((d) => ({
+const buildSteps = (data: Data[]): Step[] =>
+  data.map((d) => ({
     id: d.id,
     completed: false,
     error: false,
   }));
-}
 
 type Params = {
   data: Data[];
   initialStep?: number;
-  beforeGoToStep: () => void;
-  cancelRoute: string;
-  onSubmit: Function;
 };
-export default function useStepper({
-  data,
-  beforeGoToStep,
-  cancelRoute,
-  onSubmit,
-  initialStep = 0,
-}: Params) {
+export default function useStepper({ data, initialStep = 0 }: Params) {
   const [steps, setSteps] = useState(buildSteps(data));
-  const [actStep, setActStep] = useState(initialStep);
-  const direction = useRef(Direction.NEXT);
-
-  function nextStep() {
-    goToStep(actStep + 1);
-  }
-
-  function prevStep() {
-    goToStep(actStep - 1);
-  }
-
-  function goToStep(newStep: number) {
-    beforeGoToStep();
-
-    direction.current = newStep > actStep ? Direction.NEXT : Direction.PREV;
-    setActStep(newStep);
-  }
+  const { actStep, goToStep, nextStep, prevStep, direction } = useNavigation({
+    initialStep,
+    maxSteps: steps.length,
+  });
 
   function getActStepComponent() {
     const Component = data[actStep].Component;
-    return <Component />;
+    const showErrors = steps[actStep].error;
+    return <Component showErrors={showErrors} />;
   }
 
-  function updateState(completed: boolean, error: boolean) {
+  function updateState(
+    completed: boolean,
+    error: boolean,
+    stepNumber: number = actStep
+  ) {
     const newSteps = cloneDeep(steps);
-    newSteps[actStep] = {
-      ...newSteps[actStep],
+    newSteps[stepNumber] = {
+      ...newSteps[stepNumber],
       completed,
       error,
     };
@@ -91,50 +76,12 @@ export default function useStepper({
     setSteps(newSteps);
   }
 
-  function getActions() {
-    let actions = [];
-
-    const hasError = steps.some((step) => !!step.error);
-
-    const buttonCancel = (
-      <ActionButton key="cancel" label="CANCEL" to={cancelRoute} />
-    );
-    const buttonNext = (
-      <ActionButton key="next" label="NEXT" onClick={nextStep} primary />
-    );
-    const buttonPrev = (
-      <ActionButton key="prev" label="BACK" onClick={prevStep} />
-    );
-    const buttonComplete = (
-      <ActionButton
-        key="complete"
-        label="CREATE"
-        onClick={() => onSubmit()}
-        disabled={hasError}
-        primary
-      />
-    );
-
-    switch (actStep) {
-      case 0:
-        actions = [buttonCancel, buttonNext];
-        break;
-      case data.length - 1:
-        actions = [buttonPrev, buttonComplete];
-        break;
-      default:
-        actions = [buttonPrev, buttonNext];
-        break;
-    }
-
-    return actions;
-  }
-
   return {
     actStep,
     goToStep,
-    direction: direction.current,
-    getActions,
+    direction,
+    nextStep,
+    prevStep,
     updateState,
     getActStepComponent,
     steps,

@@ -1,0 +1,124 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+@import 'Styles/animations';
+
+$img-side: 22 * $grid-unit;
+
+.container {
+  position: relative;
+  height: $img-side;
+  overflow: hidden;
+}
+
+.next {
+  .enter {
+    animation: slideInRight 0.4s forwards;
+  }
+  .exit {
+    animation: slideOutLeft 0.4s forwards;
+  }
+}
+
+.prev {
+  .enter {
+    animation: slideInLeft 0.4s forwards;
+  }
+  .exit {
+    animation: slideOutRight 0.4s forwards;
+  }
+}
+
+.slide {
+  display: flex;
+  position: absolute;
+  width: 100%;
+
+  .image {
+    border: 1px solid palette(lowlight, 500);
+    width: $img-side;
+    height: $img-side;
+    flex-shrink: 0;
+    margin-right: 2 * $grid-unit;
+  }
+  .content {
+    flex-grow: 1;
+
+    .title {
+      @include font-title;
+      color: font-color(light);
+
+      margin: 0 0 2 * $grid-unit 0;
+    }
+    .description {
+      @include font-small;
+      color: font-color(regular);
+
+      margin: 0;
+      max-height: 12 * $grid-unit;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 6; /* number of lines to show */
+      -webkit-box-orient: vertical;
+    }
+  }
+}
+
+.navigation {
+  position: absolute;
+  bottom: 0;
+  left: $img-side + 2 * $grid-unit;
+  display: flex;
+  width: -webkit-fill-available;
+  background-color: palette(base, 700);
+
+  .buttons {
+    display: flex;
+    margin-right: 3 * $grid-unit;
+
+    .button:first-child {
+      margin-right: 0.5 * $grid-unit;
+    }
+
+    .button {
+      border-color: palette(base, 400);
+      width: 3 * $grid-unit;
+      height: 3 * $grid-unit !important;
+      padding: 0 0 0 5px;
+    }
+  }
+  .dots {
+    display: flex;
+    align-items: center;
+
+    .navDotContainer {
+      cursor: pointer;
+      width: 2 * $grid-unit;
+      height: 3 * $grid-unit;
+      position: relative;
+
+      &:hover .navDot {
+        background-color: palette(lowlight, 600);
+      }
+
+      &.actual {
+        pointer-events: none;
+
+        .navDot {
+          background-color: palette(highlight);
+        }
+      }
+
+      .navDot {
+        @include center;
+
+        @include circle(palette(base, 700), 1.2 * $grid-unit);
+        border: 1px solid palette(base, 200);
+
+        transition: background-color ease 0.4s;
+      }
+    }
+  }
+}

@@ -7,23 +7,26 @@ export type Step = {
   error: boolean;
   label: string;
   id: number;
+  active: boolean;
+  visited: boolean;
+  disabled: boolean;
 };
 
 type Props = {
   steps: Step[];
   activeStep: number;
-  goToStep: Function;
+  onStepClick: Function;
 };
-function Stepper({ steps, activeStep, goToStep }: Props) {
+function Stepper({ steps, onStepClick }: Props) {
   return (
     <div className={styles.container}>
       {steps.map((step, idx) => (
         <Step
           {...step}
           key={idx}
-          active={activeStep === idx}
-          visited={activeStep >= idx}
-          onClick={() => goToStep(step.id)}
+          onClick={() => {
+            if (!step.disabled) onStepClick(step.id);
+          }}
         />
       ))}
     </div>

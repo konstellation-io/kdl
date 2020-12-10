@@ -1,0 +1,75 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.container {
+  width: 100%;
+
+  .information {
+    padding: 8 * $grid-unit 8 * $grid-unit 6 * $grid-unit 8 * $grid-unit;
+    background-color: palette(base, 700);
+  }
+  .form {
+    padding: 4 * $grid-unit 8 * $grid-unit 8 * $grid-unit 8 * $grid-unit;
+  }
+
+  .title {
+    @include font-caption;
+    color: font-color(regular);
+
+    margin: 0 0 2 * $grid-unit 0;
+  }
+
+  .name .value {
+    @include font-subheader;
+    color: font-color(light);
+    text-transform: uppercase;
+
+    margin: 0;
+  }
+
+  .url .value {
+    @include font-body;
+    color: font-color(lowlight);
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 0 4 * $grid-unit 0;
+  }
+
+  .formEmail {
+    margin: 0 auto;
+  }
+
+  .confirmation {
+    @include font-caption;
+    color: palette(highlight);
+    text-transform: uppercase;
+
+    display: flex;
+    align-items: center;
+    margin: 0;
+    height: 0;
+    overflow: hidden;
+
+    transition: margin ease 0.3s, height ease 0.4s;
+
+    &.show {
+      margin: 2 * $grid-unit 0 3 * $grid-unit 0;
+      height: 6 * $grid-unit;
+    }
+
+    .icon {
+      width: 4 * $grid-unit;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.cancelButton {
+  width: 12 * $grid-unit;
+}
+
+.loginButton {
+  width: 25 * $grid-unit;
+}

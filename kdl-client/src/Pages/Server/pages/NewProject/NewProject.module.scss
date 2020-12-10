@@ -65,6 +65,8 @@
 }
 
 .sidebarComponent {
+  @include font-small;
+  color: font-color(lowlight);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,6 +79,8 @@
     align-items: center;
   }
   .repoLabel {
+    @include font-subheader;
+    color: font-color(light);
     width: 50%;
   }
 }

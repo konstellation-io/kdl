@@ -118,7 +118,7 @@ function NewProject() {
           <ActionButton
             key="create"
             label="CREATE"
-            onClick={onSubmit}
+            to={ROUTE.CREATION_PROJECT}
             primary
           />,
         ];
@@ -150,10 +150,6 @@ function NewProject() {
       return warning !== '';
     }
     return false;
-  }
-
-  function onSubmit() {
-    console.log('CREATE PROJECT');
   }
 
   if (!data) return <SpinnerCircular />;

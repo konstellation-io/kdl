@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import NewProject from './pages/NewProject/NewProject';
 import NewUser from './pages/NewUser/NewUser';
 import Project from './pages/Server/pages/Project/Project';
+import CreationProject from './pages/CreationProject/CreationProject';
 import ROUTE from 'Constants/routes';
 import Server from './pages/Server/Server';
 import cache from './apollo/cache';
@@ -32,6 +33,11 @@ function ServerClient() {
         <Route exact path={ROUTE.NEW_PROJECT} component={NewProject} />
         <Route exact path={ROUTE.NEW_SERVER_USER} component={NewUser} />
         <Route exact path={ROUTE.PROJECT} component={Project} />
+        <Route
+          exact
+          path={ROUTE.CREATION_PROJECT}
+          component={CreationProject}
+        />
         <Route path={ROUTE.SERVER} component={Server} />
       </Switch>
     </ApolloProvider>

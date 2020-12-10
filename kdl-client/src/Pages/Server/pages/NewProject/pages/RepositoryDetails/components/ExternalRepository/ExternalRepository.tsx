@@ -55,7 +55,7 @@ function ExternalRepository({ showErrors }: Props) {
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>Test your URL</h3>
-      <p>
+      <p className={styles.subtitle}>
         Make sure you have your public Konstellation SSH key in the external
         repository.
       </p>

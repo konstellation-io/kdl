@@ -11,6 +11,11 @@
     margin-top: 0;
   }
 
+  .subtitle {
+    @include font-body;
+    color: font-color(lowlight);
+  }
+
   .formUrlRow {
     margin-top: 3.75 * $grid-unit;
     display: flex;
@@ -63,7 +68,7 @@
     }
     .message {
       @include font-small;
-      color: palette(lowlight);
+      color: font-color(regular);
       margin-top: $grid-unit;
     }
     .checkContainer {
@@ -71,7 +76,7 @@
       align-items: center;
       .checkLabel {
         @include font-small;
-        color: palette(lowlight);
+        color: font-color(lowlight);
         margin-left: 2 * $grid-unit;
       }
     }

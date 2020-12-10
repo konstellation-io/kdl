@@ -5,6 +5,12 @@
 .container {
   height: 100%;
 
+  .title {
+    @include font-title;
+    color: font-color(light);
+    margin-top: 0;
+  }
+
   .formUrlRow {
     margin-top: 3.75 * $grid-unit;
     display: flex;
@@ -13,6 +19,7 @@
       width: 60%;
     }
     .testButton {
+      width: 10 * $grid-unit;
       margin-left: 2.5 * $grid-unit;
     }
   }

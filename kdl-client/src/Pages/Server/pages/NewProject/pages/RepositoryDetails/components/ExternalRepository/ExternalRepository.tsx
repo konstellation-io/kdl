@@ -11,6 +11,7 @@ import { useQuery } from '@apollo/client';
 import CircledInfoMessage, {
   CircledInfoMessageTypes,
 } from 'Components/CircledInfoMessage/CircledInfoMessage';
+import IconLink from '@material-ui/icons/Link';
 
 function validateUrl(value: string): string {
   const error = CHECK.getValidationError([CHECK.isDomainValid(value)]);
@@ -53,7 +54,7 @@ function ExternalRepository({ showErrors }: Props) {
 
   return (
     <div className={styles.container}>
-      <h3>Test your URL</h3>
+      <h3 className={styles.title}>Test your URL</h3>
       <p>
         Make sure you have your public Konstellation SSH key in the external
         repository.
@@ -73,6 +74,7 @@ function ExternalRepository({ showErrors }: Props) {
           error={url && urlError}
           customClassname={styles.formUrl}
           formValue={url}
+          Icon={IconLink}
           showClearButton
         />
         <Button

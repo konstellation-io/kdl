@@ -11,6 +11,7 @@ import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import useServers from 'Hooks/useServers';
+import IconLink from '@material-ui/icons/Link';
 
 function validateProjectSlug(value: string): string {
   const error = CHECK.getValidationError([
@@ -55,7 +56,10 @@ function InternalRepository({ showErrors }: Props) {
     <div className={styles.repositoryInternal}>
       <div className={styles.url}>
         <p className={styles.urlTitle}>repository url</p>
-        <p className={styles.urlContent}>{`${server?.url}/`}</p>
+        <div className={styles.serverUrlContainer}>
+          <IconLink className="icon-regular" />
+          <span className={styles.urlContent}>{`${server?.url}/`}</span>
+        </div>
       </div>
       <TextInput
         label="repository slug"

@@ -9,9 +9,11 @@ import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
 import IconLink from '@material-ui/icons/Link';
 import { RepositoryType } from '../../../../../../Graphql/types/globalTypes';
 import { SpinnerCircular } from 'kwc';
-import cx from 'classnames';
 import styles from './Summary.module.scss';
 import { useQuery } from '@apollo/client';
+import CircledInfoMessage, {
+  CircledInfoMessageTypes,
+} from 'Components/CircledInfoMessage/CircledInfoMessage';
 
 type FieldProps = {
   children: JSX.Element | JSX.Element[];
@@ -53,17 +55,14 @@ function Summary() {
       (repoTypeDetails as GetNewProject_newProject_externalRepository).values
         .hasConnectionError !== '';
 
-    const text = hasConnectionError ? 'connection error' : 'connection ok';
+    const messageText = hasConnectionError
+      ? 'connection error'
+      : 'connection ok';
+    const messageType = hasConnectionError
+      ? CircledInfoMessageTypes.ERROR
+      : CircledInfoMessageTypes.SUCCESS;
 
-    return (
-      <div
-        className={cx(styles.check, {
-          [styles.error]: hasConnectionError,
-        })}
-      >
-        {text}
-      </div>
-    );
+    return <CircledInfoMessage type={messageType} text={messageText} />;
   }
 
   return (

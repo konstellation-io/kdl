@@ -18,29 +18,32 @@ type Props = {
 function RepositoryOption({
   title,
   subtitle,
-  actionLabel,
   isSelected,
   onSelect,
   Repository,
 }: Props) {
   return (
-    <div
-      className={cx(
-        styles.container,
-        repositoryStyles.hoverContainer,
-        containerStyles.server,
-        {
-          [styles.selected]: isSelected,
-        }
-      )}
-      onClick={onSelect}
-    >
-      <div>{Repository}</div>
-      <p className={styles.title}>{title}</p>
-      <p className={styles.subtitle}>{subtitle}</p>
-      <div className={styles.button}>
-        <Button label={actionLabel} primary />
+    <div className={styles.container}>
+      <div
+        className={cx(
+          styles.repoContainer,
+          repositoryStyles.hoverContainer,
+          containerStyles.server,
+          {
+            [styles.selected]: isSelected,
+          }
+        )}
+        onClick={onSelect}
+      >
+        <div>{Repository}</div>
+        <p className={styles.title}>{title}</p>
+        <p className={styles.subtitle}>{subtitle}</p>
       </div>
+      {isSelected && (
+        <p className={styles.selectedLabel}>
+          You have selected this type of repository
+        </p>
+      )}
     </div>
   );
 }

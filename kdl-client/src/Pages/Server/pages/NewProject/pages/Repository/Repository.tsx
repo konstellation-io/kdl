@@ -12,6 +12,7 @@ import { SpinnerCircular } from 'kwc';
 import styles from './Repository.module.scss';
 import useNewProject from 'Pages/Server/apollo/hooks/useNewProject';
 import { useQuery } from '@apollo/client';
+import cx from 'classnames';
 
 function Repository(params: any) {
   const { showErrors } = params;
@@ -26,7 +27,11 @@ function Repository(params: any) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.repositories}>
+      <div
+        className={cx(styles.repositories, {
+          [styles.error]: showErrors && errors.type,
+        })}
+      >
         <RepositoryOption
           title="External Repository"
           subtitle="Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis."

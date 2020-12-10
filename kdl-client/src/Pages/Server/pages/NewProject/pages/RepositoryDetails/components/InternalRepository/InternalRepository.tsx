@@ -11,15 +11,16 @@ import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import useServers from 'Hooks/useServers';
+import IconLink from '@material-ui/icons/Link';
 
 function validateProjectSlug(value: string): string {
   const error = CHECK.getValidationError([
     CHECK.isLowerCase(value),
-    CHECK.matches(value, /^[a-z]/, 'Slug must start with a lowercase letter'),
-    CHECK.matches(value, /.{3,}/, 'Slug must contain at least 3 characters'),
+    CHECK.matches(value, /^[a-z]/, 'Name must start with a lowercase letter'),
+    CHECK.matches(value, /.{3,}/, 'Name must contain at least 3 characters'),
     CHECK.isAlphanumeric(
       value.replace('-', ''),
-      'Slug only can contain lowercase alphanumeric and hyphens'
+      'Name only can contain lowercase alphanumeric and hyphens'
     ),
     CHECK.isSlug(value),
   ]);
@@ -55,10 +56,13 @@ function InternalRepository({ showErrors }: Props) {
     <div className={styles.repositoryInternal}>
       <div className={styles.url}>
         <p className={styles.urlTitle}>repository url</p>
-        <p className={styles.urlContent}>{`${server?.url}/`}</p>
+        <div className={styles.serverUrlContainer}>
+          <IconLink className="icon-regular" />
+          <span className={styles.urlContent}>{`${server?.url}/`}</span>
+        </div>
       </div>
       <TextInput
-        label="repository slug"
+        label="repository name"
         customClassname={styles.slug}
         onChange={(value: string) => {
           updateValue('slug', value);
@@ -67,6 +71,7 @@ function InternalRepository({ showErrors }: Props) {
         onBlur={() => updateError('slug', slugOk)}
         formValue={slug}
         error={showErrors ? slugError : ''}
+        helpText="Please write in a URL compatible way"
         showClearButton
       />
     </div>

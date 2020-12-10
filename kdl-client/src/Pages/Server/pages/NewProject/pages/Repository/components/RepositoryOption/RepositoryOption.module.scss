@@ -3,36 +3,41 @@
 @import 'Styles/colors';
 
 .container {
-  width: 27 * $grid-unit;
-  height: 100%;
-  padding: 4.5 * $grid-unit;
-  border: 1px solid transparent;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  cursor: pointer;
+  .repoContainer {
+    background-color: palette(base, 800);
+    width: 27 * $grid-unit;
+    padding: 4.5 * $grid-unit;
+    border: 1px solid transparent;
+    transition: border ease 0.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
 
-  .title {
-    @include font-body;
-    color: font-color(light);
+    .title {
+      @include font-body;
+      color: font-color(light);
+      margin-top: 6 * $grid-unit;
+      margin-bottom: 0;
+    }
 
-    height: 5 * $grid-unit;
-    margin-top: 7 * $grid-unit;
+    .subtitle {
+      @include font-small;
+      color: font-color(regular);
+      margin-top: $grid-unit;
+    }
+    &.selected {
+      border: 1px solid palette(highlight);
+    }
+    &:nth-child(2) {
+      margin-left: $grid-unit * 2;
+    }
   }
-
-  .subtitle {
+  .selectedLabel {
     @include font-small;
-    color: font-color(regular);
-  }
-
-  .button {
-    margin-top: 4 * $grid-unit;
-    width: 100%;
-  }
-  &.selected {
-    border: 1px solid palette(highlight);
-  }
-  &:nth-child(2) {
-    margin-left: $grid-unit * 2;
+    color: font-color(highlight);
+    width: 200px;
   }
 }

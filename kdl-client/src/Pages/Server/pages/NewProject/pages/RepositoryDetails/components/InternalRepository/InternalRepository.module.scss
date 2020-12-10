@@ -12,10 +12,15 @@
       margin-top: 0;
       color: font-color(regular);
     }
-    .urlContent {
+    .serverUrlContainer {
+      display: flex;
+      align-items: center;
       margin-top: 2.5 * $grid-unit;
+    }
+    .urlContent {
       @include font-title;
       color: font-color(light);
+      margin-left: 3 * $grid-unit;
     }
   }
   .slug {

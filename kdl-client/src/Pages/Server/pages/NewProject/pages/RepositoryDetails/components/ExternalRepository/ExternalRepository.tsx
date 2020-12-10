@@ -5,10 +5,13 @@ import {
   GetNewProject,
 } from 'Graphql/client/queries/getNewProject.graphql';
 import React, { useState } from 'react';
-import cx from 'classnames';
 import styles from './ExternalRepository.module.scss';
 import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 import { useQuery } from '@apollo/client';
+import CircledInfoMessage, {
+  CircledInfoMessageTypes,
+} from 'Components/CircledInfoMessage/CircledInfoMessage';
+import IconLink from '@material-ui/icons/Link';
 
 function validateUrl(value: string): string {
   const error = CHECK.getValidationError([CHECK.isDomainValid(value)]);
@@ -51,8 +54,8 @@ function ExternalRepository({ showErrors }: Props) {
 
   return (
     <div className={styles.container}>
-      <h3>Test your URL</h3>
-      <p>
+      <h3 className={styles.title}>Test your URL</h3>
+      <p className={styles.subtitle}>
         Make sure you have your public Konstellation SSH key in the external
         repository.
       </p>
@@ -71,6 +74,7 @@ function ExternalRepository({ showErrors }: Props) {
           error={url && urlError}
           customClassname={styles.formUrl}
           formValue={url}
+          Icon={IconLink}
           showClearButton
         />
         <Button
@@ -84,29 +88,34 @@ function ExternalRepository({ showErrors }: Props) {
       </div>
       {isConnectionTested && !!hasConnectionError && (
         <>
-          <div className={cx(styles.connectionError, {})}>
-            {'Connection OK.'}
-          </div>
-          <div className={styles.formTestRow}>
-            <Check
-              className={styles.testCheck}
-              checked={warning}
-              onChange={(checked) => {
-                updateError('warning', checked ? '' : 'not accepted');
-                updateValue('warning', checked);
-              }}
-            />
-            <p className={styles.testCheckLabel}>
-              Save my project without testing the url
-            </p>
-          </div>
-        </>
-      )}
-      {isConnectionTested && !hasConnectionError && (
-        <>
-          <div className={cx(styles.connectionError, {})}>
-            {'Connection OK.'}
-          </div>
+          <CircledInfoMessage
+            type={CircledInfoMessageTypes.ERROR}
+            text="connection error"
+          >
+            <>
+              <div className={styles.arrow} />
+              <div className={styles.warningBox}>
+                <h6 className={styles.title}>Nam dapibus nisl vitae.</h6>
+                <p className={styles.message}>
+                  Nam dapibus nisl vitae elit fringilla rutrum. Aenean
+                  sollicitudin, erat a elementu..
+                </p>
+                <div className={styles.checkContainer}>
+                  <Check
+                    className={styles.testCheck}
+                    checked={warning}
+                    onChange={(checked) => {
+                      updateError('warning', checked ? '' : 'not accepted');
+                      updateValue('warning', checked);
+                    }}
+                  />
+                  <span className={styles.checkLabel}>
+                    Save my project without testing the url
+                  </span>
+                </div>
+              </div>
+            </>
+          </CircledInfoMessage>
         </>
       )}
     </div>

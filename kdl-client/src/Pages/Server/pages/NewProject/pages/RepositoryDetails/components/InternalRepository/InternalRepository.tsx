@@ -62,7 +62,7 @@ function InternalRepository({ showErrors }: Props) {
         </div>
       </div>
       <TextInput
-        label="repository slug"
+        label="repository name"
         customClassname={styles.slug}
         onChange={(value: string) => {
           updateValue('slug', value);
@@ -71,6 +71,7 @@ function InternalRepository({ showErrors }: Props) {
         onBlur={() => updateError('slug', slugOk)}
         formValue={slug}
         error={showErrors ? slugError : ''}
+        helpText="Please write in a URL compatible way"
         showClearButton
       />
     </div>

@@ -1,6 +1,5 @@
 import React, { MouseEvent } from 'react';
 
-import { Button } from 'kwc';
 import containerStyles from '../../Repository.module.scss';
 import cx from 'classnames';
 import repositoryStyles from '../RepositoryTypeComponent/Repository.module.scss';

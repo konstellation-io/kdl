@@ -12,7 +12,7 @@ import { useQuery } from '@apollo/client';
 
 const limits = {
   maxHeight: 500,
-  minHeight: 150,
+  minHeight: 400,
 };
 
 type Props = {

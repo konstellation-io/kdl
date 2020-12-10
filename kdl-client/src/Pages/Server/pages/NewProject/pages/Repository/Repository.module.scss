@@ -14,5 +14,8 @@
 }
 
 .errorMessage {
+  @include font-small;
+  text-align: right;
   color: palette(error);
+  margin-right: 16 * $grid-unit;
 }

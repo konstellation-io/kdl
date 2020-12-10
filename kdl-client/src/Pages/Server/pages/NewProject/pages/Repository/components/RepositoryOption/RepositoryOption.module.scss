@@ -5,6 +5,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  background-color: palette(base, 800);
   .repoContainer {
     width: 27 * $grid-unit;
     height: 100%;

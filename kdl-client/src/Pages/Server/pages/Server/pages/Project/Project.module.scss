@@ -1,3 +1,15 @@
 @import 'Styles/variables';
 @import 'Styles/mixins';
 @import 'Styles/colors';
+
+.container {
+  height: 100%;
+  background-color: palette(base, 600);
+
+  display: flex;
+  overflow: hidden;
+}
+
+.content {
+  flex-grow: 1;
+}

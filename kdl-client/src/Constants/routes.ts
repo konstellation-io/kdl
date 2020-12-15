@@ -17,6 +17,11 @@ export type RouteServerParams = {
   serverId: string;
 };
 
+export type RouteProjectParams = {
+  serverId: string;
+  projectId: string;
+};
+
 export const buildRoute = {
   server: (route: ROUTE, serverId: string) =>
     route.replace(':serverId', serverId),

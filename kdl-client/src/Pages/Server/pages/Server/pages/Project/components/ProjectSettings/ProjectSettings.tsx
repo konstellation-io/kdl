@@ -7,6 +7,7 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import { ErrorMessage } from 'kwc';
 import ProjectInfo from '../ProjectInfo/ProjectInfo';
 import React from 'react';
+import TabInfo from '../TabInfo/TabInfo';
 import cx from 'classnames';
 import styles from './ProjectSettings.module.scss';
 import { useQuery } from '@apollo/client';
@@ -31,7 +32,9 @@ function ProjectSettings() {
         </TabList>
 
         <div className={styles.tabContent}>
-          <TabPanel></TabPanel>
+          <TabPanel>
+            <TabInfo project={openedProject} />
+          </TabPanel>
           <TabPanel></TabPanel>
           <TabPanel></TabPanel>
           <TabPanel></TabPanel>

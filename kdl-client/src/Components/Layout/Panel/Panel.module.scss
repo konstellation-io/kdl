@@ -4,25 +4,51 @@
 @import 'Styles/animations';
 @import 'Styles/shadows';
 
-$panel-width: 60 * $grid-unit;
+$panel-width-default: 60 * $grid-unit;
+$panel-width-big: 110 * $grid-unit;
+
+.group {
+  overflow: hidden;
+
+  &.noShrink {
+    flex-shrink: 0;
+  }
+
+  &.dark .container {
+    background-color: black;
+  }
+}
 
 .container {
   @include glow(3, black);
 
   background-color: palette(base, 800);
-  width: $panel-width;
-  max-width: $panel-width;
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  &.big {
+    .content {
+      max-width: $panel-width-big;
+      width: $panel-width-big;
+    }
+  }
 }
 
-.enter {
-  animation: widthIn 0.4s forwards;
-}
-.exit {
-  animation: widthOut 0.4s forwards;
+$width-animations: (
+  'default': $panel-width-default,
+  'big': $panel-width-big,
+);
+@each $animation, $var in $width-animations {
+  .#{$animation} {
+    .enter {
+      animation: widthIn-#{$animation} 0.4s forwards;
+    }
+    .exit {
+      animation: widthOut-#{$animation} 0.4s forwards;
+    }
+  }
 }
 
 header {
@@ -46,25 +72,33 @@ header {
 .content {
   flex-grow: 1;
   overflow: hidden;
-  width: $panel-width;
+  max-width: $panel-width-default;
+  min-width: $panel-width-default;
+  width: $panel-width-default;
 }
 
-@keyframes widthIn {
-  from {
-    max-width: 0;
-  }
-
-  to {
-    max-width: $panel-width;
+@media screen and (max-width: $panel-width-default + $panel-width-big) {
+  .content {
+    width: 100% !important;
   }
 }
 
-@keyframes widthOut {
-  from {
-    max-width: $panel-width;
+@each $animation, $width in $width-animations {
+  @keyframes widthIn-#{$animation} {
+    from {
+      max-width: 0;
+    }
+    to {
+      max-width: $width;
+    }
   }
 
-  to {
-    max-width: 0;
+  @keyframes widthOut-#{$animation} {
+    from {
+      max-width: $width;
+    }
+    to {
+      max-width: 0;
+    }
   }
 }

@@ -36,7 +36,12 @@ enum AccessLevel {
 
 input UpdateProjectInput {
   id: ID!
-  name: String!
+  name: String
+  repository: UpdateProjectRepositoryInput
+}
+
+input UpdateProjectRepositoryInput {
+  url: String!
 }
 
 input RemoveUsersInput {

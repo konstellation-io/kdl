@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { memo } from 'react';
+
 import cx from 'classnames';
 import styles from './Repository.module.scss';
 
@@ -7,9 +8,16 @@ export enum LOCATION {
   OUT = 'out',
 }
 export enum SIZE {
+  TINY = 'tiny',
   SMALL = 'small',
   MEDIUM = 'medium',
 }
+
+const sizePixels = {
+  [SIZE.MEDIUM]: 110,
+  [SIZE.SMALL]: 55,
+  [SIZE.TINY]: 14,
+};
 
 type Props = {
   squareLocation: LOCATION;
@@ -26,6 +34,7 @@ function RepositoryTypeComponent({
       className={cx(styles.square, styles[squareLocation], styles[size], {
         [styles.notAnimate]: !shouldAnimate,
       })}
+      style={{ height: sizePixels[size], width: sizePixels[size] }}
     >
       <div className={styles.s4} />
       <div className={styles.s3} />
@@ -35,4 +44,4 @@ function RepositoryTypeComponent({
   );
 }
 
-export default RepositoryTypeComponent;
+export default memo(RepositoryTypeComponent);

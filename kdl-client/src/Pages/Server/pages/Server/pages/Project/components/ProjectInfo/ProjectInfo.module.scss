@@ -2,6 +2,20 @@
 @import 'Styles/mixins';
 @import 'Styles/colors';
 
+.container {
+  display: flex;
+  align-items: center;
+
+  &.connected .icon {
+    color: palette(success);
+  }
+
+  .icon {
+    color: palette(alert);
+    margin-right: 3 * $grid-unit;
+  }
+}
+
 p {
   margin: 0;
 }

@@ -39,7 +39,12 @@ export interface UpdateAccessLevelInput {
 
 export interface UpdateProjectInput {
   id: string;
-  name: string;
+  name?: string | null;
+  repository?: UpdateProjectRepositoryInput | null;
+}
+
+export interface UpdateProjectRepositoryInput {
+  url: string;
 }
 
 //==============================================================

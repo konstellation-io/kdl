@@ -6,28 +6,20 @@
   @return (4 * $square-size - $inner-square-size) / 6;
 }
 
-$size-s1: 20.5px;
-$size-s2: 72.1px;
-$size-s3: 87px;
-$size-s4: 103.4px;
-$size-tot: 110px;
+$side-s1: 18.6%;
+$side-s2: 65.5%;
+$side-s3: 79%;
+$side-s4: 94%;
+
 .square {
   position: relative;
 
   user-select: none;
-  height: $size-tot;
-  width: $size-tot;
   transform: rotateZ(45deg);
 
   transition: transform ease 0.3s;
 
-  &.out.small {
-    .s1 {
-      top: 15%;
-      left: 50%;
-    }
-  }
-  &.out.medium {
+  &.out {
     .s1 {
       top: -20%;
       left: 50%;
@@ -39,38 +31,21 @@ $size-tot: 110px;
     pointer-events: none;
   }
 
-  &.small > .s1 {
-    width: $size-s1 / 2;
-    height: $size-s1 / 2;
+  .s1 {
+    width: $side-s1;
+    height: $side-s1;
   }
-  &.small > .s2 {
-    width: $size-s2 / 2;
-    height: $size-s2 / 2;
+  .s2 {
+    width: $side-s2;
+    height: $side-s2;
   }
-  &.small > .s3 {
-    width: $size-s3 / 2;
-    height: $size-s3 / 2;
+  .s3 {
+    width: $side-s3;
+    height: $side-s3;
   }
-  &.small > .s4 {
-    width: $size-s4 / 2;
-    height: $size-s4 / 2;
-  }
-
-  &.medium > .s1 {
-    width: $size-s1;
-    height: $size-s1;
-  }
-  &.medium > .s2 {
-    width: $size-s2;
-    height: $size-s2;
-  }
-  &.medium > .s3 {
-    width: $size-s3;
-    height: $size-s3;
-  }
-  &.medium > .s4 {
-    width: $size-s4;
-    height: $size-s4;
+  .s4 {
+    width: $side-s4;
+    height: $side-s4;
   }
 
   .s3,
@@ -129,31 +104,19 @@ $size-tot: 110px;
     }
   }
 
-  .small > .s4 {
-    width: ($size-s4 / 2) * 1.1;
-    height: ($size-s4 / 2) * 1.1;
-  }
-  .medium > .s4 {
-    width: $size-s4 * 1.1;
-    height: $size-s4 * 1.1;
+  .s4 {
+    width: $side-s4 * 1.1;
+    height: $side-s4 * 1.1;
   }
 
-  .small > .s3 {
-    width: ($size-s3 / 2) * 1.05;
-    height: ($size-s3 / 2) * 1.05;
-  }
-  .medium > .s3 {
-    width: $size-s3 * 1.05;
-    height: $size-s3 * 1.05;
+  .s3 {
+    width: $side-s3 * 1.05;
+    height: $side-s3 * 1.05;
   }
 
-  .small > .s2 {
-    width: ($size-s2 / 2) * 0.98;
-    height: ($size-s2 / 2) * 0.98;
-  }
-  .medium > .s2 {
-    width: $size-s2 * 0.98;
-    height: $size-s2 * 0.98;
+  .s2 {
+    width: $side-s2 * 0.98;
+    height: $side-s2 * 0.98;
   }
 
   .s1 {
@@ -161,21 +124,8 @@ $size-tot: 110px;
     transform: rotateZ(-4500deg);
   }
 
-  .small {
-    .s1 {
-      top: 45%;
-      left: 45%;
-    }
-    &.out {
-      .s1 {
-        top: 10%;
-        left: 45%;
-      }
-    }
-  }
-
-  .medium > .s1 {
-    top: calc(50% - #{$size-s1 / 2});
-    left: calc(50% - #{$size-s1 / 2});
+  .s1 {
+    top: calc(50% - #{$side-s1 / 2});
+    left: calc(50% - #{$side-s1 / 2});
   }
 }

@@ -3,13 +3,17 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { RepositoryType, ProjectState } from './../../types/globalTypes';
+import {
+  CreateProjectInput,
+  RepositoryType,
+  ProjectState,
+} from './../../types/globalTypes';
 
 // ====================================================
-// GraphQL query operation: GetProjects
+// GraphQL mutation operation: CreateProject
 // ====================================================
 
-export interface GetProjects_projects_repository {
+export interface CreateProject_createProject_repository {
   __typename: 'Repository';
   id: string;
   type: RepositoryType;
@@ -17,7 +21,7 @@ export interface GetProjects_projects_repository {
   connected: boolean;
 }
 
-export interface GetProjects_projects {
+export interface CreateProject_createProject {
   __typename: 'Project';
   id: string;
   name: string;
@@ -25,11 +29,15 @@ export interface GetProjects_projects {
   favorite: boolean;
   creationDate: string;
   lastActivationDate: string;
-  repository: GetProjects_projects_repository | null;
+  repository: CreateProject_createProject_repository | null;
   state: ProjectState;
   error: string | null;
 }
 
-export interface GetProjects {
-  projects: GetProjects_projects[];
+export interface CreateProject {
+  createProject: CreateProject_createProject;
+}
+
+export interface CreateProjectVariables {
+  input: CreateProjectInput;
 }

@@ -11,6 +11,7 @@ enum ROUTE {
   NEW_SERVER_USER = '/server/:serverId/new-user',
   NEW_PROJECT = '/server/:serverId/new-project',
   PROJECT = '/server/:serverId/project/:projectId',
+  CREATION_PROJECT = '/server/:serverId/new-project/create',
 }
 
 export type RouteServerParams = {

@@ -5,12 +5,13 @@ module.exports = {
   Query: () => ({
     me: () => ({
       id: casual.uuid,
-      email: 'admin@intelygenz.com'
+      email: 'admin@intelygenz.com',
     }),
     projects: () => new MockList([4, 8]),
-    users: () => new MockList([4, 8])
+    users: () => new MockList([4, 8]),
   }),
   Mutation: () => ({
+    createProject: this.Project,
     updateProject: (_, { input: { id, name }}) => ({
       id,
       name
@@ -21,7 +22,7 @@ module.exports = {
     email: casual.email,
     creationDate: new Date().toUTCString(),
     accessLevel: casual.random_element(['ADMIN', 'VIEWER', 'MANAGER']),
-    lastActivity: new Date().toUTCString()
+    lastActivity: new Date().toUTCString(),
   }),
   Project: () => ({
     id: casual.uuid,
@@ -29,7 +30,7 @@ module.exports = {
     description: casual.description,
     favorite: casual.boolean,
     repository: this.Repository,
-    creationDate: () => (new Date()).toISOString(),
+    creationDate: () => new Date().toISOString(),
     lastActivationDate: () => (new Date()).toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
@@ -44,6 +45,6 @@ module.exports = {
     public: casual.uuid,
     private: casual.uuid,
     creationDate: new Date().toUTCString(),
-    lastActivity: new Date().toUTCString()
-  })
+    lastActivity: new Date().toUTCString(),
+  }),
 };

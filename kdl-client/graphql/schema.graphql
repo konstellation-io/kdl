@@ -10,6 +10,7 @@ type Mutation {
   removeUsers(input: RemoveUsersInput!): [User!]!
   updateAccessLevel(input: UpdateAccessLevelInput!): [User!]!
   regenerateSSHKey: SSHKey!
+  updateProject(input: UpdateProjectInput!): Project!
 }
 
 type SSHKey {
@@ -31,6 +32,11 @@ enum AccessLevel {
   VIEWER
   MANAGER
   ADMIN
+}
+
+input UpdateProjectInput {
+  id: ID!
+  name: String!
 }
 
 input RemoveUsersInput {
@@ -55,12 +61,15 @@ type Project {
   repository: Repository
   state: ProjectState!
   creationDate: String!
+  lastActivationDate: String!
   error: String
 }
 
 type Repository {
   id: ID!
   type: RepositoryType!
+  url: String!
+  connected: Boolean!
 }
 
 enum RepositoryType {

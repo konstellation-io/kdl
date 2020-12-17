@@ -19,8 +19,8 @@ export enum ProjectState {
 }
 
 export enum RepositoryType {
-  EXTERNAL = 'externalRepository',
-  INTERNAL = 'internalRepository',
+  EXTERNAL = 'EXTERNAL',
+  INTERNAL = 'INTERNAL',
 }
 
 export interface AddUserInput {
@@ -35,6 +35,11 @@ export interface RemoveUsersInput {
 export interface UpdateAccessLevelInput {
   userIds: string[];
   accessLevel: AccessLevel;
+}
+
+export interface UpdateProjectInput {
+  id: string;
+  name: string;
 }
 
 //==============================================================

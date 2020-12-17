@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 
 import { GetSSHKey } from 'Graphql/queries/types/GetSSHKey';
 import React from 'react';
-import { RegenerateSSHKey } from 'Graphql/mutations/types/regenerateSSHKey';
+import { RegenerateSSHKey } from 'Graphql/mutations/types/RegenerateSSHKey';
 import SSHKey from './components/SSHKey/SSHKey';
 import { copyToClipboard } from 'Utils/clipboard';
 import { loader } from 'graphql.macro';

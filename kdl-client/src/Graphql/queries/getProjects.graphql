@@ -5,9 +5,12 @@ query GetProjects {
     description
     favorite
     creationDate
+    lastActivationDate
     repository {
       id
       type
+      url
+      connected
     }
     state
     error

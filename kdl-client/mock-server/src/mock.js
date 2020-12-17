@@ -10,6 +10,12 @@ module.exports = {
     projects: () => new MockList([4, 8]),
     users: () => new MockList([4, 8])
   }),
+  Mutation: () => ({
+    updateProject: (_, { input: { id, name }}) => ({
+      id,
+      name
+    })
+  }),
   User: () => ({
     id: casual.uuid,
     email: casual.email,
@@ -24,12 +30,15 @@ module.exports = {
     favorite: casual.boolean,
     repository: this.Repository,
     creationDate: () => (new Date()).toISOString(),
+    lastActivationDate: () => (new Date()).toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
   }),
   Repository: () => ({
     id: casual.uuid,
-    type: casual.random_element(['INTERNAL', 'EXTERNAL'])
+    type: casual.random_element(['INTERNAL', 'EXTERNAL']),
+    url: casual.url,
+    connected: casual.boolean
   }),
   SSHKey: () => ({
     public: casual.uuid,

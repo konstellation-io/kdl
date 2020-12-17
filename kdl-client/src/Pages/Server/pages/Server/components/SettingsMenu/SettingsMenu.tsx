@@ -109,6 +109,7 @@ function SettingsMenu() {
         className={styles.settings}
         showSelectAllOption={false}
         shouldSort={false}
+        hideError
       />
       {showModal && (
         <ModalContainer

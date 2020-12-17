@@ -1,3 +1,6 @@
+import CircledInfoMessage, {
+  CircledInfoMessageTypes,
+} from 'Components/CircledInfoMessage/CircledInfoMessage';
 import {
   GET_NEW_PROJECT,
   GetNewProject,
@@ -11,9 +14,6 @@ import { RepositoryType } from '../../../../../../Graphql/types/globalTypes';
 import { SpinnerCircular } from 'kwc';
 import styles from './Summary.module.scss';
 import { useQuery } from '@apollo/client';
-import CircledInfoMessage, {
-  CircledInfoMessageTypes,
-} from 'Components/CircledInfoMessage/CircledInfoMessage';
 
 type FieldProps = {
   children: JSX.Element | JSX.Element[];
@@ -47,6 +47,7 @@ function Summary() {
   const type = repository?.values?.type || RepositoryType.EXTERNAL;
   const isExternalRepo = type === RepositoryType.EXTERNAL;
   const { name, description } = information.values;
+  // @ts-ignore
   const repoTypeDetails = data.newProject[type];
   const { url } = repoTypeDetails.values;
 

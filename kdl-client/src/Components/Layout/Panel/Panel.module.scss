@@ -1,0 +1,70 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+@import 'Styles/animations';
+@import 'Styles/shadows';
+
+$panel-width: 60 * $grid-unit;
+
+.container {
+  @include glow(3, black);
+
+  background-color: palette(base, 800);
+  width: $panel-width;
+  max-width: $panel-width;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.enter {
+  animation: widthIn 0.4s forwards;
+}
+.exit {
+  animation: widthOut 0.4s forwards;
+}
+
+header {
+  display: flex;
+  align-items: center;
+
+  .separator {
+    width: 2px;
+    height: 1.5 * $grid-unit;
+    background-color: font-color(regular);
+    margin: 0 2 * $grid-unit;
+  }
+  .title {
+    @include font-body;
+    color: font-color(light);
+
+    margin: $grid-unit auto $grid-unit 0;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  overflow: hidden;
+  width: $panel-width;
+}
+
+@keyframes widthIn {
+  from {
+    max-width: 0;
+  }
+
+  to {
+    max-width: $panel-width;
+  }
+}
+
+@keyframes widthOut {
+  from {
+    max-width: $panel-width;
+  }
+
+  to {
+    max-width: 0;
+  }
+}

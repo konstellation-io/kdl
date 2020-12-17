@@ -6,6 +6,7 @@ import {
 } from './models/ProjectFilters';
 import { UserSelection, UserSettings } from './models/UserSettings';
 
+import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import { NewProject } from './models/NewProject';
 import { Server } from 'Hooks/useServers';
 
@@ -60,6 +61,7 @@ const initialStateUserSettings: UserSettings = {
 export const projectFilters = makeVar(initialProjectFilters);
 export const newProject = makeVar(initialNewProject);
 export const openedServer = makeVar<Server | null>(null);
+export const openedProject = makeVar<GetProjects_projects | null>(null);
 export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
 
 const cache = new InMemoryCache({
@@ -69,6 +71,7 @@ const cache = new InMemoryCache({
         projectFilters: { read: () => projectFilters() },
         newProject: { read: () => newProject() },
         openedServer: { read: () => openedServer() },
+        openedProject: { read: () => openedProject() },
         userSettings: { read: () => userSettings() },
         projects: { merge: false },
         users: { merge: false },

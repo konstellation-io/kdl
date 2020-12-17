@@ -2,6 +2,7 @@ import ROUTE, { RouteServerParams } from 'Constants/routes';
 import React, { useEffect } from 'react';
 import { Route, Switch, useParams } from 'react-router-dom';
 
+import Project from './pages/Project/Project';
 import Projects from './pages/Projects/Projects';
 import ServerBar from './components/ServerBar/ServerBar';
 import UserSshKey from './pages/UserSshKey/UserSshKey';
@@ -41,6 +42,7 @@ function Server() {
       <Switch>
         <Route exact path={ROUTE.SERVER_USERS} component={Users} />
         <Route exact path={ROUTE.SERVER} component={Projects} />
+        <Route exact path={ROUTE.PROJECT} component={Project} />
         <Route exact path={ROUTE.USER_SSH_KEY} component={UserSshKey} />
       </Switch>
     </div>

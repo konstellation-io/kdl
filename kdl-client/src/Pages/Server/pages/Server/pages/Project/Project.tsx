@@ -7,7 +7,6 @@ import ProjectSettings from './components/ProjectSettings/ProjectSettings';
 import { RouteProjectParams } from 'Constants/routes';
 import UpdateRepository from './components/UpdateRepository/UpdateRepository';
 import { loader } from 'graphql.macro';
-import { openedProject } from 'Pages/Server/apollo/cache';
 import styles from './Project.module.scss';
 import useBoolState from 'Hooks/useBoolState';
 import useOpenedProject from 'Pages/Server/apollo/hooks/useOpenedProject';
@@ -77,7 +76,7 @@ function Project() {
           size={PANEL_SIZE.BIG}
           dark
         >
-          <UpdateRepository project={project} />
+          <UpdateRepository project={project} close={hideRepoEdit} />
         </Panel>
       </div>
       <div className={styles.content}>

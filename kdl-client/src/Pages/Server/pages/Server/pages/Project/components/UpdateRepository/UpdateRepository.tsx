@@ -33,8 +33,9 @@ type FormData = {
 
 type Props = {
   project: GetProjects_projects;
+  close: () => void;
 };
-function UpdateRepository({ project }: Props) {
+function UpdateRepository({ project, close }: Props) {
   const {
     value: loading,
     activate: showLoading,
@@ -73,7 +74,7 @@ function UpdateRepository({ project }: Props) {
     };
   }, [register, unregister]);
 
-  function onSubmit({ url }: FormData) {
+  function onSubmit() {
     showLoading();
 
     // TODO: validate connection with server
@@ -86,7 +87,7 @@ function UpdateRepository({ project }: Props) {
 
   const url = watch('url');
 
-  function UpdateRepositoryUrl() {
+  function updateRepositoryUrl() {
     updateProject(
       mutationPayloadHelper({
         id: project.id,
@@ -156,10 +157,11 @@ function UpdateRepository({ project }: Props) {
       <ActionsBar className={styles.actions}>
         <Button
           label="SAVE"
+          onClick={updateRepositoryUrl}
           disabled={!(connectionOk || (!connectionOk && watch('skipTest')))}
           primary
         />
-        <Button label="CANCEL" />
+        <Button label="CANCEL" onClick={close} />
       </ActionsBar>
     </div>
   );

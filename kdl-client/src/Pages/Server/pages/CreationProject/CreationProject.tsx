@@ -37,8 +37,8 @@ function CreationProject() {
     {
       onCompleted: ({ createProject: { id } }) => setProjectId(id),
       onError: (e) => console.error(`createProject: ${e}`),
-      update: (cache, { data }) => {
-        const newProject = data?.createProject as CreateProject_createProject;
+      update: (cache, { data: newProjectData }) => {
+        const newProject = newProjectData?.createProject as CreateProject_createProject;
         const cacheResult = cache.readQuery<GetProjects>({
           query: GetProjectsQuery,
         });

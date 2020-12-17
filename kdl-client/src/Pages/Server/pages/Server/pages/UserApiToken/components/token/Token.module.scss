@@ -8,16 +8,16 @@
   flex-direction: column;
   border-bottom: 1px solid palette(base, 400);
 
-  .ownerContainer {
+  .labelContainer {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .owner {
+    .labelWrapper {
       color: font-color(lowlight);
       display: flex;
       align-items: center;
-      .ownerName {
+      .label {
         margin-left: $grid-unit;
       }
     }

@@ -11,28 +11,26 @@ type Props = {
   lastUsedDate: string;
 };
 
-const Token: React.FC<Props> = ({ label, creationDate, lastUsedDate }) => {
-  return (
-    <div className={styles.container}>
-      <div className={styles.ownerContainer}>
-        <div className={styles.owner}>
-          <KeyIcon className="icon-small" />
-          <span className={styles.ownerName}>{label}</span>
-        </div>
-        <Button label="DELETE" Icon={DeleteIcon} />
+const Token: React.FC<Props> = ({ label, creationDate, lastUsedDate }) => (
+  <div className={styles.container}>
+    <div className={styles.labelContainer}>
+      <div className={styles.labelWrapper}>
+        <KeyIcon className="icon-small" />
+        <span className={styles.label}>{label}</span>
       </div>
-      <div className={styles.datesContainer}>
-        <div>
-          <span className={styles.dateLabel}>GENERATED ON:</span>
-          <span className={styles.date}>{creationDate}</span>
-        </div>
-        <div>
-          <span className={styles.dateLabel}>LAST USED:</span>
-          <span className={styles.date}>{lastUsedDate}</span>
-        </div>
+      <Button label="DELETE" Icon={DeleteIcon} />
+    </div>
+    <div className={styles.datesContainer}>
+      <div>
+        <span className={styles.dateLabel}>GENERATED ON:</span>
+        <span className={styles.date}>{creationDate}</span>
+      </div>
+      <div>
+        <span className={styles.dateLabel}>LAST USED:</span>
+        <span className={styles.date}>{lastUsedDate}</span>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default Token;

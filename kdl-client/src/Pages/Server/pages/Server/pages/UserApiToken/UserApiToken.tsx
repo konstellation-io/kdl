@@ -15,7 +15,7 @@ function UserApiToken() {
   const apiTokens = data?.apiTokens || [];
   const isEmptyList = apiTokens.length === 0;
 
-  function renderContent() {
+  function renderMainContent() {
     if (loading) return <SpinnerCircular />;
     else if (!loading && isEmptyList)
       return <Message text="There are not tokens yet" />;
@@ -45,7 +45,7 @@ function UserApiToken() {
           height={30}
         />
       </div>
-      <div className={styles.tokensContainer}>{renderContent()}</div>
+      <div className={styles.tokensContainer}>{renderMainContent()}</div>
     </div>
   );
 }

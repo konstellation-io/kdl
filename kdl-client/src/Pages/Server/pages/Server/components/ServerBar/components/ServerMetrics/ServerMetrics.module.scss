@@ -16,6 +16,7 @@
   cursor: pointer;
   padding: 0 5 * $grid-unit 0 4 * $grid-unit;
   background-color: palette(base, 900);
+  height: 100%;
 
   transition: background-color ease 0.2s;
 

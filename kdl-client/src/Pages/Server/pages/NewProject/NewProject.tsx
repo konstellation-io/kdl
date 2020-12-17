@@ -3,8 +3,12 @@ import {
   GET_NEW_PROJECT,
   GetNewProject,
 } from 'Graphql/client/queries/getNewProject.graphql';
-import ROUTE, { buildRoute, RouteServerParams } from 'Constants/routes';
+import ROUTE, { RouteServerParams, buildRoute } from 'Constants/routes';
 import React, { useEffect } from 'react';
+import RepositoryTypeComponent, {
+  LOCATION,
+  SIZE,
+} from './pages/Repository/components/RepositoryTypeComponent/RepositoryTypeComponent';
 import useStepper, { ActionButton } from 'Hooks/useStepper/useStepper';
 
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
@@ -12,6 +16,7 @@ import Information from './pages/Information/Information';
 import Repository from './pages/Repository/Repository';
 import RepositoryDetails from './pages/RepositoryDetails/RepositoryDetails';
 import { RepositoryType } from '../../../../Graphql/types/globalTypes';
+import SidebarTop from 'Components/Layout/Page/DefaultPage/SidebarTop';
 import { SpinnerCircular } from 'kwc';
 import Stepper from 'Components/Stepper/Stepper';
 import Summary from './pages/Summary/Summary';
@@ -21,11 +26,6 @@ import styles from './NewProject.module.scss';
 import useNewProject from 'Pages/Server/apollo/hooks/useNewProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import SidebarTop from 'Components/Layout/Page/DefaultPage/SidebarTop';
-import RepositoryTypeComponent, {
-  LOCATION,
-  SIZE,
-} from './pages/Repository/components/RepositoryTypeComponent/RepositoryTypeComponent';
 
 enum Steps {
   INFORMATION,
@@ -172,6 +172,7 @@ function NewProject() {
   function validateStep() {
     const stepData = stepsWithData[actStep];
     if (data && stepData !== null && actStep !== Steps.SUMMARY) {
+      // @ts-ignore
       const actStepData = data.newProject[stepData];
 
       const error =

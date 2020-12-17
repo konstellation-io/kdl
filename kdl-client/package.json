@@ -1,7 +1,7 @@
 {
   "name": "konstellation-dev-lab",
   "description": "Konstellation Development Lab desktop application",
-  "version": "1.9.0",
+  "version": "1.12.0",
   "author": {
     "name": "Konstellation Team",
     "email": "konstellation-team@intelygenz.com",
@@ -42,6 +42,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",
     "react-table": "7.2.2",
+    "react-tabs": "3.1.1",
     "react-toastify": "6.0.9",
     "react-transition-group": "4.4.1",
     "typeface-montserrat": "1.1.13",
@@ -59,6 +60,7 @@
     "@types/moment-timezone": "^0.5.30",
     "@types/react-router-dom": "5.1.6",
     "@types/react-table": "7.0.19",
+    "@types/react-tabs": "2.3.2",
     "@types/react-transition-group": "4.4.0",
     "@types/uuid": "8.3.0",
     "concurrently": "5.3.0",

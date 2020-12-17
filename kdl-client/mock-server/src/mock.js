@@ -12,6 +12,10 @@ module.exports = {
   }),
   Mutation: () => ({
     createProject: this.Project,
+    updateProject: (_, { input: { id, name }}) => ({
+      id,
+      name
+    })
   }),
   User: () => ({
     id: casual.uuid,
@@ -27,12 +31,15 @@ module.exports = {
     favorite: casual.boolean,
     repository: this.Repository,
     creationDate: () => new Date().toISOString(),
+    lastActivationDate: () => (new Date()).toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
   }),
   Repository: () => ({
     id: casual.uuid,
     type: casual.random_element(['INTERNAL', 'EXTERNAL']),
+    url: casual.url,
+    connected: casual.boolean
   }),
   SSHKey: () => ({
     public: casual.uuid,

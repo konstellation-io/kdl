@@ -13,6 +13,8 @@ export interface GetProjects_projects_repository {
   __typename: 'Repository';
   id: string;
   type: RepositoryType;
+  url: string;
+  connected: boolean;
 }
 
 export interface GetProjects_projects {
@@ -22,6 +24,7 @@ export interface GetProjects_projects {
   description: string;
   favorite: boolean;
   creationDate: string;
+  lastActivationDate: string;
   repository: GetProjects_projects_repository | null;
   state: ProjectState;
   error: string | null;

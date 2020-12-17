@@ -49,6 +49,16 @@ export interface UpdateAccessLevelInput {
   accessLevel: AccessLevel;
 }
 
+export interface UpdateProjectInput {
+  id: string;
+  name?: string | null;
+  repository?: UpdateProjectRepositoryInput | null;
+}
+
+export interface UpdateProjectRepositoryInput {
+  url: string;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

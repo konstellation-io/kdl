@@ -3,6 +3,8 @@ import 'kwc/index.css';
 import 'Components/TitleBar/TitleBar';
 import 'Styles/app.global.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-tabs/style/react-tabs.css';
+import 'Styles/react-tabs.scss';
 import 'Styles/react-toastify.scss';
 
 import App from './App';

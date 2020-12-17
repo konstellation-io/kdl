@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import NewProject from './pages/NewProject/NewProject';
 import NewUser from './pages/NewUser/NewUser';
-import CreationProject from './pages/CreationProject/CreationProject';
+import ProjectCreation from './pages/ProjectCreation/ProjectCreation';
 import ROUTE from 'Constants/routes';
 import Server from './pages/Server/Server';
 import cache from './apollo/cache';
@@ -34,7 +34,7 @@ function ServerClient() {
         <Route
           exact
           path={ROUTE.CREATION_PROJECT}
-          component={CreationProject}
+          component={ProjectCreation}
         />
         <Route path={ROUTE.SERVER} component={Server} />
       </Switch>

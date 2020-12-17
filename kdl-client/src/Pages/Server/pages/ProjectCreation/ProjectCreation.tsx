@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './CreationProject.module.scss';
+import styles from './ProjectCreation.module.scss';
 import { Button, SpinnerCircular } from 'kwc';
 import StatusCircle from 'Components/LottieShapes/StatusCircle/StatusCircle';
 import { useMutation, useQuery } from '@apollo/client';
@@ -26,7 +26,7 @@ import ROUTE, {
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 const CreateProjectMutation = loader('Graphql/mutations/createProject.graphql');
 
-function CreationProject() {
+function ProjectCreation() {
   const [projectId, setProjectId] = useState('');
 
   const { serverId } = useParams<RouteServerParams>();
@@ -77,7 +77,7 @@ function CreationProject() {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <h1 className={styles.title}>Your project is creating now</h1>
+        <h1>Your project is creating now</h1>
         <span className={styles.subtitle}>
           In order to receive a login link to access
         </span>
@@ -106,4 +106,4 @@ function CreationProject() {
   );
 }
 
-export default CreationProject;
+export default ProjectCreation;

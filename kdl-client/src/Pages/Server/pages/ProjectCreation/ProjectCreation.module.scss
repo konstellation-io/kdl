@@ -15,13 +15,8 @@
     align-items: center;
     flex-direction: column;
     padding: 8.5 * $grid-unit 22 * $grid-unit 0 22 * $grid-unit;
-    width: 632px;
+    width: 79 * $grid-unit;
     height: 100%;
-
-    .title {
-      @include font-headline;
-      color: font-color(highlight);
-    }
 
     .subtitle {
       @include font-small;

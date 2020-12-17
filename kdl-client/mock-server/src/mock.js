@@ -12,6 +12,7 @@ module.exports = {
     apiTokens: () => new MockList([4, 8]),
   }),
   Mutation: () => ({
+    createProject: this.Project,
     updateProject: (_, { input: { id, name } }) => ({
       id,
       name,

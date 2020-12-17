@@ -29,8 +29,19 @@ export interface AddUserInput {
   accessLevel: AccessLevel;
 }
 
+export interface CreateProjectInput {
+  name: string;
+  description: string;
+  repository: RepositoryInput;
+}
+
 export interface RemoveUsersInput {
   userIds: string[];
+}
+
+export interface RepositoryInput {
+  type: RepositoryType;
+  url: string;
 }
 
 export interface UpdateAccessLevelInput {

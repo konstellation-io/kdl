@@ -11,6 +11,7 @@ type Mutation {
   removeUsers(input: RemoveUsersInput!): [User!]!
   updateAccessLevel(input: UpdateAccessLevelInput!): [User!]!
   regenerateSSHKey: SSHKey!
+  createProject(input: CreateProjectInput!): Project!
   updateProject(input: UpdateProjectInput!): Project!
 }
 
@@ -65,6 +66,12 @@ input UpdateAccessLevelInput {
   accessLevel: AccessLevel!
 }
 
+input CreateProjectInput {
+  name: String!
+  description: String!
+  repository: RepositoryInput!
+}
+
 type Project {
   id: ID!
   name: String!
@@ -75,6 +82,11 @@ type Project {
   creationDate: String!
   lastActivationDate: String!
   error: String
+}
+
+input RepositoryInput {
+  type: RepositoryType!
+  url: String!
 }
 
 type Repository {

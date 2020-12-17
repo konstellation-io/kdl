@@ -4,17 +4,16 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetSSHKey
+// GraphQL query operation: GetApiTokens
 // ====================================================
 
-export interface GetSSHKey_sshKey {
-  __typename: 'SSHKey';
-  public: string;
-  private: string;
+export interface GetApiTokens_apiTokens {
+  __typename: 'ApiToken';
+  label: string;
   creationDate: string;
-  lastActivity: string | null;
+  lastUsedDate: string;
 }
 
-export interface GetSSHKey {
-  sshKey: GetSSHKey_sshKey;
+export interface GetApiTokens {
+  apiTokens: GetApiTokens_apiTokens[];
 }

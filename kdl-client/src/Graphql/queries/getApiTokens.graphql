@@ -1,0 +1,7 @@
+query GetApiTokens {
+  apiTokens {
+    label
+    creationDate
+    lastUsedDate
+  }
+}

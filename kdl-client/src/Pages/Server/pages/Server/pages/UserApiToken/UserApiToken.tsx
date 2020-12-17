@@ -1,4 +1,4 @@
-import { Button, SpinnerCircular } from 'kwc';
+import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
 import { useQuery } from '@apollo/client';
 
 import React from 'react';
@@ -11,12 +11,13 @@ import Message from 'Components/Message/Message';
 const GetApiTokensQuery = loader('Graphql/queries/getApiTokens.graphql');
 
 function UserApiToken() {
-  const { data, loading } = useQuery<GetApiTokens>(GetApiTokensQuery);
+  const { data, loading, error } = useQuery<GetApiTokens>(GetApiTokensQuery);
   const apiTokens = data?.apiTokens || [];
   const isEmptyList = apiTokens.length === 0;
 
   function renderMainContent() {
     if (loading) return <SpinnerCircular />;
+    else if (error) return <ErrorMessage />;
     else if (isEmptyList) return <Message text="There are not tokens yet" />;
 
     return apiTokens.map(({ label, lastUsedDate, creationDate }) => (

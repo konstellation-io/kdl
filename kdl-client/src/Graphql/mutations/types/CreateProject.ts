@@ -18,6 +18,7 @@ export interface CreateProject_createProject_repository {
   id: string;
   type: RepositoryType;
   url: string;
+  connected: boolean;
 }
 
 export interface CreateProject_createProject {
@@ -26,9 +27,10 @@ export interface CreateProject_createProject {
   name: string;
   description: string;
   favorite: boolean;
+  creationDate: string;
+  lastActivationDate: string;
   repository: CreateProject_createProject_repository | null;
   state: ProjectState;
-  creationDate: string;
   error: string | null;
 }
 

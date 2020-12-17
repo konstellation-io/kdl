@@ -4,13 +4,15 @@ mutation CreateProject($input: CreateProjectInput!) {
     name
     description
     favorite
+    creationDate
+    lastActivationDate
     repository {
       id
       type
       url
+      connected
     }
     state
-    creationDate
     error
   }
 }

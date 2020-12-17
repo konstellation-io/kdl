@@ -47,7 +47,7 @@ function CreationProject() {
           const { projects } = cacheResult;
           cache.writeQuery({
             query: GetProjectsQuery,
-            data: { projects: projects.concat([newProject]) },
+            data: { projects: [...projects, newProject] },
           });
         }
       },

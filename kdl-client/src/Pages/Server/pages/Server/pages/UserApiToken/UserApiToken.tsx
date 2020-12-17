@@ -18,15 +18,15 @@ function UserApiToken() {
   function renderMainContent() {
     if (loading) return <SpinnerCircular />;
     else if (isEmptyList) return <Message text="There are not tokens yet" />;
-    else
-      return apiTokens.map(({ label, lastUsedDate, creationDate }) => (
-        <Token
-          key={label}
-          label={label}
-          creationDate={creationDate}
-          lastUsedDate={lastUsedDate}
-        />
-      ));
+
+    return apiTokens.map(({ label, lastUsedDate, creationDate }) => (
+      <Token
+        key={label}
+        label={label}
+        creationDate={creationDate}
+        lastUsedDate={lastUsedDate}
+      />
+    ));
   }
 
   return (

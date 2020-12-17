@@ -40,11 +40,9 @@
       display: flex;
       margin-top: 3.75 * $grid-unit;
       width: 100%;
-
-      & > div:nth-child(2) {
+      & a:last-child .button {
         margin-left: 2 * $grid-unit;
       }
-
       .button {
         color: font-color(light);
         background-color: palette(lowlight, 800);

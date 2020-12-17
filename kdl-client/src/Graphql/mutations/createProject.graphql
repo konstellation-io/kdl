@@ -1,0 +1,16 @@
+mutation CreateProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    id
+    name
+    description
+    favorite
+    repository {
+      id
+      type
+      url
+    }
+    state
+    creationDate
+    error
+  }
+}

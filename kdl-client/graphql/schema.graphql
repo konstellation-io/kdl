@@ -10,6 +10,7 @@ type Mutation {
   removeUsers(input: RemoveUsersInput!): [User!]!
   updateAccessLevel(input: UpdateAccessLevelInput!): [User!]!
   regenerateSSHKey: SSHKey!
+  createProject(input: CreateProjectInput!): Project!
 }
 
 type SSHKey {
@@ -47,6 +48,12 @@ input UpdateAccessLevelInput {
   accessLevel: AccessLevel!
 }
 
+input CreateProjectInput {
+  name: String!
+  description: String!
+  repository: RepositoryInput!
+}
+
 type Project {
   id: ID!
   name: String!
@@ -58,9 +65,15 @@ type Project {
   error: String
 }
 
+input RepositoryInput {
+  type: RepositoryType!
+  url: String!
+}
+
 type Repository {
   id: ID!
   type: RepositoryType!
+  url: String!
 }
 
 enum RepositoryType {

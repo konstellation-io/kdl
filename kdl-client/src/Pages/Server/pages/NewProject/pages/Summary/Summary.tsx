@@ -47,7 +47,9 @@ function Summary() {
   const type = repository?.values?.type || RepositoryType.EXTERNAL;
   const isExternalRepo = type === RepositoryType.EXTERNAL;
   const { name, description } = information.values;
-  const repoTypeDetails = data.newProject[type];
+  const repoTypeDetails = isExternalRepo
+    ? data.newProject.externalRepository
+    : data.newProject.internalRepository;
   const { url } = repoTypeDetails.values;
 
   function getRepositoryCheckMessage() {

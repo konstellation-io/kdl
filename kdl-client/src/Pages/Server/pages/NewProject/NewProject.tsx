@@ -61,18 +61,32 @@ const stepperSteps = [
     Component: Summary,
   },
 ];
+
+export const repoTypeToStepName: {
+  [k: string]: StepNames.EXTERNAL | StepNames.INTERNAL;
+} = {
+  [RepositoryType.EXTERNAL]: StepNames.EXTERNAL,
+  [RepositoryType.INTERNAL]: StepNames.INTERNAL,
+};
+
 function NewProject() {
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
+
   const { serverId } = useParams<RouteServerParams>();
   const { clearAll } = useNewProject('information');
   const cancelRoute = buildRoute.server(ROUTE.SERVER, serverId);
   const type = data?.newProject.repository.values.type || null;
 
-  const stepsWithData: [
+  const stepsWithData: (
+    | StepNames.INFORMATION
+    | StepNames.REPOSITORY
+    | StepNames.INTERNAL
+    | StepNames.EXTERNAL
+  )[] = [
     StepNames.INFORMATION,
     StepNames.REPOSITORY,
-    RepositoryType | null
-  ] = [StepNames.INFORMATION, StepNames.REPOSITORY, type];
+    repoTypeToStepName[type || ''],
+  ];
 
   // We want to execute this on on component unmount
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,7 +132,7 @@ function NewProject() {
           <ActionButton
             key="create"
             label="CREATE"
-            to={ROUTE.CREATION_PROJECT}
+            to={buildRoute.server(ROUTE.CREATION_PROJECT, serverId)}
             primary
           />,
         ];

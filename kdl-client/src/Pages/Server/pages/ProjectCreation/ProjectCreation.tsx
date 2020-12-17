@@ -70,6 +70,8 @@ function ProjectCreation() {
 
       createProject(mutationPayloadHelper(inputs));
     }
+    // We want to execute this on on component mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!data) return <SpinnerCircular />;

@@ -22,6 +22,7 @@ function UserApiToken() {
     else
       return apiTokens.map(({ label, lastUsedDate, creationDate }) => (
         <Token
+          key={label}
           label={label}
           creationDate={creationDate}
           lastUsedDate={lastUsedDate}

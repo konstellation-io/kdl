@@ -62,7 +62,7 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
             data: {
               project: {
                 ...project,
-                members: project.members.concat(newMembers),
+                members: [...project.members, ...newMembers],
               },
             },
           });
@@ -92,8 +92,8 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
       const selectedMembers = dataMembers.project.members.filter(
         (m) => m.id === memberDetails.id
       );
-      const selectedMember = selectedMembers[0];
-      openMemberDetails(selectedMember);
+
+      openMemberDetails(selectedMembers[0]);
     }
   }, [dataMembers, openMemberDetails, memberDetails]);
 
@@ -103,9 +103,9 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
 
   const users = dataUsers.users.map((user) => user.email);
   const members = dataMembers.project.members.map((member) => member.email);
-  const options = users.filter(
-    (email) => ![...members, ...memberSelection].includes(email)
-  );
+  const allMembers = [...members, ...memberSelection];
+
+  const options = users.filter((email) => !allMembers.includes(email));
 
   function performAddmembers() {
     if (dataUsers) {
@@ -128,6 +128,9 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
           options={options}
           theme={SearchSelectTheme.LIGHT}
           chipSelection={memberSelection}
+          onRemoveChip={(email) =>
+            setMemberSelection(memberSelection.filter((m) => m !== email))
+          }
           onChange={(value: string) => {
             setError('');
 

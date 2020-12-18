@@ -15,7 +15,7 @@ type Props = {
   title: string;
   show: boolean;
   close: () => void;
-  children: JSX.Element;
+  children?: JSX.Element | null | false;
   size?: PANEL_SIZE;
   noShrink?: boolean;
   dark?: boolean;

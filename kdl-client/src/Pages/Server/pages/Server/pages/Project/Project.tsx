@@ -96,9 +96,7 @@ function Project() {
           noShrink
           dark
         >
-          {memberDetails === null ? (
-            <></>
-          ) : (
+          {memberDetails && (
             <MemberDetails
               member={memberDetails}
               close={() => setMemberDetails(null)}

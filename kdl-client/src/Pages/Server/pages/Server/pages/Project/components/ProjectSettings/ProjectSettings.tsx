@@ -8,6 +8,7 @@ import { ErrorMessage } from 'kwc';
 import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import ProjectInfo from '../ProjectInfo/ProjectInfo';
 import React from 'react';
+import TabDangerZone from '../TabDangerZone/TabDangerZone';
 import TabGit from '../TabGit/TabGit';
 import TabInfo from '../TabInfo/TabInfo';
 import TabMembers from '../TabMembers/TabMembers';
@@ -60,7 +61,9 @@ function ProjectSettings({
               memberDetails={memberDetails}
             />
           </TabPanel>
-          <TabPanel></TabPanel>
+          <TabPanel>
+            <TabDangerZone />
+          </TabPanel>
         </div>
       </Tabs>
     </div>

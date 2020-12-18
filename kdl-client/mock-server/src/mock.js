@@ -6,16 +6,17 @@ module.exports = {
     me: () => ({
       id: casual.uuid,
       email: 'admin@intelygenz.com',
+      apiTokens: () => new MockList([4, 8]),
     }),
     projects: () => new MockList([4, 8]),
     users: () => new MockList([4, 8]),
   }),
   Mutation: () => ({
     createProject: this.Project,
-    updateProject: (_, { input: { id, name }}) => ({
+    updateProject: (_, { input: { id, name } }) => ({
       id,
-      name
-    })
+      name,
+    }),
   }),
   User: () => ({
     id: casual.uuid,
@@ -31,7 +32,7 @@ module.exports = {
     favorite: casual.boolean,
     repository: this.Repository,
     creationDate: () => new Date().toISOString(),
-    lastActivationDate: () => (new Date()).toISOString(),
+    lastActivationDate: () => new Date().toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
   }),
@@ -39,7 +40,7 @@ module.exports = {
     id: casual.uuid,
     type: casual.random_element(['INTERNAL', 'EXTERNAL']),
     url: casual.url,
-    connected: casual.boolean
+    connected: casual.boolean,
   }),
   SSHKey: () => ({
     public: casual.uuid,

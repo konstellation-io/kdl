@@ -1,0 +1,42 @@
+@import 'Styles/colors';
+@import 'Styles/variables';
+@import 'Styles/mixins';
+
+.container {
+  padding-bottom: 2.5 * $grid-unit;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid palette(base, 400);
+
+  .labelContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .labelWrapper {
+      color: font-color(lowlight);
+      display: flex;
+      align-items: center;
+      .label {
+        margin-left: $grid-unit;
+      }
+    }
+  }
+
+  .datesContainer {
+    display: flex;
+    align-items: center;
+    .dateLabel {
+      @include font-caption;
+      color: font-color(regular);
+    }
+    .date {
+      @include font-caption;
+      color: font-color(light);
+      margin-left: $grid-unit;
+    }
+    & > div:last-child {
+      margin-left: 3 * $grid-unit;
+    }
+  }
+}

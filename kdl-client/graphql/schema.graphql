@@ -27,6 +27,14 @@ type User {
   creationDate: String!
   accessLevel: AccessLevel!
   lastActivity: String
+  apiTokens: [ApiToken!]!
+}
+
+type ApiToken {
+  id: ID!
+  label: String!
+  creationDate: String!
+  lastUsedDate: String!
 }
 
 enum AccessLevel {

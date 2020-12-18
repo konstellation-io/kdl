@@ -62,6 +62,10 @@ function SettingsMenu() {
     history.push(buildRoute.server(ROUTE.USER_SSH_KEY, serverId));
   }
 
+  function goToUserAPITokens() {
+    history.push(buildRoute.server(ROUTE.USER_API_TOKENS, serverId));
+  }
+
   function LogoutButton({ label }: CustomOptionProps) {
     return (
       <SettingsButton Icon={LogoutIcon} onClick={openModal} label={label} />
@@ -91,11 +95,22 @@ function SettingsMenu() {
     );
   }
 
+  function apiTokensButton({ label }: CustomOptionProps) {
+    return (
+      <SettingsButton
+        Icon={KeyIcon}
+        onClick={goToUserAPITokens}
+        label={label}
+      />
+    );
+  }
+
   const optionToButton = {
     disconnect: DisconnectButton,
     'sign out': LogoutButton,
     'user settings': UserSettingsSeparator,
     'ssh key': SSHKeyButton,
+    'api tokens': apiTokensButton,
   };
 
   return (

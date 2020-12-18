@@ -2,5 +2,11 @@ query GetMe {
   me {
     id
     email
+    apiTokens {
+      id
+      label
+      creationDate
+      lastUsedDate
+    }
   }
 }

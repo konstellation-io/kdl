@@ -7,10 +7,19 @@
 // GraphQL query operation: GetMe
 // ====================================================
 
+export interface GetMe_me_apiTokens {
+  __typename: 'ApiToken';
+  id: string;
+  label: string;
+  creationDate: string;
+  lastUsedDate: string;
+}
+
 export interface GetMe_me {
   __typename: 'User';
   id: string;
   email: string;
+  apiTokens: GetMe_me_apiTokens[];
 }
 
 export interface GetMe {

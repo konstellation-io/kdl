@@ -8,7 +8,7 @@ enum ROUTE {
   SERVER = '/server/:serverId',
   SERVER_USERS = '/server/:serverId/users',
   USER_SSH_KEY = '/server/:serverId/user/ssh-key',
-  USER_API_TOKEN = '/server/:serverId/user/api-token',
+  USER_API_TOKENS = '/server/:serverId/user/api-tokens',
   NEW_SERVER_USER = '/server/:serverId/new-user',
   NEW_PROJECT = '/server/:serverId/new-project',
   PROJECT = '/server/:serverId/project/:projectId',

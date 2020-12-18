@@ -6,10 +6,10 @@ module.exports = {
     me: () => ({
       id: casual.uuid,
       email: 'admin@intelygenz.com',
+      apiTokens: () => new MockList([4, 8]),
     }),
     projects: () => new MockList([4, 8]),
     users: () => new MockList([4, 8]),
-    apiTokens: () => new MockList([4, 8]),
   }),
   Mutation: () => ({
     createProject: this.Project,

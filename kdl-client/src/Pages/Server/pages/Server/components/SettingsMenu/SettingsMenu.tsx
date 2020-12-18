@@ -63,7 +63,7 @@ function SettingsMenu() {
   }
 
   function goToUserAPITokens() {
-    history.push(buildRoute.server(ROUTE.USER_API_TOKEN, serverId));
+    history.push(buildRoute.server(ROUTE.USER_API_TOKENS, serverId));
   }
 
   function LogoutButton({ label }: CustomOptionProps) {

@@ -3,7 +3,6 @@ type Query {
   projects: [Project!]!
   users: [User!]!
   sshKey: SSHKey!
-  apiTokens: [ApiToken!]!
 }
 
 type Mutation {
@@ -13,12 +12,6 @@ type Mutation {
   regenerateSSHKey: SSHKey!
   createProject(input: CreateProjectInput!): Project!
   updateProject(input: UpdateProjectInput!): Project!
-}
-
-type ApiToken {
-  label: String!
-  creationDate: String!
-  lastUsedDate: String!
 }
 
 type SSHKey {
@@ -34,6 +27,14 @@ type User {
   creationDate: String!
   accessLevel: AccessLevel!
   lastActivity: String
+  apiTokens: [ApiToken!]!
+}
+
+type ApiToken {
+  id: ID!
+  label: String!
+  creationDate: String!
+  lastUsedDate: String!
 }
 
 enum AccessLevel {

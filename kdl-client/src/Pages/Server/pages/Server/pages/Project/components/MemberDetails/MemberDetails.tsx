@@ -99,6 +99,10 @@ function MemberDetail({ member, projectId, close }: Props) {
     return () => unregister('accessLevel');
   }, [register, unregister]);
 
+  useEffect(() => {
+    setValue('accessLevel', member.accessLevel);
+  }, [member, setValue]);
+
   function handleUpdateMember({ accessLevel }: FormData) {
     updateMember(
       mutationPayloadHelper({

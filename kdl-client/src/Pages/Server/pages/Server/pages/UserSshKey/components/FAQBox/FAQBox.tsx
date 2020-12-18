@@ -1,8 +1,8 @@
-import { BUTTON_THEMES, Button, Check } from 'kwc';
 import React, { useState } from 'react';
 
 import AnimateHeight from 'react-animate-height';
 import IconHelp from '@material-ui/icons/Help';
+import MessageActionBox from 'Components/MessageActionBox/MessageActionBox';
 import cx from 'classnames';
 import styles from './FAQBox.module.scss';
 
@@ -13,12 +13,6 @@ export enum BOX_THEME {
   WARN = 'warn',
   ERROR = 'error',
 }
-
-const toButtonTheme = new Map([
-  [BOX_THEME.DEFAULT, BUTTON_THEMES.DEFAULT],
-  [BOX_THEME.WARN, BUTTON_THEMES.WARN],
-  [BOX_THEME.ERROR, BUTTON_THEMES.ERROR],
-]);
 
 type Action = {
   needConfirmation?: boolean;
@@ -42,7 +36,6 @@ function FAQBox({
   theme = BOX_THEME.DEFAULT,
 }: Props) {
   const [opened, setOpened] = useState(false);
-  const [confirmed, setConfirmed] = useState(false);
 
   function toggleOpened() {
     setOpened(!opened);
@@ -59,31 +52,12 @@ function FAQBox({
         <IconHelp className="icon-small" />
         <p className={styles.label}>{label}</p>
       </div>
-      <div
-        className={cx(styles.content, styles[theme])}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <p className={styles.title}>{title}</p>
-        <p className={styles.description}>{desciption}</p>
-        {action && (
-          <div className={styles.action}>
-            {action.needConfirmation && (
-              <div className={styles.confirmation}>
-                <Check checked={confirmed} onChange={(v) => setConfirmed(v)} />
-                <p className={styles.confirmationText}>{action.message}</p>
-              </div>
-            )}
-            <Button
-              label={action.label}
-              theme={toButtonTheme.get(theme)}
-              onClick={action.onClick}
-              disabled={action.needConfirmation && !confirmed}
-              height={30}
-              primary
-            />
-          </div>
-        )}
-      </div>
+      <MessageActionBox
+        title={title}
+        desciption={desciption}
+        action={action}
+        theme={theme}
+      />
     </AnimateHeight>
   );
 }

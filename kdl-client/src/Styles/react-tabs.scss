@@ -11,17 +11,14 @@ $tab-height: 3.5 * $grid-unit;
   flex-grow: 1;
   overflow: hidden;
 
-  &__tab-list {
-    margin: 0;
-  }
-
   &__tab-panel {
     height: 100%;
   }
 
-  ul {
+  &__tab-list {
     @include font-tabnav;
 
+    margin: 0;
     text-transform: uppercase;
     color: font-color(grey);
     border: 0;

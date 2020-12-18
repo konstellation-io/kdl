@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import styles from './ProjectCreation.module.scss';
 import { Button, SpinnerCircular } from 'kwc';
-import StatusCircle from 'Components/LottieShapes/StatusCircle/StatusCircle';
-import { useMutation, useQuery } from '@apollo/client';
-import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
-import { RepositoryType } from 'Graphql/types/globalTypes';
-import { repoTypeToStepName } from '../NewProject/NewProject';
+import {
+  CreateProject,
+  CreateProjectVariables,
+  CreateProject_createProject,
+} from 'Graphql/mutations/types/CreateProject';
 import {
   GET_NEW_PROJECT,
   GetNewProject,
 } from 'Graphql/client/queries/getNewProject.graphql';
-import {
-  CreateProject,
-  CreateProject_createProject,
-  CreateProjectVariables,
-} from 'Graphql/mutations/types/CreateProject';
-import { GetProjects } from 'Graphql/queries/types/GetProjects';
-import { useParams } from 'react-router-dom';
 import ROUTE, {
-  buildRoute,
   RouteServerParams,
+  buildRoute,
 } from '../../../../Constants/routes';
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+
+import { GetProjects } from 'Graphql/queries/types/GetProjects';
+import { RepositoryType } from 'Graphql/types/globalTypes';
+import StatusCircle from 'Components/LottieShapes/StatusCircle/StatusCircle';
+import { loader } from 'graphql.macro';
+import { mutationPayloadHelper } from 'Utils/formUtils';
+import { repoTypeToStepName } from '../NewProject/NewProject';
+import styles from './ProjectCreation.module.scss';
+import { useParams } from 'react-router-dom';
 
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 const CreateProjectMutation = loader('Graphql/mutations/createProject.graphql');

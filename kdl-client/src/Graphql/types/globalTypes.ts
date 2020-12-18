@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================
@@ -24,6 +23,11 @@ export enum RepositoryType {
   INTERNAL = 'INTERNAL',
 }
 
+export interface AddMembersInput {
+  projectId: string;
+  memberIds: string[];
+}
+
 export interface AddUserInput {
   email: string;
   accessLevel: AccessLevel;
@@ -33,6 +37,11 @@ export interface CreateProjectInput {
   name: string;
   description: string;
   repository: RepositoryInput;
+}
+
+export interface RemoveMemberInput {
+  projectId: string;
+  memberId: string;
 }
 
 export interface RemoveUsersInput {
@@ -46,6 +55,12 @@ export interface RepositoryInput {
 
 export interface UpdateAccessLevelInput {
   userIds: string[];
+  accessLevel: AccessLevel;
+}
+
+export interface UpdateMemberInput {
+  projectId: string;
+  memberId: string;
   accessLevel: AccessLevel;
 }
 

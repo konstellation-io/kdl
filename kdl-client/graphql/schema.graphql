@@ -1,6 +1,7 @@
 type Query {
   me: User!
   projects: [Project!]!
+  project(id: ID!): Project!
   users: [User!]!
   sshKey: SSHKey!
 }
@@ -12,6 +13,9 @@ type Mutation {
   regenerateSSHKey: SSHKey!
   createProject(input: CreateProjectInput!): Project!
   updateProject(input: UpdateProjectInput!): Project!
+  addMembers(input: AddMembersInput!): [Member!]!
+  removeMember(input: RemoveMemberInput!): Member!
+  updateMember(input: UpdateMemberInput!): Member!
 }
 
 type SSHKey {
@@ -37,6 +41,14 @@ type ApiToken {
   lastUsedDate: String!
 }
 
+type Member {
+  id: ID!
+  email: String!
+  accessLevel: AccessLevel!
+  addedDate: String!
+  lastActivity: String
+}
+
 enum AccessLevel {
   VIEWER
   MANAGER
@@ -47,6 +59,22 @@ input UpdateProjectInput {
   id: ID!
   name: String
   repository: UpdateProjectRepositoryInput
+}
+
+input AddMembersInput {
+  projectId: ID!
+  memberIds: [ID!]!
+}
+
+input RemoveMemberInput {
+  projectId: ID!
+  memberId: ID!
+}
+
+input UpdateMemberInput {
+  projectId: ID!
+  memberId: ID!
+  accessLevel: AccessLevel!
 }
 
 input UpdateProjectRepositoryInput {
@@ -83,6 +111,7 @@ type Project {
   creationDate: String!
   lastActivationDate: String!
   error: String
+  members: [Member!]!
 }
 
 input RepositoryInput {

@@ -9,14 +9,22 @@ module.exports = {
       apiTokens: () => new MockList([4, 8]),
     }),
     projects: () => new MockList([4, 8]),
-    users: () => new MockList([4, 8]),
+    users: () => new MockList([20, 30])
   }),
   Mutation: () => ({
     createProject: this.Project,
     updateProject: (_, { input: { id, name } }) => ({
       id,
-      name,
+      name
     }),
+    updateMember: (_, { input: { memberId, accessLevel }}) => ({
+      id: memberId,
+      accessLevel
+    }),
+    removeMember: (_, { input: { memberId }}) => ({
+      id: memberId
+    }),
+    addMembers: () => new MockList([2, 4])
   }),
   User: () => ({
     id: casual.uuid,
@@ -24,6 +32,13 @@ module.exports = {
     creationDate: new Date().toUTCString(),
     accessLevel: casual.random_element(['ADMIN', 'VIEWER', 'MANAGER']),
     lastActivity: new Date().toUTCString(),
+  }),
+  Member: () => ({
+    id: casual.uuid,
+    email: casual.email,
+    accessLevel: casual.random_element(['ADMIN', 'VIEWER', 'MANAGER']),
+    addedDate: new Date().toUTCString(),
+    lastActivity: new Date().toUTCString()
   }),
   Project: () => ({
     id: casual.uuid,
@@ -35,6 +50,7 @@ module.exports = {
     lastActivationDate: () => new Date().toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
+    members: () => new MockList([4, 6])
   }),
   Repository: () => ({
     id: casual.uuid,

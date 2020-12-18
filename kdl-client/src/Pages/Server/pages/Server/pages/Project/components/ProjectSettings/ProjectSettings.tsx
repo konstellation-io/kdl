@@ -5,18 +5,26 @@ import {
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
 import { ErrorMessage } from 'kwc';
+import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import ProjectInfo from '../ProjectInfo/ProjectInfo';
 import React from 'react';
 import TabGit from '../TabGit/TabGit';
 import TabInfo from '../TabInfo/TabInfo';
+import TabMembers from '../TabMembers/TabMembers';
 import cx from 'classnames';
 import styles from './ProjectSettings.module.scss';
 import { useQuery } from '@apollo/client';
 
 type Props = {
   showRepoEdit: () => void;
+  openMemberDetails: (member: GetProjectMembers_project_members | null) => void;
+  memberDetails: GetProjectMembers_project_members | null;
 };
-function ProjectSettings({ showRepoEdit }: Props) {
+function ProjectSettings({
+  showRepoEdit,
+  openMemberDetails,
+  memberDetails,
+}: Props) {
   const { data: localData } = useQuery<GetOpenedProject>(GET_OPENED_PROJECT);
   const openedProject = localData?.openedProject;
 
@@ -27,7 +35,7 @@ function ProjectSettings({ showRepoEdit }: Props) {
       <div className={styles.info}>
         <ProjectInfo project={openedProject} />
       </div>
-      <Tabs defaultIndex={1}>
+      <Tabs>
         <TabList>
           <Tab>INFO</Tab>
           <Tab>GIT</Tab>
@@ -45,7 +53,13 @@ function ProjectSettings({ showRepoEdit }: Props) {
               showRepoEdit={showRepoEdit}
             />
           </TabPanel>
-          <TabPanel></TabPanel>
+          <TabPanel>
+            <TabMembers
+              projectId={openedProject.id}
+              openMemberDetails={openMemberDetails}
+              memberDetails={memberDetails}
+            />
+          </TabPanel>
           <TabPanel></TabPanel>
         </div>
       </Tabs>

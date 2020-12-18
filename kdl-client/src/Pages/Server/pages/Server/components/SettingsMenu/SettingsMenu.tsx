@@ -95,7 +95,7 @@ function SettingsMenu() {
     );
   }
 
-  function apiTokenButtons({ label }: CustomOptionProps) {
+  function apiTokensButton({ label }: CustomOptionProps) {
     return (
       <SettingsButton
         Icon={KeyIcon}
@@ -110,7 +110,7 @@ function SettingsMenu() {
     'sign out': LogoutButton,
     'user settings': UserSettingsSeparator,
     'ssh key': SSHKeyButton,
-    'api tokens': apiTokenButtons,
+    'api tokens': apiTokensButton,
   };
 
   return (

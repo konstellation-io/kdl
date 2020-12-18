@@ -1,8 +1,10 @@
 import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
 import Panel, { PANEL_SIZE } from 'Components/Layout/Panel/Panel';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
+import MemberDetails from './components/MemberDetails/MemberDetails';
 import ProjectSettings from './components/ProjectSettings/ProjectSettings';
 import { RouteProjectParams } from 'Constants/routes';
 import UpdateRepository from './components/UpdateRepository/UpdateRepository';
@@ -31,6 +33,11 @@ function Project() {
     activate: showRepoEdit,
     deactivate: hideRepoEdit,
   } = useBoolState(false);
+
+  const [
+    memberDetails,
+    setMemberDetails,
+  ] = useState<GetProjectMembers_project_members | null>(null);
 
   function closeAll() {
     hideSettings();
@@ -67,7 +74,11 @@ function Project() {
           close={closeAll}
           noShrink
         >
-          <ProjectSettings showRepoEdit={showRepoEdit} />
+          <ProjectSettings
+            showRepoEdit={showRepoEdit}
+            openMemberDetails={setMemberDetails}
+            memberDetails={memberDetails}
+          />
         </Panel>
         <Panel
           title="Edit Repository Information"
@@ -77,6 +88,23 @@ function Project() {
           dark
         >
           <UpdateRepository project={project} close={hideRepoEdit} />
+        </Panel>
+        <Panel
+          title="Member details"
+          show={memberDetails !== null}
+          close={() => setMemberDetails(null)}
+          noShrink
+          dark
+        >
+          {memberDetails === null ? (
+            <></>
+          ) : (
+            <MemberDetails
+              member={memberDetails}
+              close={() => setMemberDetails(null)}
+              projectId={project.id}
+            />
+          )}
         </Panel>
       </div>
       <div className={styles.content}>

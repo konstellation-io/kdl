@@ -51,7 +51,6 @@
   flex-grow: 1;
   background-color: palette(base, 800);
   padding: 4 * $grid-unit 3 * $grid-unit;
-  flex-grow: 1;
 
   .lastActivityTitle {
     @include font-caption;

@@ -122,7 +122,7 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
   }
 
   return (
-    <div className={styles.container}>
+    <div>
       <div className={styles.formSearch}>
         <SearchSelect
           options={options}

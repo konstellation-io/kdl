@@ -73,6 +73,7 @@ function GenerateApiToken() {
     errors,
     watch,
     getValues,
+    clearErrors,
   } = useForm<FormData>();
 
   useEffect(() => {
@@ -130,7 +131,10 @@ function GenerateApiToken() {
           <TextInput
             label="token name"
             placeholder="My fancy token name"
-            onChange={(v: string) => setValue('tokenName', v)}
+            onChange={(v: string) => {
+              setValue('tokenName', v);
+              clearErrors('tokenName');
+            }}
             error={errors.tokenName?.message || ''}
             onEnterKeyPress={handleSubmit(submitNewToken)}
             autoFocus

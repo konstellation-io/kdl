@@ -103,9 +103,7 @@ function GenerateApiToken() {
   function handleAcceptClick() {
     if (copiedState === CopiedState.COPIED)
       history.push(buildRoute.server(ROUTE.USER_API_TOKENS, serverId));
-    else {
-      setCopiedState(CopiedState.NOT_COPIED);
-    }
+    else setCopiedState(CopiedState.NOT_COPIED);
   }
 
   return (

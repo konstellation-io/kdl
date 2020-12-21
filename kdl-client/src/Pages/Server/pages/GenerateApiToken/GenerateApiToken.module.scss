@@ -1,0 +1,66 @@
+@import 'Styles/variables';
+@import 'Styles/colors';
+@import 'Styles/mixins';
+
+.container {
+  height: 100%;
+
+  .tokenNameContainer {
+    height: 20%;
+    padding: 7 * $grid-unit 0 4 * $grid-unit 8 * $grid-unit;
+    display: flex;
+    align-items: center;
+    .generateButton {
+      margin-left: 4 * $grid-unit;
+      width: 150px;
+    }
+    div:first-child {
+      width: 40%;
+    }
+  }
+
+  .resultContainer {
+    height: 80%;
+    padding: 4 * $grid-unit 0 0 8 * $grid-unit;
+    background-color: palette(base, 600);
+    .resultWrapper {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      .infoMessage {
+        @include font-body;
+        color: font-color(light);
+        margin-top: 0;
+      }
+      .tokenCopied {
+        @include font-small;
+        margin-bottom: $grid-unit;
+        &.copied {
+          color: palette(success);
+        }
+        &.notCopied {
+          color: palette(error);
+        }
+      }
+      .labelTokenContainer {
+        @include font-caption;
+        color: font-color(regular);
+      }
+      .tokenContainer {
+        @include font-body;
+        color: font-color(light);
+        margin-top: $grid-unit;
+        text-align: left;
+        border: 1px solid palette(lowlight);
+        padding: 2.5 * $grid-unit 3 * $grid-unit;
+        word-break: break-word;
+      }
+      .copyButton {
+        width: fit-content;
+        align-self: flex-end;
+        color: font-color(light);
+        background-color: palette(lowlight);
+      }
+    }
+  }
+}

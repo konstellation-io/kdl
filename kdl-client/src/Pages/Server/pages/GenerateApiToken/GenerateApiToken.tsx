@@ -126,7 +126,7 @@ function GenerateApiToken() {
       ]}
     >
       <div className={styles.container}>
-        <div className={styles.tokenNameContainer}>
+        <div className={styles.tokenGenerationContainer}>
           <TextInput
             label="token name"
             placeholder="My fancy token name"

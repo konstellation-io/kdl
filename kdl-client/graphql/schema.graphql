@@ -16,6 +16,7 @@ type Mutation {
   addMembers(input: AddMembersInput!): [Member!]!
   removeMember(input: RemoveMemberInput!): Member!
   updateMember(input: UpdateMemberInput!): Member!
+  addApiToken(input: ApiTokenInput): ApiToken
 }
 
 type SSHKey {
@@ -36,9 +37,10 @@ type User {
 
 type ApiToken {
   id: ID!
-  label: String!
+  name: String!
   creationDate: String!
   lastUsedDate: String!
+  token: String!
 }
 
 type Member {
@@ -53,6 +55,11 @@ enum AccessLevel {
   VIEWER
   MANAGER
   ADMIN
+}
+
+input ApiTokenInput {
+  userId: ID!
+  name: String
 }
 
 input UpdateProjectInput {

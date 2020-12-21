@@ -1,20 +1,23 @@
 import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
 import { useQuery } from '@apollo/client';
-import React from 'react';
 import { loader } from 'graphql.macro';
+import { GetMe } from 'Graphql/queries/types/GetMe';
+import React from 'react';
 import styles from './UserApiTokens.module.scss';
 import Token from './components/token/Token';
-import { GetMe } from 'Graphql/queries/types/GetMe';
 import Message from 'Components/Message/Message';
+import ROUTE, {
+  buildRoute,
+  RouteServerParams,
+} from '../../../../../../Constants/routes';
+import { useParams } from 'react-router-dom';
 
 const GetMeQuery = loader('Graphql/queries/getMe.graphql');
 
 function UserApiTokens() {
+  const { serverId } = useParams<RouteServerParams>();
   const { data, loading, error } = useQuery<GetMe>(GetMeQuery);
 
-  function handleGenerateClick() {
-    console.log('generate');
-  }
   function handleDeleteClick(tokenId: string) {
     console.log('delete', tokenId);
   }
@@ -25,18 +28,16 @@ function UserApiTokens() {
 
     if (!data.me.apiTokens) return <Message text="There are not tokens yet" />;
 
-    return data.me.apiTokens.map(
-      ({ label, lastUsedDate, creationDate, id }) => (
-        <Token
-          key={id}
-          id={id}
-          label={label}
-          creationDate={creationDate}
-          lastUsedDate={lastUsedDate}
-          onDeleteClick={handleDeleteClick}
-        />
-      )
-    );
+    return data.me.apiTokens.map(({ name, lastUsedDate, creationDate, id }) => (
+      <Token
+        key={id}
+        id={id}
+        name={name}
+        creationDate={creationDate}
+        lastUsedDate={lastUsedDate}
+        onDeleteClick={handleDeleteClick}
+      />
+    ));
   }
 
   return (
@@ -51,7 +52,7 @@ function UserApiTokens() {
           label="GENERATE"
           className={styles.generateButton}
           height={30}
-          onClick={handleGenerateClick}
+          to={buildRoute.server(ROUTE.GENERATE_USER_API_TOKEN, serverId)}
           border
         />
       </div>

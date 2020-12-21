@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -9,7 +10,7 @@
 export interface GetMe_me_apiTokens {
   __typename: 'ApiToken';
   id: string;
-  label: string;
+  name: string;
   creationDate: string;
   lastUsedDate: string;
 }

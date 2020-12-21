@@ -7,7 +7,7 @@ import { Button } from 'kwc';
 
 type Props = {
   id: string;
-  label: string;
+  name: string;
   creationDate: string;
   lastUsedDate: string;
   onDeleteClick: (id: string) => void;
@@ -15,7 +15,7 @@ type Props = {
 
 const Token: React.FC<Props> = ({
   id,
-  label,
+  name,
   creationDate,
   lastUsedDate,
   onDeleteClick,
@@ -24,7 +24,7 @@ const Token: React.FC<Props> = ({
     <div className={styles.labelContainer}>
       <div className={styles.labelWrapper}>
         <KeyIcon className="icon-small" />
-        <span className={styles.label}>{label}</span>
+        <span className={styles.label}>{name}</span>
       </div>
       <Button
         label="DELETE"

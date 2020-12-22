@@ -5,6 +5,7 @@
 .container {
   overflow: auto;
   height: 100%;
+  padding-bottom: 3 * $grid-unit;
 
   .title {
     color: font-color(lowlight);
@@ -26,9 +27,5 @@
     .generateButton {
       margin: 0 3.5 * $grid-unit;
     }
-  }
-  .tokensContainer {
-    margin-top: 3 * $grid-unit;
-    padding: 0 3.5 * $grid-unit 3.5 * $grid-unit 3.5 * $grid-unit;
   }
 }

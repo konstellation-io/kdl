@@ -27,17 +27,12 @@ type FormData = {
   tokenName: string;
 };
 
-enum CopiedState {
-  DEFAULT = '',
-  COPIED = 'copied',
-  NOT_COPIED = 'notCopied',
-}
-
 function GenerateApiToken() {
   const history = useHistory();
   const { serverId } = useParams<RouteServerParams>();
   const [apiTokenCreated, setApiTokenCreated] = useState(false);
-  const [copiedState, setCopiedState] = useState(CopiedState.DEFAULT);
+  const [copied, setCopied] = useState(false);
+  const [showCopyAlert, setShowCopyAlert] = useState(false);
   const [token, setToken] = useState('');
 
   const { data: dataMe } = useQuery<GetMe>(GetMeQuery);
@@ -96,15 +91,24 @@ function GenerateApiToken() {
 
   function handleCopyButtonClick() {
     copyToClipboard(token);
-    setCopiedState(CopiedState.COPIED);
+    setShowCopyAlert(false);
+    setCopied(true);
     toast.info('Copied to clipboard');
     toast.clearWaitingQueue();
   }
 
   function handleAcceptClick() {
-    if (copiedState === CopiedState.COPIED)
+    if (copied)
       history.push(buildRoute.server(ROUTE.USER_API_TOKENS, serverId));
-    else setCopiedState(CopiedState.NOT_COPIED);
+    else setShowCopyAlert(true);
+  }
+
+  function renderCopyMessage() {
+    if (copied)
+      return 'Nice, your token is now in your clipboard, remember to store it.';
+    if (showCopyAlert && !copied)
+      return 'This token will be not accessible again, please copy and save it.';
+    return '';
   }
 
   return (
@@ -158,15 +162,12 @@ function GenerateApiToken() {
                 remember to copy and store the token as soon as it is generated.
               </p>
               <p
-                className={cx(styles.tokenCopied, styles[copiedState])}
-                style={{
-                  visibility:
-                    copiedState !== CopiedState.DEFAULT ? 'visible' : 'hidden',
-                }}
+                className={cx(styles.tokenCopied, {
+                  [styles.copied]: copied,
+                  [styles.notCopied]: showCopyAlert && !copied,
+                })}
               >
-                {copiedState === CopiedState.COPIED
-                  ? 'Nice, your token is now in your clipboard, remember to store it.'
-                  : 'This token will be not accessible again, please copy and save it.'}
+                {renderCopyMessage()}
               </p>
               <span className={styles.labelTokenContainer}>YOUR NEW TOKEN</span>
               <div className={styles.tokenContainer}>{token}</div>

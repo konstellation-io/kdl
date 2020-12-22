@@ -12,7 +12,7 @@
     align-items: center;
     .generateButton {
       margin-left: 4 * $grid-unit;
-      width: 150px;
+      width: 19 * $grid-unit;
     }
     div:first-child {
       width: 40%;
@@ -35,6 +35,7 @@
       .tokenCopied {
         @include font-small;
         margin-bottom: $grid-unit;
+        height: 2 * $grid-unit;
         &.copied {
           color: palette(success);
         }

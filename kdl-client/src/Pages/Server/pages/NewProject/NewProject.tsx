@@ -253,7 +253,7 @@ function NewProject() {
             <TransitionGroup className={cx(styles.pages, styles[direction])}>
               <CSSTransition
                 key={actStep}
-                timeout={500}
+                timeout={200}
                 classNames={{
                   enter: styles.enter,
                   exit: styles.exit,

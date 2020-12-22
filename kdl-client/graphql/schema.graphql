@@ -17,6 +17,7 @@ type Mutation {
   removeMember(input: RemoveMemberInput!): Member!
   updateMember(input: UpdateMemberInput!): Member!
   addApiToken(input: ApiTokenInput): ApiToken
+  removeApiToken(input: RemoveApiTokenInput): ApiToken!
 }
 
 type SSHKey {
@@ -76,6 +77,10 @@ input AddMembersInput {
 input RemoveMemberInput {
   projectId: ID!
   memberId: ID!
+}
+
+input RemoveApiTokenInput {
+  apiTokenId: ID!
 }
 
 input UpdateMemberInput {

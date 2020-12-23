@@ -3,8 +3,9 @@
 @import 'Styles/colors';
 
 .container {
-  overflow: auto;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .title {
     color: font-color(lowlight);
@@ -28,7 +29,8 @@
     }
   }
   .tokensContainer {
-    margin-top: 3 * $grid-unit;
-    padding: 0 3.5 * $grid-unit 3.5 * $grid-unit 3.5 * $grid-unit;
+    flex-grow: 1;
+    overflow: auto;
+    padding-bottom: 8 * $grid-unit;
   }
 }

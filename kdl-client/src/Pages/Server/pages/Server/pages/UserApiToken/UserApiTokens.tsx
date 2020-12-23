@@ -91,8 +91,8 @@ function UserApiTokens() {
       <h1 className={styles.title}>API Tokens</h1>
       <div className={styles.infoContainer}>
         <p className={styles.infoMessage}>
-          This is your private SSH key, works lorem ipsum and for dolor amet. If
-          you want more information please lorem.
+          These are you API Tokens, works lorem ipsum and for dolor amet. If you
+          want more information please lorem.
         </p>
         <Button
           label="GENERATE"

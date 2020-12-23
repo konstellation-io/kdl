@@ -21,25 +21,29 @@ const Token: React.FC<Props> = ({
   onDeleteClick,
 }) => (
   <div className={styles.container}>
-    <div className={styles.labelContainer}>
-      <div className={styles.labelWrapper}>
-        <KeyIcon className="icon-small" />
-        <span className={styles.label}>{name}</span>
-      </div>
-      <Button
-        label="DELETE"
-        Icon={DeleteIcon}
-        onClick={() => onDeleteClick(id)}
-      />
-    </div>
-    <div className={styles.datesContainer}>
-      <div>
-        <span className={styles.dateLabel}>GENERATED ON:</span>
-        <span className={styles.date}>{creationDate}</span>
-      </div>
-      <div>
-        <span className={styles.dateLabel}>LAST USED:</span>
-        <span className={styles.date}>{lastUsedDate}</span>
+    <div className={styles.wrapper}>
+      <div className={styles.labelContainer}>
+        <div className={styles.labelWrapper}>
+          <KeyIcon className="icon-small" />
+          <div className={styles.infoContainer}>
+            <span className={styles.label}>{name}</span>
+            <div className={styles.datesContainer}>
+              <div>
+                <span className={styles.dateLabel}>GENERATED ON:</span>
+                <span className={styles.date}>{creationDate}</span>
+              </div>
+              <div>
+                <span className={styles.dateLabel}>LAST USED:</span>
+                <span className={styles.date}>{lastUsedDate}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Button
+          label="DELETE"
+          Icon={DeleteIcon}
+          onClick={() => onDeleteClick(id)}
+        />
       </div>
     </div>
   </div>

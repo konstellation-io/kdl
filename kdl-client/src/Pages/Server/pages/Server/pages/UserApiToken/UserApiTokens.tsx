@@ -8,7 +8,7 @@ import { mutationPayloadHelper } from 'Utils/formUtils';
 import { RemoveApiTokenInput } from 'Graphql/types/globalTypes';
 import styles from './UserApiTokens.module.scss';
 import Token from './components/token/Token';
-import TokenDeleteModal from './components/TokenDeleteModal/TokenDeleteModal';
+import DeleteTokenModal from './components/DeleteTokenModal/TokenDeleteModal';
 import Message from 'Components/Message/Message';
 import ROUTE, { buildRoute, RouteServerParams } from 'Constants/routes';
 import {
@@ -104,7 +104,7 @@ function UserApiTokens() {
       </div>
       <div className={styles.tokensContainer}>{renderMainContent()}</div>
       {showDeleteModal && (
-        <TokenDeleteModal
+        <DeleteTokenModal
           onCancel={() => setShowDeleteModal(false)}
           onSubmit={handleDeleteSubmit}
         />

@@ -17,7 +17,7 @@ type Props = {
   onCancel: () => void;
 };
 
-function TokenDeleteModal({ onSubmit, onCancel }: Props) {
+function DeleteTokenModal({ onSubmit, onCancel }: Props) {
   const {
     handleSubmit,
     setValue,
@@ -54,4 +54,4 @@ function TokenDeleteModal({ onSubmit, onCancel }: Props) {
   );
 }
 
-export default TokenDeleteModal;
+export default DeleteTokenModal;

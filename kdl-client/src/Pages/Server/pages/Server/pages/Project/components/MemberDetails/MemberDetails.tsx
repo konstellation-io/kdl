@@ -16,6 +16,7 @@ import {
 
 import { AccessLevel } from 'Graphql/types/globalTypes';
 import ActionsBar from 'Components/Layout/ActionsBar/ActionsBar';
+import ConfirmAction from 'Components/Layout/ConfirmAction/ConfirmAction';
 import Gravatar from 'react-gravatar';
 import IconDate from '@material-ui/icons/Today';
 import IconRemove from '@material-ui/icons/Delete';
@@ -152,12 +153,19 @@ function MemberDetail({ member, projectId, close }: Props) {
             hideError
           />
           <div className={styles.removeButtonContainer}>
-            <Button
-              label="REMOVE FROM PROYECT"
-              Icon={IconRemove}
-              className={styles.removeButton}
-              onClick={handleRemoveMember}
-            />
+            <ConfirmAction
+              title="DELETE MEMBER FROM PROJECT"
+              subtitle={`Are you sure you want to remove the member "${member.email}"`}
+              action={handleRemoveMember}
+              actionLabel="REMOVE"
+              warning
+            >
+              <Button
+                label="REMOVE FROM PROYECT"
+                Icon={IconRemove}
+                className={styles.removeButton}
+              />
+            </ConfirmAction>
           </div>
         </div>
       </div>

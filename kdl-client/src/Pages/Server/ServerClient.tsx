@@ -8,6 +8,7 @@ import ProjectCreation from './pages/ProjectCreation/ProjectCreation';
 import ROUTE from 'Constants/routes';
 import Server from './pages/Server/Server';
 import cache from './apollo/cache';
+import GenerateApiToken from './pages/GenerateApiToken/GenerateApiToken';
 
 function ServerClient() {
   // Resets cache on exit client
@@ -35,6 +36,11 @@ function ServerClient() {
           exact
           path={ROUTE.CREATION_PROJECT}
           component={ProjectCreation}
+        />
+        <Route
+          exact
+          path={ROUTE.GENERATE_USER_API_TOKEN}
+          component={GenerateApiToken}
         />
         <Route path={ROUTE.SERVER} component={Server} />
       </Switch>

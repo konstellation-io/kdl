@@ -9,22 +9,30 @@ module.exports = {
       apiTokens: () => new MockList([4, 8]),
     }),
     projects: () => new MockList([4, 8]),
-    users: () => new MockList([20, 30])
+    users: () => new MockList([20, 30]),
   }),
   Mutation: () => ({
     createProject: this.Project,
     updateProject: (_, { input: { id, name } }) => ({
       id,
-      name
+      name,
     }),
-    updateMember: (_, { input: { memberId, accessLevel }}) => ({
+    updateMember: (_, { input: { memberId, accessLevel } }) => ({
       id: memberId,
-      accessLevel
+      accessLevel,
     }),
-    removeMember: (_, { input: { memberId }}) => ({
-      id: memberId
+    removeMember: (_, { input: { memberId } }) => ({
+      id: memberId,
     }),
-    addMembers: () => new MockList([2, 4])
+    addMembers: () => new MockList([2, 4]),
+    addApiToken: this.ApiToken,
+  }),
+  ApiToken: () => ({
+    id: casual.uuid,
+    name: casual.name,
+    creationDate: new Date().toUTCString(),
+    lastUsedDate: new Date().toUTCString(),
+    token: `uy3w89u4ty9t86reh9i0wrthunfiodw9iw90fuy45i985hu6ibhjygkcf4589hirtuybmvf2345uighrfjº209h7guj340t93y45etr0i2h30pv9ivph9n45ot3pi2rcjpqh9voptwgijr3cv’io56t4kr0exuy3w89u4ty9t86reh9i0wrthunfiodw9iw90fuy45i985hu6ibhjygkcf4589hirtuybmvf2p345uighrfj209h7guj340t93y45etr0i2h30pv9ivph9n45ot3pi2rcjpqh9cvst4kr0ex`,
   }),
   User: () => ({
     id: casual.uuid,
@@ -38,7 +46,7 @@ module.exports = {
     email: casual.email,
     accessLevel: casual.random_element(['ADMIN', 'VIEWER', 'MANAGER']),
     addedDate: new Date().toUTCString(),
-    lastActivity: new Date().toUTCString()
+    lastActivity: new Date().toUTCString(),
   }),
   Project: () => ({
     id: casual.uuid,
@@ -50,7 +58,7 @@ module.exports = {
     lastActivationDate: () => new Date().toISOString(),
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
-    members: () => new MockList([4, 6])
+    members: () => new MockList([4, 6]),
   }),
   Repository: () => ({
     id: casual.uuid,

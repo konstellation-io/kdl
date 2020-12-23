@@ -3,25 +3,25 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ApiTokenInput } from './../../types/globalTypes';
+
 // ====================================================
-// GraphQL query operation: GetMe
+// GraphQL mutation operation: AddApiToken
 // ====================================================
 
-export interface GetMe_me_apiTokens {
+export interface AddApiToken_addApiToken {
   __typename: 'ApiToken';
   id: string;
   name: string;
   creationDate: string;
   lastUsedDate: string;
+  token: string;
 }
 
-export interface GetMe_me {
-  __typename: 'User';
-  id: string;
-  email: string;
-  apiTokens: GetMe_me_apiTokens[];
+export interface AddApiToken {
+  addApiToken: AddApiToken_addApiToken | null;
 }
 
-export interface GetMe {
-  me: GetMe_me;
+export interface AddApiTokenVariables {
+  input: ApiTokenInput;
 }

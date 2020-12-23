@@ -19,7 +19,7 @@ function validateProjectSlug(value: string): string {
     CHECK.matches(value, /^[a-z]/, 'Name must start with a lowercase letter'),
     CHECK.matches(value, /.{3,}/, 'Name must contain at least 3 characters'),
     CHECK.isAlphanumeric(
-      value.replace('-', ''),
+      value.replaceAll('-', ''),
       'Name only can contain lowercase alphanumeric and hyphens'
     ),
     CHECK.isSlug(value),

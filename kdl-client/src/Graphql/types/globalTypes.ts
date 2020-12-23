@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================
@@ -31,6 +32,11 @@ export interface AddMembersInput {
 export interface AddUserInput {
   email: string;
   accessLevel: AccessLevel;
+}
+
+export interface ApiTokenInput {
+  userId: string;
+  name?: string | null;
 }
 
 export interface CreateProjectInput {

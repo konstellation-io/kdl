@@ -8,6 +8,16 @@
   }
 }
 
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}
+
 @keyframes slideOutRight {
   from {
     transform: translateX(0);

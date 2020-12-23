@@ -15,6 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { GetMe } from 'Graphql/queries/types/GetMe';
 import KeyIcon from '@material-ui/icons/VpnKey';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
+import LinkIcon from '@material-ui/icons/Link';
 import { ipcRenderer } from 'electron';
 import { loader } from 'graphql.macro';
 import styles from './SettingsMenu.module.scss';
@@ -98,7 +99,7 @@ function SettingsMenu() {
   function apiTokensButton({ label }: CustomOptionProps) {
     return (
       <SettingsButton
-        Icon={KeyIcon}
+        Icon={LinkIcon}
         onClick={goToUserAPITokens}
         label={label}
       />

@@ -49,6 +49,7 @@ function DeleteTokenModal({ onSubmit, onCancel }: Props) {
         }}
         submit={handleSubmit(onSubmit)}
         error={errors.deletePass?.message as string}
+        isInput
       />
     </ModalContainer>
   );

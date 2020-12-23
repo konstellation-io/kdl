@@ -31,7 +31,7 @@
     "electron-updater": "4.3.5",
     "graphql": "^15.3.0",
     "graphql.macro": "github:mgs95/graphql.macro#build",
-    "kwc": "1.4.2",
+    "kwc": "1.5.0",
     "lodash": "4.17.20",
     "moment-timezone": "^0.5.32",
     "node-sass": "4.14.1",

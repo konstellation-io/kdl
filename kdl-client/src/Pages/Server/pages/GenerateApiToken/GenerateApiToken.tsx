@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { ActionButton } from 'Hooks/useStepper/useStepper';
-import { useHistory, useParams } from 'react-router-dom';
-import { Button, TextInput } from 'kwc';
-import { useForm } from 'react-hook-form';
-import { copyToClipboard } from 'Utils/clipboard';
-import { useMutation, useQuery } from '@apollo/client';
-import { loader } from 'graphql.macro';
 import {
   AddApiToken,
-  AddApiToken_addApiToken,
   AddApiTokenVariables,
+  AddApiToken_addApiToken,
 } from 'Graphql/mutations/types/AddApiToken';
-import { GetMe } from 'Graphql/queries/types/GetMe';
-import { mutationPayloadHelper } from 'Utils/formUtils';
-import { toast } from 'react-toastify';
-import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
-import ROUTE, { buildRoute, RouteServerParams } from 'Constants/routes';
+import { Button, TextInput } from 'kwc';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import ROUTE, { RouteServerParams, buildRoute } from 'Constants/routes';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
+
+import { ActionButton } from 'Hooks/useStepper/useStepper';
 import CodeIcon from '@material-ui/icons/Code';
-import styles from './GenerateApiToken.module.scss';
+import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
+import { GetMe } from 'Graphql/queries/types/GetMe';
+import { copyToClipboard } from 'Utils/clipboard';
 import cx from 'classnames';
+import { loader } from 'graphql.macro';
+import { mutationPayloadHelper } from 'Utils/formUtils';
+import styles from './GenerateApiToken.module.scss';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 
 const GetMeQuery = loader('Graphql/queries/getMe.graphql');
 const AddApiTokenMutation = loader('Graphql/mutations/addApiToken.graphql');
@@ -155,29 +157,44 @@ function GenerateApiToken() {
           />
         </div>
         <div className={styles.resultContainer}>
-          {apiTokenCreated && (
-            <div className={styles.resultWrapper}>
-              <p className={styles.infoMessage}>
-                API Token cannot be accessed after it has been generated,
-                remember to copy and store the token as soon as it is generated.
-              </p>
-              <p
-                className={cx(styles.tokenCopied, {
-                  [styles.copied]: copied,
-                  [styles.notCopied]: showCopyAlert && !copied,
-                })}
-              >
-                {renderCopyMessage()}
-              </p>
-              <span className={styles.labelTokenContainer}>YOUR NEW TOKEN</span>
-              <div className={styles.tokenContainer}>{token}</div>
-              <Button
-                label="COPY YOUR TOKEN TO YOUR CLIPBOARD"
-                className={styles.copyButton}
-                onClick={handleCopyButtonClick}
-              />
-            </div>
-          )}
+          <TransitionGroup>
+            <CSSTransition
+              timeout={500}
+              key={`${apiTokenCreated}`}
+              classNames={{
+                enter: styles.enter,
+              }}
+            >
+              <>
+                {apiTokenCreated && (
+                  <div className={styles.resultWrapper}>
+                    <p className={styles.infoMessage}>
+                      API Token cannot be accessed after it has been generated,
+                      remember to copy and store the token as soon as it is
+                      generated.
+                    </p>
+                    <div className={styles.token}>
+                      <p
+                        className={cx(styles.tokenCopied, {
+                          [styles.copied]: copied,
+                          [styles.notCopied]: showCopyAlert && !copied,
+                        })}
+                      >
+                        {renderCopyMessage()}
+                      </p>
+                      <span className={styles.label}>YOUR NEW TOKEN</span>
+                      <div className={styles.tokenValue}>{token}</div>
+                      <Button
+                        label="COPY YOUR TOKEN TO YOUR CLIPBOARD"
+                        className={styles.copyButton}
+                        onClick={handleCopyButtonClick}
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </div>
     </DefaultPage>

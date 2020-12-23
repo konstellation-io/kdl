@@ -70,9 +70,9 @@ const ConfirmAction: FC<Props> = ({
     return () => unregister('message');
   }, [register, unregister, setValue, validateMessage, showInput]);
 
-  function onSubmit({ message }: FormData) {
+  function onSubmit({ message: msg }: FormData) {
     hideModal();
-    action(message);
+    action(msg);
   }
 
   return (

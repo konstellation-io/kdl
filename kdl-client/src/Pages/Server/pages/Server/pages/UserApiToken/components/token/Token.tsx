@@ -50,7 +50,7 @@ function Token({ id, name, creationDate, lastUsedDate }: Props) {
                 me: {
                   ...me,
                   apiTokens: me.apiTokens.filter(
-                    ({ id }) => id !== removedTokenId
+                    (token) => token.id !== removedTokenId
                   ),
                 },
               },

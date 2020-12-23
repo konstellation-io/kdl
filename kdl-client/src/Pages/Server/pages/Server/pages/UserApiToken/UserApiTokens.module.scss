@@ -3,9 +3,9 @@
 @import 'Styles/colors';
 
 .container {
-  overflow: auto;
   height: 100%;
-  padding-bottom: 3 * $grid-unit;
+  display: flex;
+  flex-direction: column;
 
   .title {
     color: font-color(lowlight);
@@ -27,5 +27,10 @@
     .generateButton {
       margin: 0 3.5 * $grid-unit;
     }
+  }
+  .tokensContainer {
+    flex-grow: 1;
+    overflow: auto;
+    padding-bottom: 8 * $grid-unit;
   }
 }

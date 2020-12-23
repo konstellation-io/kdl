@@ -1,25 +1,72 @@
 import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import { GetMe } from 'Graphql/queries/types/GetMe';
-import React from 'react';
+import { useParams } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { mutationPayloadHelper } from 'Utils/formUtils';
+import { RemoveApiTokenInput } from 'Graphql/types/globalTypes';
 import styles from './UserApiTokens.module.scss';
 import Token from './components/token/Token';
+import DeleteTokenModal from './components/DeleteTokenModal/DeleteTokenModal';
 import Message from 'Components/Message/Message';
-import ROUTE, {
-  buildRoute,
-  RouteServerParams,
-} from '../../../../../../Constants/routes';
-import { useParams } from 'react-router-dom';
+import ROUTE, { buildRoute, RouteServerParams } from 'Constants/routes';
+import {
+  RemoveApiToken,
+  RemoveApiToken_removeApiToken,
+  RemoveApiTokenVariables,
+} from 'Graphql/mutations/types/RemoveApiToken';
 
 const GetMeQuery = loader('Graphql/queries/getMe.graphql');
+const RemoveApiTokenMutation = loader(
+  'Graphql/mutations/removeApiToken.graphql'
+);
 
 function UserApiTokens() {
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const selectedTokenId = useRef<string>('');
   const { serverId } = useParams<RouteServerParams>();
   const { data, loading, error } = useQuery<GetMe>(GetMeQuery);
+  const [removeApiToken] = useMutation<RemoveApiToken, RemoveApiTokenVariables>(
+    RemoveApiTokenMutation,
+    {
+      onCompleted: () => setShowDeleteModal(false),
+      onError: (e) => console.error(`removeApiToken: ${e}`),
+      update: (cache, result) => {
+        if (result.data) {
+          const { id: removedTokenId } = result.data
+            .removeApiToken as RemoveApiToken_removeApiToken;
+
+          if (data?.me.apiTokens.length) {
+            const apiTokens = data.me.apiTokens.filter(
+              ({ id }) => id !== removedTokenId
+            );
+            cache.writeQuery({
+              query: GetMeQuery,
+              data: {
+                me: {
+                  ...data.me,
+                  apiTokens,
+                },
+              },
+            });
+          }
+        }
+      },
+    }
+  );
 
   function handleDeleteClick(tokenId: string) {
-    console.log('delete', tokenId);
+    selectedTokenId.current = tokenId;
+    setShowDeleteModal(true);
+  }
+
+  function handleDeleteSubmit() {
+    removeApiToken(
+      mutationPayloadHelper<RemoveApiTokenInput>({
+        apiTokenId: selectedTokenId.current,
+      })
+    );
   }
 
   function renderMainContent() {
@@ -35,11 +82,10 @@ function UserApiTokens() {
         name={name}
         creationDate={creationDate}
         lastUsedDate={lastUsedDate}
-        onDeleteClick={handleDeleteClick}
+        onDeleteClick={() => handleDeleteClick(id)}
       />
     ));
   }
-
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>API Tokens</h1>
@@ -57,6 +103,12 @@ function UserApiTokens() {
         />
       </div>
       <div className={styles.tokensContainer}>{renderMainContent()}</div>
+      {showDeleteModal && (
+        <DeleteTokenModal
+          onCancel={() => setShowDeleteModal(false)}
+          onSubmit={handleDeleteSubmit}
+        />
+      )}
     </div>
   );
 }

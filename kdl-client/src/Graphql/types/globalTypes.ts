@@ -45,6 +45,10 @@ export interface CreateProjectInput {
   repository: RepositoryInput;
 }
 
+export interface RemoveApiTokenInput {
+  apiTokenId: string;
+}
+
 export interface RemoveMemberInput {
   projectId: string;
   memberId: string;

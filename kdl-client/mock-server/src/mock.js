@@ -24,6 +24,9 @@ module.exports = {
     removeMember: (_, { input: { memberId } }) => ({
       id: memberId,
     }),
+    removeApiToken: (_, { input: { apiTokenId } }) => ({
+      id: apiTokenId,
+    }),
     addMembers: () => new MockList([2, 4]),
     addApiToken: this.ApiToken,
   }),

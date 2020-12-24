@@ -65,6 +65,19 @@ function Project() {
   // FIXME: get real openedProject
   const project = data.projects[0];
 
+  function handleProva() {
+    // Or use `remote` from the renderer process.
+    const { BrowserWindow } = require('electron').remote;
+
+    const win = new BrowserWindow({
+      webPreferences: { devTools: true },
+    });
+
+    win.loadURL('https://github.com');
+    console.log(win.webContents);
+    win.webContents.openDevTools();
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.panels}>
@@ -108,6 +121,7 @@ function Project() {
       <div className={styles.content}>
         Project Page
         <Button label="toggle" onClick={toggleSettings} />
+        <Button label="prova" onClick={handleProva} />
       </div>
     </div>
   );

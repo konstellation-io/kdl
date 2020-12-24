@@ -1,10 +1,5 @@
 import { Button, SpinnerCircular } from 'kwc';
 import {
-  CreateProject,
-  CreateProjectVariables,
-  CreateProject_createProject,
-} from 'Graphql/mutations/types/CreateProject';
-import {
   GET_NEW_PROJECT,
   GetNewProject,
 } from 'Graphql/client/queries/getNewProject.graphql';
@@ -12,48 +7,24 @@ import ROUTE, {
   RouteServerParams,
   buildRoute,
 } from '../../../../Constants/routes';
-import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import React, { useEffect } from 'react';
 
-import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import { RepositoryType } from 'Graphql/types/globalTypes';
 import StatusCircle from 'Components/LottieShapes/StatusCircle/StatusCircle';
-import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import { repoTypeToStepName } from '../NewProject/NewProject';
 import styles from './ProjectCreation.module.scss';
 import { useParams } from 'react-router-dom';
-
-const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
-const CreateProjectMutation = loader('Graphql/mutations/createProject.graphql');
+import useProject from 'Graphql/hooks/useProject';
+import { useQuery } from '@apollo/client';
 
 function ProjectCreation() {
-  const [projectId, setProjectId] = useState('');
+  const {
+    addANewProject,
+    create: { data: dataCreateProject },
+  } = useProject();
 
   const { serverId } = useParams<RouteServerParams>();
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
-
-  const [createProject] = useMutation<CreateProject, CreateProjectVariables>(
-    CreateProjectMutation,
-    {
-      onCompleted: ({ createProject: { id } }) => setProjectId(id),
-      onError: (e) => console.error(`createProject: ${e}`),
-      update: (cache, { data: newProjectData }) => {
-        const newProject = newProjectData?.createProject as CreateProject_createProject;
-        const cacheResult = cache.readQuery<GetProjects>({
-          query: GetProjectsQuery,
-        });
-
-        if (cacheResult !== null) {
-          const { projects } = cacheResult;
-          cache.writeQuery({
-            query: GetProjectsQuery,
-            data: { projects: [...projects, newProject] },
-          });
-        }
-      },
-    }
-  );
 
   useEffect(() => {
     if (data) {
@@ -61,15 +32,13 @@ function ProjectCreation() {
       const type = repository.values.type || RepositoryType.EXTERNAL;
       const repoTypeDetails = data.newProject[repoTypeToStepName[type]];
 
-      const inputs = {
+      addANewProject({
         ...information.values,
         repository: {
           type,
           url: repoTypeDetails.values.url,
         },
-      };
-
-      createProject(mutationPayloadHelper(inputs));
+      });
     }
     // We want to execute this on on component mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,8 +68,12 @@ function ProjectCreation() {
           />
           <Button
             label="GO TO PROJECT"
-            to={buildRoute.project(ROUTE.PROJECT, serverId, projectId)}
-            disabled={!projectId}
+            to={buildRoute.project(
+              ROUTE.PROJECT,
+              serverId,
+              dataCreateProject?.createProject.id || ''
+            )}
+            disabled={!dataCreateProject}
             className={styles.button}
           />
         </div>

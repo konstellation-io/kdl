@@ -2,10 +2,9 @@ import React, { FC, MouseEvent } from 'react';
 
 import { Button } from 'kwc';
 import IconCopy from '@material-ui/icons/FileCopyOutlined';
-import { copyToClipboard } from 'Utils/clipboard';
+import { copyAndToast } from 'Utils/clipboard';
 import cx from 'classnames';
 import styles from './CopyToClipboard.module.scss';
-import { toast } from 'react-toastify';
 
 type Props = {
   children: string;
@@ -16,10 +15,7 @@ const CopyToClipboard: FC<Props> = ({ children, className }) => {
     event?.stopPropagation();
     event?.preventDefault();
 
-    copyToClipboard(children);
-
-    toast.info('Copied to clipboard');
-    toast.clearWaitingQueue();
+    copyAndToast(children);
   }
 
   return (

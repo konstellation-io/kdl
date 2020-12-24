@@ -1,10 +1,4 @@
 import {
-  AccessLevel,
-  RemoveUsersInput,
-  UpdateAccessLevelInput,
-} from 'Graphql/types/globalTypes';
-import {
-  CHECK,
   ErrorMessage,
   ModalContainer,
   ModalLayoutConfirmList,
@@ -19,100 +13,32 @@ import {
   defaultModalInfo,
   getModalInfo,
 } from './confirmationModals';
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  RemoveUsers,
-  RemoveUsersVariables,
-} from 'Graphql/mutations/types/RemoveUsers';
-import {
-  UpdateAccessLevel,
-  UpdateAccessLevelVariables,
-} from 'Graphql/mutations/types/UpdateAccessLevel';
-import { useMutation, useQuery } from '@apollo/client';
+import React, { useRef } from 'react';
 
+import { AccessLevel } from 'Graphql/types/globalTypes';
 import { GetUsers } from 'Graphql/queries/types/GetUsers';
 import UserFiltersAndActions from './components/UserFiltersAndActions/UserFiltersAndActions';
 import UserList from './components/UserList/UserList';
 import UserRow from './components/UserRow/UserRow';
 import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import styles from './Users.module.scss';
-import { useForm } from 'react-hook-form';
+import useBoolState from 'Hooks/useBoolState';
+import { useQuery } from '@apollo/client';
+import useUser from 'Graphql/hooks/useUser';
 
 const GetUsersQuery = loader('Graphql/queries/getUsers.graphql');
-const UpdateAccessLevelMutation = loader(
-  'Graphql/mutations/updateAccessLevel.graphql'
-);
-const RemoveUsersMutation = loader('Graphql/mutations/removeUsers.graphql');
-
-function verifyComment(value: string) {
-  return CHECK.getValidationError([CHECK.isFieldNotEmpty(value)]);
-}
-
-type FormData = {
-  comment: string;
-};
 
 function Users() {
-  const { handleSubmit, setValue, register, unregister } = useForm<FormData>({
-    defaultValues: {
-      comment: '',
-    },
-  });
   const { data, loading, error } = useQuery<GetUsers>(GetUsersQuery);
   const { data: localData } = useQuery<GetUserSettings>(GET_USER_SETTINGS);
-  const [removeUsers] = useMutation<RemoveUsers, RemoveUsersVariables>(
-    RemoveUsersMutation,
-    {
-      update: (cache, result) => {
-        if (result.data) {
-          const removedUsers = result.data.removeUsers;
-          const cacheResult = cache.readQuery<GetUsers>({
-            query: GetUsersQuery,
-          });
-          if (cacheResult !== null) {
-            const removedUserIds = removedUsers.map((u) => u.id);
-            const { users } = cacheResult;
-            cache.writeQuery({
-              query: GetUsersQuery,
-              data: {
-                users: users.filter((u) => !removedUserIds.includes(u.id)),
-              },
-            });
-          }
-        }
-      },
-      onError: (e) => console.error(`removeUsers: ${e}`),
-    }
-  );
-  const [updateAccessLevel] = useMutation<
-    UpdateAccessLevel,
-    UpdateAccessLevelVariables
-  >(UpdateAccessLevelMutation, {
-    onError: (e) => console.error(`updateAccessLevel: ${e}`),
-  });
+  const { removeUsersById, updateUsersAccessLevel } = useUser();
 
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const {
+    value: modalVisible,
+    activate: showModal,
+    deactivate: hideModal,
+  } = useBoolState(false);
   const modalInfo = useRef<ModalInfo>(defaultModalInfo);
-
-  useEffect(() => {
-    register('comment', { validate: verifyComment });
-
-    return () => unregister('comment');
-  }, [register, unregister, setValue]);
-
-  function openModal() {
-    setShowConfirmation(true);
-  }
-  function closeModal() {
-    setShowConfirmation(false);
-  }
-
-  function onSubmit() {
-    handleSubmit(({ comment }: FormData) =>
-      modalInfo.current.action(comment)
-    )();
-  }
 
   const selectedUsers = localData?.userSettings.selectedUserIds || [];
 
@@ -127,16 +53,12 @@ function Users() {
   function onDeleteUsers(user?: [string]) {
     const usersInfo = getUsersInfo(user);
 
-    openModal();
+    showModal();
     modalInfo.current = getModalInfo({
       type: 'delete',
       action: () => {
-        removeUsers(
-          mutationPayloadHelper<RemoveUsersInput>({
-            userIds: usersInfo.userIds,
-          })
-        );
-        closeModal();
+        removeUsersById(usersInfo.userIds);
+        hideModal();
       },
       ...usersInfo,
     });
@@ -145,17 +67,12 @@ function Users() {
   function onUpdateAccessLevel(newAccessLevel: AccessLevel, user?: [string]) {
     const usersInfo = getUsersInfo(user);
 
-    openModal();
+    showModal();
     modalInfo.current = getModalInfo({
       type: 'update',
       action: () => {
-        updateAccessLevel(
-          mutationPayloadHelper<UpdateAccessLevelInput>({
-            userIds: usersInfo.userIds,
-            accessLevel: newAccessLevel,
-          })
-        );
-        closeModal();
+        updateUsersAccessLevel(usersInfo.userIds, newAccessLevel);
+        hideModal();
       },
       accessLevel: newAccessLevel,
       ...usersInfo,
@@ -185,11 +102,11 @@ function Users() {
     <div className={styles.container}>
       <h1 className={styles.sectionTitle}>Users</h1>
       {getContent()}
-      {showConfirmation && (
+      {modalVisible && (
         <ModalContainer
           title={modalInfo.current.title}
-          onAccept={onSubmit}
-          onCancel={closeModal}
+          onAccept={modalInfo.current.action}
+          onCancel={hideModal}
           actionButtonLabel={modalInfo.current.acceptLabel}
           className={styles.modal}
           blocking

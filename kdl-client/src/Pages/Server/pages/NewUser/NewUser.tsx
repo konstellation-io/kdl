@@ -1,26 +1,15 @@
-import {
-  AddUser,
-  AddUserVariables,
-  AddUser_addUser,
-} from 'Graphql/mutations/types/AddUser';
 import { Button, CHECK, Check, Select, TextInput } from 'kwc';
 import React, { useEffect } from 'react';
 
 import { AccessLevel } from 'Graphql/types/globalTypes';
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
-import { GetUsers } from 'Graphql/queries/types/GetUsers';
 import ROUTE from 'Constants/routes';
 import cx from 'classnames';
 import { get } from 'lodash';
-import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import styles from './NewUser.module.scss';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
-import { useMutation } from '@apollo/client';
-
-const GetUsersQuery = loader('Graphql/queries/getUsers.graphql');
-const AddUserMutation = loader('Graphql/mutations/addUser.graphql');
+import useUser from 'Graphql/hooks/useUser';
 
 function verifyEmail(value: string) {
   return CHECK.getValidationError([
@@ -65,27 +54,10 @@ function NewUser() {
       confirmation: false,
     },
   });
-  const [addUser, { loading, error: mutationError }] = useMutation<
-    AddUser,
-    AddUserVariables
-  >(AddUserMutation, {
-    onCompleted: onCompleteAddUser,
-    onError: (e) => console.error(`addUser: ${e}`),
-    update: (cache, { data }) => {
-      const newUser = data?.addUser as AddUser_addUser;
-      const cacheResult = cache.readQuery<GetUsers>({
-        query: GetUsersQuery,
-      });
-
-      if (cacheResult !== null) {
-        const { users } = cacheResult;
-        cache.writeQuery({
-          query: GetUsersQuery,
-          data: { users: users.concat([newUser]) },
-        });
-      }
-    },
-  });
+  const {
+    addANewUser,
+    add: { loading, error: errorAddUser },
+  } = useUser(() => history.push(ROUTE.SERVER_USERS));
 
   useEffect(() => {
     register('email', { validate: verifyEmail });
@@ -100,18 +72,10 @@ function NewUser() {
   }, [register, unregister, setValue]);
 
   useEffect(() => {
-    if (mutationError) {
-      setError('email', mutationError);
+    if (errorAddUser) {
+      setError('email', errorAddUser);
     }
-  }, [mutationError, setError]);
-
-  function onCompleteAddUser() {
-    history.push(ROUTE.SERVER_USERS);
-  }
-
-  function onSubmit(formData: FormData) {
-    addUser(mutationPayloadHelper(formData));
-  }
+  }, [errorAddUser, setError]);
 
   const actions = [
     <Button
@@ -125,7 +89,7 @@ function NewUser() {
       primary
       key="add"
       label="ADD"
-      onClick={handleSubmit(onSubmit)}
+      onClick={handleSubmit(addANewUser)}
       loading={loading}
       className={styles.buttonSave}
       tabIndex={0}
@@ -154,7 +118,7 @@ function NewUser() {
               clearErrors('email');
               setValue('email', value);
             }}
-            onEnterKeyPress={handleSubmit(onSubmit)}
+            onEnterKeyPress={handleSubmit(addANewUser)}
             autoFocus
           />
           <Select

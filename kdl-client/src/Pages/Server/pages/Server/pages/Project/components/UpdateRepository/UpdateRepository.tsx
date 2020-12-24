@@ -3,23 +3,15 @@ import CircledInfoMessage, {
   CircledInfoMessageTypes,
 } from 'Components/CircledInfoMessage/CircledInfoMessage';
 import React, { useEffect } from 'react';
-import {
-  UpdateProject,
-  UpdateProjectVariables,
-} from 'Graphql/mutations/types/UpdateProject';
 
 import ActionsBar from 'Components/Layout/ActionsBar/ActionsBar';
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import IconInfo from '@material-ui/icons/Info';
 import IconLink from '@material-ui/icons/Link';
-import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import styles from './UpdateRepository.module.scss';
 import useBoolState from 'Hooks/useBoolState';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@apollo/client';
-
-const UpdateProjectMutation = loader('Graphql/mutations/updateProject.graphql');
+import useProject from 'Graphql/hooks/useProject';
 
 function validateUrl(value: string) {
   const error = CHECK.getValidationError([CHECK.isDomainValid(value)]);
@@ -45,12 +37,7 @@ function UpdateRepository({ project, close }: Props) {
     false
   );
 
-  const [updateProject] = useMutation<UpdateProject, UpdateProjectVariables>(
-    UpdateProjectMutation,
-    {
-      onError: (e) => console.error(`updateProject: ${e}`),
-    }
-  );
+  const { updateProjectRepositoryUrl } = useProject();
 
   const {
     handleSubmit,
@@ -87,15 +74,8 @@ function UpdateRepository({ project, close }: Props) {
 
   const url = watch('url');
 
-  function updateRepositoryUrl() {
-    updateProject(
-      mutationPayloadHelper({
-        id: project.id,
-        repository: {
-          url,
-        },
-      })
-    );
+  function handleOnSave() {
+    updateProjectRepositoryUrl(project.id, url);
   }
 
   return (
@@ -157,7 +137,7 @@ function UpdateRepository({ project, close }: Props) {
       <ActionsBar className={styles.actions}>
         <Button
           label="SAVE"
-          onClick={updateRepositoryUrl}
+          onClick={handleOnSave}
           disabled={!(connectionOk || (!connectionOk && watch('skipTest')))}
           primary
         />

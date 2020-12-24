@@ -1,6 +1,7 @@
 import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
 import Panel, { PANEL_SIZE } from 'Components/Layout/Panel/Panel';
 import React, { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 
 import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
@@ -14,6 +15,7 @@ import useBoolState from 'Hooks/useBoolState';
 import useOpenedProject from 'Pages/Server/apollo/hooks/useOpenedProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import Prova from './components/Prova';
 
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
@@ -66,6 +68,8 @@ function Project() {
   const project = data.projects[0];
 
   function handleProva() {
+    const componentAsString = ReactDOMServer.renderToString(<Prova />);
+
     // Or use `remote` from the renderer process.
     const { BrowserWindow } = require('electron').remote;
 
@@ -73,8 +77,13 @@ function Project() {
       webPreferences: { devTools: true },
     });
 
+    win.webContents.on('did-finish-load', () => {
+      let code = `
+        document.body.innerHTML = '${componentAsString}' + document.body.innerHTML;
+      `;
+      win.webContents.executeJavaScript(code);
+    });
     win.loadURL('https://github.com');
-    console.log(win.webContents);
     win.webContents.openDevTools();
   }
 

@@ -1,25 +1,57 @@
+import { updateServer, updateServerState } from './server';
+
+import Request from './Request';
 import { ipcMain } from 'electron';
-import { updateServerState } from './server';
 
-// TODO: replace this with real actions
-function doAction() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 5000);
-  });
-}
+// TODO: update commands
+const command = {
+  start: 'ls',
+  stop: 'lsasdsdada',
+};
 
-ipcMain.on('startLocalServer', (_: unknown, serverId: string) => {
-  updateServerState(serverId, 'STARTING');
-  doAction().then(() => {
-    updateServerState(serverId, 'STARTED');
-  });
+ipcMain.on('startLocalServer', (event, serverId: string) => {
+  const request = new Request(event, '', command.start);
+  updateServer(serverId, { state: 'STARTING' });
+
+  request.runCommand()
+    .then(_ => {
+      // TODO: Remove this timeout
+      setTimeout(() => {
+        updateServer(serverId, {
+          state: 'STARTED',
+          warning: false
+        });
+      }, 5000);
+    })
+    .catch((_: unknown) => {
+      updateServer(serverId, {
+        state: 'STOPPED',
+        warning: true
+      });
+      event.sender.send('mainProcessError', 'Cannot start server');
+    });
 });
 
-ipcMain.on('stopLocalServer', (_: unknown, serverId: string) => {
-  updateServerState(serverId, 'STOPPING');
-  doAction().then(() => {
-    updateServerState(serverId, 'STOPPED');
-  });
+ipcMain.on('stopLocalServer', (event, serverId: string) => {
+  const request = new Request(event, '', command.stop);
+  updateServer(serverId, { state: 'STOPPING' });
+
+  request.runCommand()
+    .then((_: unknown) => {
+      updateServer(serverId, {
+        state: 'STOPPED',
+        warning: false
+      });
+    })
+    .catch(_ => {
+      // TODO: Remove this timeout
+      setTimeout(() => {
+        updateServer(serverId, {
+          state: 'STOPPED',
+          warning: true
+        });
+
+        event.sender.send('mainProcessError', 'Cannot stop server');
+      }, 5000);
+    });
 });

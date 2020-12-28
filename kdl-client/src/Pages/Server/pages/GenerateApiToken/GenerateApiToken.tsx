@@ -53,7 +53,7 @@ function GenerateApiToken() {
   }, [register, unregister, setValue]);
 
   function onSubmit({ tokenName }: FormData) {
-    addTokenByName(dataMe?.me.id, tokenName);
+    !dataAddToken && addTokenByName(dataMe?.me.id, tokenName);
   }
 
   function handleCopyButtonClick() {
@@ -109,16 +109,17 @@ function GenerateApiToken() {
             }}
             error={errors.tokenName?.message || ''}
             onEnterKeyPress={handleSubmit(onSubmit)}
+            disabled={!!dataAddToken}
             autoFocus
-            showClearButton
           />
           <Button
             label="GENERATE"
             Icon={CodeIcon}
             className={styles.generateButton}
             onClick={handleSubmit(onSubmit)}
-            disabled={!watch('tokenName') || !!dataAddToken}
+            disabled={!watch('tokenName')}
             loading={loading}
+            success={!!dataAddToken}
             primary
           />
         </div>

@@ -109,7 +109,7 @@ function UpdateRepository({ project, close }: Props) {
             className={styles.testButton}
             onClick={handleSubmit(onSubmit)}
             loading={loading}
-            primary
+            border
           />
         </div>
         {connectionOk && <p className={styles.connectionOk}>Connection Ok</p>}

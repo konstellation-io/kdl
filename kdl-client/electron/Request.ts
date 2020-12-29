@@ -16,18 +16,19 @@ export default class Request {
   }
 
   runCommand() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (this.command) {
         exec(this.command, { timeout: 5000 }, (error: ExecException | null, stdout: any, stderr: any) => {
           if (error) {
             console.error(`Command: "${this.command}" failed: ${stderr}`, error);
-            return resolve(false);
+            reject(error);
+          } else {
+            console.info(`Command: "${this.command}" output: ${stdout}`);
+            resolve(true);
           }
-          console.info(`Command: "${this.command}" output: ${stdout}`);
-          resolve(true);
         });
       } else {
-        return resolve(false);
+        reject('Command execution failed, command is not defined');
       }
     });
   }

@@ -1,37 +1,59 @@
-import { createServer, updateServerState } from './server';
+import { createServer, updateServer } from './server';
 
 import Request from './Request';
 import { ipcMain } from 'electron';
 
+// TODO: update commands
+const command = {
+  connect: 'ls',
+  signId: 'ls',
+  signOut: 'ls',
+};
+
 ipcMain.on('connectToRemoteServer', (event, server) => {
-  const request = new Request(event, 'connectToRemoteServer', `echo ${server.url}`);
-  request.runCommand().then(success => {
-    // TODO: Get server name from server
-    const serverName = 'Remote server';
+  const request = new Request(event, 'connectToRemoteServer', command.connect);
 
-    const serverId = createServer({
-      ...server,
-      name: serverName,
-      state: 'SIGNED_OUT',
-      type: 'remote'
+  request.runCommand()
+    .then(success => {
+      // TODO: Get server name from server
+      const serverName = 'Remote server';
+
+      const serverId = createServer({
+        ...server,
+        name: serverName,
+        state: 'SIGNED_OUT',
+        type: 'remote'
+      });
+
+      request.reply({ success, serverId });
+    })
+    .catch((_: unknown) => {
+      event.sender.send('mainProcessError', 'Could not connect to server');
     });
-
-    request.reply({ success, serverId });
-  });
 });
 
 ipcMain.on('serverLogin', (event, { serverId, email }) => {
-  const request = new Request(event, 'serverLogin', `echo ${email}`);
-  request.runCommand().then(success => {
-    success && updateServerState(serverId, 'SIGNED_IN');
-    request.reply({ success });
-  });
+  const request = new Request(event, 'serverLogin', command.signId);
+
+  request.runCommand()
+    .then(success => {
+      success && updateServer(serverId, { state: 'SIGNED_IN' });
+      request.reply({ success });
+    })
+    .catch((_: unknown) => {
+      event.sender.send('mainProcessError', 'Could not sign in');
+    });
 });
 
 ipcMain.on('serverLogout', (event, serverId) => {
-  const request = new Request(event, 'serverLogout', `echo ${serverId}`);
-  request.runCommand().then(success => {
-    success && updateServerState(serverId, 'SIGNED_OUT')
-    request.reply({ success });
-  });
+  const request = new Request(event, 'serverLogout', command.signOut);
+
+  request.runCommand()
+    .then(success => {
+      success && updateServer(serverId, { state: 'SIGNED_OUT' })
+      request.reply({ success });
+    })
+    .catch((_: unknown) => {
+      event.sender.send('mainProcessError', 'Could not sign out');
+    });
 });

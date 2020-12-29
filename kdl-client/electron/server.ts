@@ -7,6 +7,7 @@ type Server = {
   type: 'local' | 'remote';
   state: string;
   url: string;
+  warning?: boolean;
 }
 
 type NewServer = {
@@ -17,12 +18,21 @@ type NewServer = {
   warning?: boolean;
 }
 
-export function updateServerState(serverId: string, newState: string) {
-  const servers = store.get('servers') as Server[];
-  const server = servers.find(c => c.id === serverId);
+type UpdateFields = {
+  state?: string;
+  warning?: boolean;
+};
 
-  if (server) {
-    server.state = newState;
+export function updateServer(serverId: string, newFields: UpdateFields) {
+  const servers = store.get('servers') as Server[];
+  const serverIdx = servers.findIndex(c => c.id === serverId);
+
+  if (serverIdx !== -1) {
+    servers[serverIdx] = {
+      ...servers[serverIdx],
+      ...newFields
+    };
+
     store.set('servers', servers);
   }
 }

@@ -4,7 +4,7 @@ import { ipcMain } from 'electron';
 import settings from './settings.json';
 import { spawn } from 'child_process';
 
-const commands: { [k: string]: string} = {
+const commands: { [k: string]: string } = {
   k8s: "kubectl get nodes -o jsonpath='{.items[*].status.conditions[*].type}'",
   minikube: 'minikube status',
   helm: 'helm ls'
@@ -29,7 +29,7 @@ function createNamespace(request: Request) {
 }
 
 function installComponents(request: Request) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const cmd = spawn('helm', [
       'upgrade',
       '--install',
@@ -53,21 +53,27 @@ function installComponents(request: Request) {
           url: 'local-server-url.local-server-domain',
           type: 'local'
         });
+
+        resolve(success);
+      } else {
+        reject('Could not finish installation');
       }
-
-      resolve(success);
     });
-
   });
 }
 
 ipcMain.on('installLocalServer', event => {
   const request = new Request(event, 'installLocalServer');
-  createNamespace(request).then(success => {
-    if (success) {
-      return installComponents(request);
-    }
-  });
+
+  createNamespace(request)
+    .then(success => {
+      if (success) {
+        return installComponents(request);
+      }
+    })
+    .catch(error => {
+      event.sender.send('mainProcessError', error);
+    });
 });
 
 ipcMain.on('checkRequirement', (event, requirement) => {
@@ -76,7 +82,11 @@ ipcMain.on('checkRequirement', (event, requirement) => {
 
   request.runCommand()
     .then(_ => {
-      // TODO: retrieve real response state. Remember promise return this state.
       request.reply([requirement, true]);
+    })
+    .catch(_ => {
+      // TODO: Remove next line and replace with l85
+      request.reply([requirement, true]);
+      // request.reply([requirement, false]);
     });
 });

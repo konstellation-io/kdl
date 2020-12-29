@@ -1,5 +1,6 @@
 import 'Components/TitleBar/TitleBar';
 
+import React, { useEffect } from 'react';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
 
@@ -8,17 +9,33 @@ import ConnectToRemoteServer from 'Pages/ConnectToRemoteServer/ConnectToRemoteSe
 import InstallLocalServer from 'Pages/InstallLocalServer/InstallLocalServer';
 import NewServer from 'Pages/NewServer/NewServer';
 import ROUTE from 'Constants/routes';
-import React from 'react';
 import ServerClient from 'Pages/Server/ServerClient';
 import ServerLogin from 'Pages/ServerLogin/ServerLogin';
 import Servers from 'Pages/Servers/Servers';
 import { SpinnerCircular } from 'kwc';
 import history from './browserHistory';
+import { ipcRenderer } from 'electron';
+import { toast } from 'react-toastify';
 import useServers from 'Hooks/useServers';
+
+function onMainProcessError(_: unknown, message: string) {
+  toast.error(message, {
+    autoClose: false,
+  });
+}
 
 function App() {
   const { servers, loading } = useServers();
   const noServers = servers.length === 0;
+
+  // Add main process errors listener
+  useEffect(() => {
+    ipcRenderer.on('mainProcessError', onMainProcessError);
+
+    return () => {
+      ipcRenderer.removeListener('mainProcessError', onMainProcessError);
+    };
+  }, []);
 
   if (loading) return <SpinnerCircular />;
 

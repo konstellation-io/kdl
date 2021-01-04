@@ -1,10 +1,11 @@
-import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
+import { ErrorMessage, SpinnerCircular } from 'kwc';
 import Panel, { PANEL_SIZE } from 'Components/Layout/Panel/Panel';
 import React, { useEffect, useState } from 'react';
 
 import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import MemberDetails from './components/MemberDetails/MemberDetails';
+import ProjectNavigation from './components/ProjectNavigation/ProjectNavigation';
 import ProjectSettings from './components/ProjectSettings/ProjectSettings';
 import { RouteProjectParams } from 'Constants/routes';
 import UpdateRepository from './components/UpdateRepository/UpdateRepository';
@@ -39,8 +40,22 @@ function Project() {
     setMemberDetails,
   ] = useState<GetProjectMembers_project_members | null>(null);
 
-  function closeAll() {
-    hideSettings();
+  // When closing settings, close all panels
+  useEffect(() => {
+    if (!isSettingsShown) {
+      hideSettings();
+      hideRepoEdit();
+      setMemberDetails(null);
+    }
+  }, [isSettingsShown, hideRepoEdit, hideSettings]);
+
+  // Only one secondary panel can be opened at a time
+  function onOpenRepoEdit() {
+    setMemberDetails(null);
+    showRepoEdit();
+  }
+  function onSetMemberDetails(value: GetProjectMembers_project_members | null) {
+    setMemberDetails(value);
     hideRepoEdit();
   }
 
@@ -67,47 +82,49 @@ function Project() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.panels}>
-        <Panel
-          title="Settings"
-          show={isSettingsShown}
-          close={closeAll}
-          noShrink
-        >
-          <ProjectSettings
-            showRepoEdit={showRepoEdit}
-            openMemberDetails={setMemberDetails}
-            memberDetails={memberDetails}
-          />
-        </Panel>
-        <Panel
-          title="Edit Repository Information"
-          show={isRepoEditShown}
-          close={hideRepoEdit}
-          size={PANEL_SIZE.BIG}
-          dark
-        >
-          <UpdateRepository project={project} close={hideRepoEdit} />
-        </Panel>
-        <Panel
-          title="Member details"
-          show={memberDetails !== null}
-          close={() => setMemberDetails(null)}
-          noShrink
-          dark
-        >
-          {memberDetails && (
-            <MemberDetails
-              member={memberDetails}
-              close={() => setMemberDetails(null)}
-              projectId={project.id}
-            />
-          )}
-        </Panel>
+      <ProjectNavigation toggleSettings={toggleSettings} />
+      <div className={styles.contentLayer}>
+        <div className={styles.content}>Project Page</div>
       </div>
-      <div className={styles.content}>
-        Project Page
-        <Button label="toggle" onClick={toggleSettings} />
+      <div className={styles.panelLayer}>
+        <div className={styles.panels}>
+          <Panel
+            title="Settings"
+            show={isSettingsShown}
+            close={hideSettings}
+            noShrink
+          >
+            <ProjectSettings
+              showRepoEdit={onOpenRepoEdit}
+              openMemberDetails={onSetMemberDetails}
+              memberDetails={memberDetails}
+            />
+          </Panel>
+          <Panel
+            title="Edit Repository Information"
+            show={isRepoEditShown}
+            close={hideRepoEdit}
+            size={PANEL_SIZE.BIG}
+            dark
+          >
+            <UpdateRepository project={project} close={hideRepoEdit} />
+          </Panel>
+          <Panel
+            title="Member details"
+            show={memberDetails !== null}
+            close={() => setMemberDetails(null)}
+            noShrink
+            dark
+          >
+            {memberDetails && (
+              <MemberDetails
+                member={memberDetails}
+                close={() => setMemberDetails(null)}
+                projectId={project.id}
+              />
+            )}
+          </Panel>
+        </div>
       </div>
     </div>
   );

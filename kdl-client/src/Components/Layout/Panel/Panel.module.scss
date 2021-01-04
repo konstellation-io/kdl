@@ -8,6 +8,7 @@ $panel-width-default: 60 * $grid-unit;
 $panel-width-big: 110 * $grid-unit;
 
 .group {
+  @include glow(3, black);
   overflow: hidden;
 
   &.noShrink {
@@ -20,13 +21,12 @@ $panel-width-big: 110 * $grid-unit;
 }
 
 .container {
-  @include glow(3, black);
-
   background-color: palette(base, 800);
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  pointer-events: all;
 
   &.big {
     .content {

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServerOption component Component match snapshot 1`] = `
+<Link
+  to="/some/route"
+>
+  <div
+    className="container hoverContainer server"
+  >
+    <div>
+      <Server
+        direction="up"
+      />
+    </div>
+    <p
+      className="title"
+    >
+      Some title
+    </p>
+    <p
+      className="subtitle"
+    >
+      Some subtitle
+    </p>
+    <div
+      className="button"
+    >
+      <P
+        label="Some label"
+        primary={true}
+      />
+    </div>
+  </div>
+</Link>
+`;

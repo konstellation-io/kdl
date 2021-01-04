@@ -1,7 +1,6 @@
-import { updateServer, updateServerState } from './server';
-
 import Request from './Request';
 import { ipcMain } from 'electron';
+import { updateServer } from './server';
 
 // TODO: update commands
 const command = {

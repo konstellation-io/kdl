@@ -25,7 +25,9 @@ type Props = {
 function ProjectNavigation({ toggleSettings }: Props) {
   const { serverId, projectId } = useParams<RouteProjectParams>();
   const { workspace, loading, toggleProjectNavOpened } = useWorkspace();
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(
+    workspace?.project.navigationOpened || false
+  );
 
   // navigationOpened state can be retrieve from useWorkspace, having this
   // state here prevents lagging between updating a new value and retriving it.
@@ -63,7 +65,7 @@ function ProjectNavigation({ toggleSettings }: Props) {
         </div>
         <div
           className={cx({
-            [styles.collapsed]: !workspace.project.navigationOpened,
+            [styles.collapsed]: !opened,
           })}
           onClick={onToggleOpened}
         >

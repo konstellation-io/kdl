@@ -9,7 +9,7 @@ type Props = {
 
 function NavigationButton({ label, Icon }: Props) {
   return (
-    <div className={styles.navButton}>
+    <div className={styles.navButton} title={label}>
       <Icon className={cx('icon-regular', styles.icon)} />
       <span className={styles.label}>{label}</span>
     </div>

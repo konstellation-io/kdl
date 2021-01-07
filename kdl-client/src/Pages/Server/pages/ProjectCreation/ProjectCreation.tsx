@@ -88,8 +88,8 @@ function ProjectCreation() {
           <StatusCircle label="CREATING..." key="ok" size={280} />
         </div>
         <p className={styles.infoMessage}>
-          If you don't want to wait, you may go to the project detail, but not
-          still created, or to the dashboard with all the projects.
+          If you don't want to wait, you may go to the project detail while it
+          is being created, or to the Server and see all the projects.
         </p>
         <div className={styles.buttonsContainer}>
           <Button

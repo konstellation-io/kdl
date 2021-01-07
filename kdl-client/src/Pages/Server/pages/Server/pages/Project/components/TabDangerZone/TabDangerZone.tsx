@@ -15,7 +15,10 @@ function TabDangerZone() {
       </p>
       <MessageActionBox
         title="Archive project"
-        desciption="Atrum, neque sem pretium metus, quis mollis nisl nunc et massa. Vestibulum sed metus in lorem tristique ullamcorper id vitae erat. Nulla mollis sapien sollicitudin lacinia lacinia.."
+        desciption="This project will be accessible and you will be able to recover it, but while it is 
+          archived you will not be able to make changes or use any resources associated with this project. To 
+          access this project again after being archived, go to server projects and filter by ARCHIVED (by 
+          default, archived projects are hidden)."
         action={{
           label: 'ARCHIVE',
           onClick: () => {},
@@ -25,7 +28,8 @@ function TabDangerZone() {
       />
       <MessageActionBox
         title="¿Do you want to delete this project? Be carefull"
-        desciption="Atrum, neque sem pretium metus, quis mollis nisl nunc et massa. Vestibulum sed metus in lorem tristique ullamcorper id vitae erat. Nulla mollis sapien sollicitudin lacinia lacinia.."
+        desciption="Deleted projects cannot be recovered, doing this action will delete permanently the actual 
+          project, consider archiving it instead."
         action={{
           label: 'DELETE',
           onClick: () => {},

@@ -131,7 +131,7 @@ function InstallLocalServer() {
   return (
     <DefaultPage
       title="Install Local Server"
-      subtitle="Konstellation is being installed into your Kubernetes. Please, don't stop or restart your local Kubernetes during the installation."
+      subtitle="A new KDL local server is being installed on your machine. Wait until installation is complete."
       actions={actions}
     >
       <div className={styles.container}>
@@ -164,11 +164,10 @@ function InstallLocalServer() {
                 <div className={styles.serverReady}>
                   <p className={styles.title}>Server installed and ready!</p>
                   <p className={styles.description}>
-                    Curabitur lobortis id lorem id bibendum. Ut id consectetur
-                    magna. Quisque volutpat augue enim, pulvinar lobortis nibh
-                    lacinia at. Vestibulum nec erat ut mi sollicitudin porttitor
-                    id sit amet risus. Nam tempus vel odio vitae aliquam. In
-                    imperdiet
+                    Your local Server is ready to be used. You can stop the
+                    Server inside the Server list by clicking on the "STOP"
+                    button. Remember that you can only install one local Server
+                    in your machine.
                   </p>
                 </div>
               </AnimateHeight>

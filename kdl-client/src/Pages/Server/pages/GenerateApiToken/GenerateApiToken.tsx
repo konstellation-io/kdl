@@ -116,7 +116,7 @@ function GenerateApiToken() {
   return (
     <DefaultPage
       title="Please, write a name to generate your API token"
-      subtitle="In order to lorem ipsum description."
+      subtitle="A new API token will be generated labeled with this name. You cannot set a custom token."
       actions={[
         <ActionButton
           key="cancel"
@@ -136,7 +136,7 @@ function GenerateApiToken() {
         <div className={styles.tokenGenerationContainer}>
           <TextInput
             label="token name"
-            placeholder="My fancy token name"
+            placeholder="API token name"
             onChange={(v: string) => {
               setValue('tokenName', v);
               clearErrors('tokenName');

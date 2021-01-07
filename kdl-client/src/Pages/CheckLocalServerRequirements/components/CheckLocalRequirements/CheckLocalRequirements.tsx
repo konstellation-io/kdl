@@ -13,6 +13,24 @@ enum CheckId {
   helm = 'helm',
 }
 
+const checkError = {
+  k8s: {
+    title: 'Check 1 error',
+    message: 'Check 1 message',
+    docUrl: 'google.es',
+  },
+  minikube: {
+    title: 'Check 2 error',
+    message: 'Check 2 message',
+    docUrl: 'google.es',
+  },
+  helm: {
+    title: 'Check 3 error',
+    message: 'Check 3 message',
+    docUrl: 'google.es',
+  },
+};
+
 type CheckRequirementResponse = [CheckId, boolean];
 
 type Check = {
@@ -114,9 +132,9 @@ function CheckLocalRequirements({ setChecksState }: Props) {
       {check.isOk === false && (
         <div className={styles.errorBox}>
           <ErrorBox
-            title="To add a Resource Startud"
-            message="Nam porttitor blandit accumsan. Ut vel dictum sem, a pretium dui. In malesuada enim in dolor at vestibulum nisi. Nullam vehicula nisi velit. Mauris turpis nisl, molestie ut vehicula."
-            docUrl="https://github.com/konstellation-io/kdl"
+            title={checkError[check.id].title}
+            message={checkError[check.id].message}
+            docUrl={checkError[check.id].docUrl}
             onChange={() => toggleCheckOpen(idx, !check.open)}
             openController={check.open}
             action={{

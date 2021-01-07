@@ -36,15 +36,15 @@ function CheckLocalServerRequirements() {
   return (
     <DefaultPage
       title="Install local Server"
-      subtitle="Konstellation Server is based on Kubernetes. Kubernetes can run in almost any platform. The local server installation is checking if everything is ready to start the installation."
+      subtitle="Intalling a local server allows the user to create fully functional KDL proyects. You can stop the server at any time to free up resources."
       actions={actions}
     >
       <div className={styles.container}>
         <p className={styles.title}>Checking requirements</p>
         <p className={styles.description}>
-          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
-          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
-          vel iaculis mauris. Sed ullamcorper tellus.
+          Before installing the local Server in your machine, some checks must
+          be done. Installation will be done within a Kubernetes environment and
+          may require the installation of different tools.
         </p>
         <CheckLocalRequirements setChecksState={setChecksState} />
       </div>

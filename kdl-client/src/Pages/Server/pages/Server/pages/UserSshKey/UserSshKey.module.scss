@@ -20,11 +20,10 @@
 .subtitle {
   @include font-body;
   color: font-color(lowlight);
-  line-height: 6 * $grid-unit;
 
   background-color: palette(lowlight, 900);
   margin: 0;
-  padding-left: 3 * $grid-unit;
+  padding: 2 * $grid-unit 3 * $grid-unit 2 * $grid-unit 3 * $grid-unit;
 }
 
 .key {

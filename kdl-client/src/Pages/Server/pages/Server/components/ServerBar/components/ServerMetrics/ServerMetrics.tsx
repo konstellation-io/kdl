@@ -86,6 +86,7 @@ function ServerMetrics() {
           enterActive: styles.enterActive,
           exit: styles.exit,
           exitDone: styles.exitDone,
+          enterDone: styles.enterDone,
         }}
         unmountOnExit
       >

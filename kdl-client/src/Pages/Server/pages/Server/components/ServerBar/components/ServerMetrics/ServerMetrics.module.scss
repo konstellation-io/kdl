@@ -72,19 +72,20 @@
   left: 0;
   overflow: hidden;
 
-  transition: height ease 0.5s, opacity ease 0.5s;
+  transition: max-height ease 0.5s, opacity ease 0.5s;
 
   height: 170px;
-  opacity: 1;
+  max-height: 0;
+  opacity: 0;
 
-  &.enter,
   &.exit,
   &.exitDone {
-    height: 0;
+    max-height: 0;
     opacity: 0.4;
   }
+  &.enterDone,
   &.enterActive {
-    height: 170px;
+    max-height: 170px;
     opacity: 1;
   }
 }

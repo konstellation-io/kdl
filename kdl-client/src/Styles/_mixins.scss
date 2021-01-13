@@ -67,3 +67,10 @@
   border-left-width: $base / 2;
   border-right-width: $base / 2;
 }
+
+@mixin make-project-icon($base, $color) {
+  width: $base;
+  height: $base;
+  background-color: $color;
+  clip-path: polygon(0 50%, 20% 0, 100% 0, 80% 50%, 100% 100%, 20% 100%);
+}

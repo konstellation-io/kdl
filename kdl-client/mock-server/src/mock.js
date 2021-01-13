@@ -29,6 +29,26 @@ module.exports = {
     }),
     addMembers: () => new MockList([2, 4]),
     addApiToken: this.ApiToken,
+    updateAccessLevel: (_, { input: { userIds, accessLevel } }) => userIds.map(userId => ({
+      id: userId,
+      accessLevel
+    })),
+    removeUsers: (_, { input: { userIds } }) => userIds.map(userId => ({
+      id: userId
+    })),
+    createProject: (_, { input }) => ({
+      ...input,
+      repository: {
+        ...input.repository,
+        connected: false
+      },
+      id: 'some-new-id',
+      favorite: false,
+      state: 'STOPPED',
+      creationDate: new Date().toUTCString(),
+      lastActivationDate: new Date().toUTCString(),
+      members: []
+    }),
   }),
   ApiToken: () => ({
     id: casual.uuid,

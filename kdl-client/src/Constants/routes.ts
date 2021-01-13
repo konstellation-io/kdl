@@ -13,6 +13,8 @@ enum ROUTE {
   NEW_SERVER_USER = '/server/:serverId/new-user',
   NEW_PROJECT = '/server/:serverId/new-project',
   PROJECT = '/server/:serverId/project/:projectId',
+  PROJECT_OVERVIEW = '/server/:serverId/project/:projectId/overview',
+  PROJECT_TOOLS = '/server/:serverId/project/:projectId/tools',
   CREATION_PROJECT = '/server/:serverId/new-project/create',
 }
 

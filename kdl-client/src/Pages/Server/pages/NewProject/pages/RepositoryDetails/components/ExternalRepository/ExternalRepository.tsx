@@ -93,10 +93,12 @@ function ExternalRepository({ showErrors }: Props) {
         >
           <div className={styles.arrow} />
           <div className={styles.warningBox}>
-            <h6 className={styles.title}>Nam dapibus nisl vitae.</h6>
+            <h6 className={styles.title}>Repository connection failed.</h6>
             <p className={styles.message}>
-              Nam dapibus nisl vitae elit fringilla rutrum. Aenean sollicitudin,
-              erat a elementu..
+              Make sure your SSH key is included in the repository. If not,
+              access SSH Key section inside the Server Project list and follow
+              the instructions. You may skip this process by checking the
+              confirmation bellow.
             </p>
             <div className={styles.checkContainer}>
               <Check

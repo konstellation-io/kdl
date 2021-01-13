@@ -207,12 +207,10 @@ function NewProject() {
           <span className={styles.repoLabel}>{typeAsString}</span>
         </div>
         <p>
-          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
-          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
-          vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem
-          tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh
-          aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis
-          accumsan turpis.
+          You have selected a repository type.{' '}
+          <strong>External repositories</strong> use a version-control system
+          located outside the server. <strong>Internal repositories</strong>{' '}
+          will be deployed inside the actual Server.
         </p>
       </div>
     );
@@ -221,7 +219,7 @@ function NewProject() {
   return (
     <DefaultPage
       title="Add a Project"
-      subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. "
+      subtitle="You will create a new KDL project in the actual server. Follow the steps."
       actions={getActions()}
     >
       <>

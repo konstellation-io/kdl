@@ -1,7 +1,6 @@
 import React from 'react';
-
-import styles from './CircledInfoMessage.module.scss';
 import cx from 'classnames';
+import styles from './CircledInfoMessage.module.scss';
 
 export enum CircledInfoMessageTypes {
   SUCCESS = 'success',

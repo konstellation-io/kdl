@@ -1,4 +1,5 @@
 import ROUTE, { buildRoute } from 'Constants/routes';
+import { StoreKey, StoreUpdate } from 'types/store';
 import { useEffect, useState } from 'react';
 
 import { Action } from 'Pages/Servers/components/Server/Server';
@@ -31,15 +32,20 @@ function useServers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    function onStoreUpdate(_: unknown, newServers: Server[]) {
-      setServers(newServers);
+    function onStoreUpdate(_: unknown, { key, value }: StoreUpdate) {
+      if (key === StoreKey.SERVERS) {
+        setServers(value);
+      }
     }
 
-    ipcRenderer.send('subscribeToValue', 'servers');
+    ipcRenderer.send('subscribeToValue', StoreKey.SERVERS);
     ipcRenderer.on('subscribeToValueReply', onStoreUpdate);
 
     async function fetchData() {
-      const storeServers = await ipcRenderer.invoke('getStoreValue', 'servers');
+      const storeServers = await ipcRenderer.invoke(
+        'getStoreValue',
+        StoreKey.SERVERS
+      );
       setServers(storeServers);
       setLoading(false);
     }

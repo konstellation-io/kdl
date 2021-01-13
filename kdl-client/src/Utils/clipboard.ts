@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export function copyToClipboard(value: string) {
   const tempInput = document.createElement('input');
   tempInput.value = value;
@@ -5,4 +7,11 @@ export function copyToClipboard(value: string) {
   tempInput.select();
   document.execCommand('copy');
   document.body.removeChild(tempInput);
+}
+
+export function copyAndToast(value: string) {
+  copyToClipboard(value);
+
+  toast.info('Copied to clipboard');
+  toast.clearWaitingQueue();
 }

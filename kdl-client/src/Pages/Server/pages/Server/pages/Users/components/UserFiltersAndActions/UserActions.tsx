@@ -121,7 +121,7 @@ function UserActions({ onDeleteUsers, onUpdateUsers }: Props) {
           showSelectAllOption={false}
           shouldSort={false}
           disabled={nSelections === 0}
-          disabledOptions={[types[2]]}
+          disabledOptions={[types[1]]}
           CustomOptions={{
             [Actions.DELETE]: CustomRemove,
             [Actions.CHANGE_ACCESS_LEVEL_TO]: CustomSeparator,

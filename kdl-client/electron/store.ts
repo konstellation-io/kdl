@@ -10,15 +10,18 @@ ipcMain.handle('getStoreValue', (_: unknown, key: string) => {
 	return store.get(key);
 });
 
-ipcMain.handle('setStoreValue', (_: unknown, { key, value }: StoreValue) => {
-	return store.set(key, value);
+ipcMain.on('setStoreValue', (_: unknown, { key, value }: StoreValue) => {
+	store.set(key, value);
 });
 
 const subcribedKeys: string[] = [];
-ipcMain.on('subscribeToValue', (event: any, key: "servers") => {
+ipcMain.on('subscribeToValue', (event: any, key: "servers" | "workspace") => {
   if (!subcribedKeys.includes(key)) {
     store.onDidChange(key, (newValue: unknown, _: unknown) => {
-      event.sender.send('subscribeToValueReply', newValue);
+      event.sender.send('subscribeToValueReply', {
+        key,
+        value: newValue
+      });
     });
 
     subcribedKeys.push(key);

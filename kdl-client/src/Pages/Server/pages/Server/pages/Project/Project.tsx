@@ -1,13 +1,11 @@
-import { Button, ErrorMessage, SpinnerCircular } from 'kwc';
-import Panel, { PANEL_SIZE } from 'Components/Layout/Panel/Panel';
-import React, { useEffect, useState } from 'react';
+import { ErrorMessage, SpinnerCircular } from 'kwc';
+import React, { useEffect } from 'react';
 
-import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
-import MemberDetails from './components/MemberDetails/MemberDetails';
-import ProjectSettings from './components/ProjectSettings/ProjectSettings';
+import ProjectContentRoutes from './ProjectContentRoutes';
+import ProjectNavigation from './components/ProjectNavigation/ProjectNavigation';
+import ProjectPanels from './ProjectPanels';
 import { RouteProjectParams } from 'Constants/routes';
-import UpdateRepository from './components/UpdateRepository/UpdateRepository';
 import { loader } from 'graphql.macro';
 import styles from './Project.module.scss';
 import useBoolState from 'Hooks/useBoolState';
@@ -26,23 +24,7 @@ function Project() {
     value: isSettingsShown,
     toggle: toggleSettings,
     deactivate: hideSettings,
-  } = useBoolState(true);
-
-  const {
-    value: isRepoEditShown,
-    activate: showRepoEdit,
-    deactivate: hideRepoEdit,
   } = useBoolState(false);
-
-  const [
-    memberDetails,
-    setMemberDetails,
-  ] = useState<GetProjectMembers_project_members | null>(null);
-
-  function closeAll() {
-    hideSettings();
-    hideRepoEdit();
-  }
 
   useEffect(() => {
     // const openedProject = data?.projects.find(p => p.id === projectId);
@@ -67,47 +49,16 @@ function Project() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.panels}>
-        <Panel
-          title="Settings"
-          show={isSettingsShown}
-          close={closeAll}
-          noShrink
-        >
-          <ProjectSettings
-            showRepoEdit={showRepoEdit}
-            openMemberDetails={setMemberDetails}
-            memberDetails={memberDetails}
-          />
-        </Panel>
-        <Panel
-          title="Edit Repository Information"
-          show={isRepoEditShown}
-          close={hideRepoEdit}
-          size={PANEL_SIZE.BIG}
-          dark
-        >
-          <UpdateRepository project={project} close={hideRepoEdit} />
-        </Panel>
-        <Panel
-          title="Member details"
-          show={memberDetails !== null}
-          close={() => setMemberDetails(null)}
-          noShrink
-          dark
-        >
-          {memberDetails && (
-            <MemberDetails
-              member={memberDetails}
-              close={() => setMemberDetails(null)}
-              projectId={project.id}
-            />
-          )}
-        </Panel>
+      <ProjectNavigation toggleSettings={toggleSettings} />
+      <div className={styles.contentLayer}>
+        <ProjectContentRoutes />
       </div>
-      <div className={styles.content}>
-        Project Page
-        <Button label="toggle" onClick={toggleSettings} />
+      <div className={styles.panelLayer}>
+        <ProjectPanels
+          openedProject={project}
+          hideSettings={hideSettings}
+          isSettingsShown={isSettingsShown}
+        />
       </div>
     </div>
   );

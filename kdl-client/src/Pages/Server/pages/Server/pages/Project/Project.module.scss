@@ -4,19 +4,30 @@
 @import 'Styles/shadows';
 
 .container {
+  position: relative;
   height: 100%;
+  width: 100%;
   background-color: palette(base, 600);
 
   display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap;
   overflow: hidden;
+}
+
+.contentLayer {
+  height: 100%;
+  width: 100%;
+}
+.panelLayer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
 }
 
 .panels {
   @include glow(3, black);
   display: flex;
-  overflow: hidden;
+  justify-content: flex-end;
   height: 100%;
 }
 

@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewServer page with servers Component match snapshot 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="content"
+  >
+    <h1>
+      Add a Server
+    </h1>
+    <h3
+      className="subtitle"
+    >
+      Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum.
+    </h3>
+    <div
+      className="servers"
+    >
+      <ServerOption
+        Server={
+          <Server
+            direction="up"
+          />
+        }
+        actionLabel="CONNECT"
+        subtitle="Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. "
+        title="Connect to a Remote Server"
+        to="/connect-to-remote-server"
+      />
+      <ServerOption
+        Server={
+          <Server
+            direction="down"
+          />
+        }
+        actionLabel="INSTALL"
+        subtitle="Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae."
+        title="Install a Local Server"
+        to="/check-local-server-requirements"
+      />
+    </div>
+  </div>
+  <ActionsBar
+    centerActions={true}
+    className="actionBar"
+  >
+    <P
+      label="CANCEL"
+      to="/"
+    />
+  </ActionsBar>
+</div>
+`;
+
+exports[`NewServer page without servers Component match snapshot 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="content"
+  >
+    <h1>
+      Add a Server
+    </h1>
+    <h3
+      className="subtitle"
+    >
+      Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum.
+    </h3>
+    <div
+      className="servers"
+    >
+      <ServerOption
+        Server={
+          <Server
+            direction="up"
+          />
+        }
+        actionLabel="CONNECT"
+        subtitle="Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. "
+        title="Connect to a Remote Server"
+        to="/connect-to-remote-server"
+      />
+      <ServerOption
+        Server={
+          <Server
+            direction="down"
+          />
+        }
+        actionLabel="INSTALL"
+        subtitle="Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae."
+        title="Install a Local Server"
+        to="/check-local-server-requirements"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -95,8 +95,8 @@ function ServerLogin() {
 
   return (
     <DefaultPage
-      title="Login to Remote Server"
-      subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. "
+      title="Sign in to Remote Server"
+      subtitle="You will sign in to the a Remote Server. Make sure you have access privileges or you will not be able to complete the process. After introducing you email address, and email will allow you to sign in."
       actions={actions}
     >
       <div className={styles.container}>

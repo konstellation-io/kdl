@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InstallLocalServer page Component match snapshot 1`] = `
+<DefaultPage
+  actions={Array []}
+  subtitle="Konstellation is being installed into your Kubernetes. Please, don't stop or restart your local Kubernetes during the installation."
+  title="Install Local Server"
+>
+  <div
+    className="container"
+  >
+    <AnimateHeight
+      animateOpacity={false}
+      animationStateClasses={
+        Object {
+          "animating": "rah-animating",
+          "animatingDown": "rah-animating--down",
+          "animatingToHeightAuto": "rah-animating--to-height-auto",
+          "animatingToHeightSpecific": "rah-animating--to-height-specific",
+          "animatingToHeightZero": "rah-animating--to-height-zero",
+          "animatingUp": "rah-animating--up",
+          "static": "rah-static",
+          "staticHeightAuto": "rah-static--height-auto",
+          "staticHeightSpecific": "rah-static--height-specific",
+          "staticHeightZero": "rah-static--height-zero",
+        }
+      }
+      applyInlineTransitions={true}
+      className="box"
+      delay={0}
+      duration={300}
+      easing="ease"
+      height="auto"
+      style={Object {}}
+    >
+      <div
+        className="slides"
+      >
+        <SlidePresentation
+          slides={
+            Array [
+              Object {
+                "description": "In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis accumsan turpis.",
+                "img": "img1.png",
+                "title": "Title 1",
+              },
+              Object {
+                "description": "In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis accumsan turpis.",
+                "img": "img2.png",
+                "title": "Title 2",
+              },
+              Object {
+                "description": "In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis accumsan turpis.",
+                "img": "img1.png",
+                "title": "Title 3",
+              },
+              Object {
+                "description": "In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis accumsan turpis.",
+                "img": "img2.png",
+                "title": "Title 4",
+              },
+            ]
+          }
+        />
+      </div>
+    </AnimateHeight>
+    <div
+      className="content"
+    >
+      <p
+        className="subtitle"
+      >
+        INSTALLING LOG
+      </p>
+      <P
+        Icon={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "compare": null,
+            "displayName": "FullscreenIcon",
+            "muiName": "SvgIcon",
+            "type": Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "render": [Function],
+            },
+          }
+        }
+        className="expandButton"
+        label=""
+        onClick={[Function]}
+      />
+      <LogViewer
+        logs={Array []}
+      />
+      <SidebarBottom>
+        <StatusCircle />
+        <AnimateHeight
+          animateOpacity={false}
+          animationStateClasses={
+            Object {
+              "animating": "rah-animating",
+              "animatingDown": "rah-animating--down",
+              "animatingToHeightAuto": "rah-animating--to-height-auto",
+              "animatingToHeightSpecific": "rah-animating--to-height-specific",
+              "animatingToHeightZero": "rah-animating--to-height-zero",
+              "animatingUp": "rah-animating--up",
+              "static": "rah-static",
+              "staticHeightAuto": "rah-static--height-auto",
+              "staticHeightSpecific": "rah-static--height-specific",
+              "staticHeightZero": "rah-static--height-zero",
+            }
+          }
+          applyInlineTransitions={true}
+          className="ok"
+          delay={0}
+          duration={300}
+          easing="ease"
+          height={0}
+          style={Object {}}
+        >
+          <div
+            className="serverReady"
+          >
+            <p
+              className="title"
+            >
+              Server installed and ready!
+            </p>
+            <p
+              className="description"
+            >
+              Curabitur lobortis id lorem id bibendum. Ut id consectetur magna. Quisque volutpat augue enim, pulvinar lobortis nibh lacinia at. Vestibulum nec erat ut mi sollicitudin porttitor id sit amet risus. Nam tempus vel odio vitae aliquam. In imperdiet
+            </p>
+          </div>
+        </AnimateHeight>
+      </SidebarBottom>
+    </div>
+  </div>
+</DefaultPage>
+`;

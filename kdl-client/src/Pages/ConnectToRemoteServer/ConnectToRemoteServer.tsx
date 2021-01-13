@@ -53,6 +53,7 @@ function ConnectToRemoteServer() {
     register,
     errors,
     setError,
+    clearErrors,
   } = useForm<FormData>({ defaultValues: { serverUrl: '' } });
 
   const validateUrl = useCallback(
@@ -68,22 +69,10 @@ function ConnectToRemoteServer() {
     [servers]
   );
 
-  const validateName = useCallback(
-    (value: string) => {
-      const serverNames = servers.map((server) => server.name);
-
-      return CHECK.getValidationError([
-        CHECK.isFieldNotEmpty(value),
-        CHECK.isItemDuplicated(value, serverNames, 'server name'),
-      ]);
-    },
-    [servers]
-  );
-
   useEffect(() => {
     register('serverUrl', { validate: validateUrl });
     return () => unregister('serverUrl');
-  }, [register, unregister, setValue, validateUrl, validateName]);
+  }, [register, unregister, setValue, validateUrl]);
 
   useEffect(() => {
     const onConnectToRemoteServerReply = (
@@ -147,24 +136,22 @@ function ConnectToRemoteServer() {
   return (
     <DefaultPage
       title="Connect to a Remote Server"
-      subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum."
+      subtitle="By connecting to a Remote Server, you can access projects located in some machine or cluster shared among different users."
       actions={actions}
     >
       <div className={styles.container}>
         <p className={styles.title}>How to connect to a Server</p>
         <p className={styles.subtitle}>
-          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
-          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
-          vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem
-          tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh
-          aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis
-          accumsan turpis.
+          Before trying to connect to a Server, make sure you have access
+          privileges. A Server administrator must add you account to the users
+          list. You can add a Remote Server without access provileges but you
+          will not be able to sign in or work with projects.
         </p>
         <div className={styles.formServerUrl}>
           <TextInput
             label="server url"
             onChange={(value: string) => {
-              setError('serverUrl', {});
+              errors.serverUrl && clearErrors('serverUrl');
               setValue('serverUrl', value);
             }}
             onEnterKeyPress={handleSubmit(onSubmit)}

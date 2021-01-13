@@ -1,26 +1,15 @@
-import {
-  AddUser,
-  AddUserVariables,
-  AddUser_addUser,
-} from 'Graphql/mutations/types/AddUser';
 import { Button, CHECK, Check, Select, TextInput } from 'kwc';
 import React, { useEffect } from 'react';
 
 import { AccessLevel } from 'Graphql/types/globalTypes';
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
-import { GetUsers } from 'Graphql/queries/types/GetUsers';
 import ROUTE from 'Constants/routes';
 import cx from 'classnames';
 import { get } from 'lodash';
-import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import styles from './NewUser.module.scss';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
-import { useMutation } from '@apollo/client';
-
-const GetUsersQuery = loader('Graphql/queries/getUsers.graphql');
-const AddUserMutation = loader('Graphql/mutations/addUser.graphql');
+import useUser from 'Graphql/hooks/useUser';
 
 function verifyEmail(value: string) {
   return CHECK.getValidationError([
@@ -65,27 +54,10 @@ function NewUser() {
       confirmation: false,
     },
   });
-  const [addUser, { loading, error: mutationError }] = useMutation<
-    AddUser,
-    AddUserVariables
-  >(AddUserMutation, {
-    onCompleted: onCompleteAddUser,
-    onError: (e) => console.error(`addUser: ${e}`),
-    update: (cache, { data }) => {
-      const newUser = data?.addUser as AddUser_addUser;
-      const cacheResult = cache.readQuery<GetUsers>({
-        query: GetUsersQuery,
-      });
-
-      if (cacheResult !== null) {
-        const { users } = cacheResult;
-        cache.writeQuery({
-          query: GetUsersQuery,
-          data: { users: users.concat([newUser]) },
-        });
-      }
-    },
-  });
+  const {
+    addNewUser,
+    add: { loading, error: errorAddUser },
+  } = useUser(() => history.push(ROUTE.SERVER_USERS));
 
   useEffect(() => {
     register('email', { validate: verifyEmail });
@@ -100,18 +72,10 @@ function NewUser() {
   }, [register, unregister, setValue]);
 
   useEffect(() => {
-    if (mutationError) {
-      setError('email', mutationError);
+    if (errorAddUser) {
+      setError('email', errorAddUser);
     }
-  }, [mutationError, setError]);
-
-  function onCompleteAddUser() {
-    history.push(ROUTE.SERVER_USERS);
-  }
-
-  function onSubmit(formData: FormData) {
-    addUser(mutationPayloadHelper(formData));
-  }
+  }, [errorAddUser, setError]);
 
   const actions = [
     <Button
@@ -125,7 +89,7 @@ function NewUser() {
       primary
       key="add"
       label="ADD"
-      onClick={handleSubmit(onSubmit)}
+      onClick={handleSubmit(addNewUser)}
       loading={loading}
       className={styles.buttonSave}
       tabIndex={0}
@@ -135,26 +99,29 @@ function NewUser() {
   return (
     <DefaultPage
       title="Add a new user"
-      subtitle="In order to allow its access to the server"
+      subtitle="Added user will have access to the server. If a user not included in the server tries to access it, 
+        they will not receive the sign in email, instead an error will be returned."
       actions={actions}
     >
       <div className={styles.container}>
         <h2 className={styles.title}>Please introduce a new user</h2>
         <p className={styles.subtitle}>
-          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
-          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
-          vel iaculis mauris. Sed ullamcorper tellus.
+          Only an email address is required. By default, the new user will only
+          have VIEWER privileges and no changes will be allowed to be performed
+          by him, you can change this behavior by updating the USER TYPE
+          selector.
         </p>
         <div className={styles.content}>
           <TextInput
             whiteColor
             label="email"
+            placeholder="New user email"
             error={get(errors.email, 'message') as string}
             onChange={(value: string) => {
               clearErrors('email');
               setValue('email', value);
             }}
-            onEnterKeyPress={handleSubmit(onSubmit)}
+            onEnterKeyPress={handleSubmit(addNewUser)}
             autoFocus
           />
           <Select
@@ -173,12 +140,9 @@ function NewUser() {
           >
             <p className={styles.disclaimerTitle}>Please be careful</p>
             <p className={styles.disclaimerDesc}>
-              Curabitur lobortis id lorem id bibendum. Ut id consectetur magna.
-              Quisque volutpat augue enim, pulvinar lobortis nibh lacinia at.
-              Vestibulum nec erat ut mi sollicitudin porttitor id sit amet
-              risus. Nam tempus vel odio vitae aliquam. In imperdiet eros id
-              lacus vestibulum vestibulum. Suspendisse fermentum sem sagittis
-              ante venenatis egestas quis vel justo
+              Depending on the users role, they might be able to create new
+              proyects, use server resources or change the server users list.
+              Make sure to add users with their expected role.
             </p>
             <div className={styles.formConfirmation}>
               <Check

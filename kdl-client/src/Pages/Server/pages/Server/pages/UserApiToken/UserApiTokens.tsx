@@ -7,6 +7,7 @@ import React from 'react';
 import Token from './components/token/Token';
 import { loader } from 'graphql.macro';
 import styles from './UserApiTokens.module.scss';
+import useAPIToken from 'Graphql/hooks/useAPIToken';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
@@ -15,6 +16,7 @@ const GetMeQuery = loader('Graphql/queries/getMe.graphql');
 function UserApiTokens() {
   const { serverId } = useParams<RouteServerParams>();
   const { data, loading, error } = useQuery<GetMe>(GetMeQuery);
+  const { removeApiTokenById } = useAPIToken();
 
   function renderMainContent() {
     if (loading) return <SpinnerCircular />;
@@ -25,10 +27,10 @@ function UserApiTokens() {
     return data.me.apiTokens.map(({ name, lastUsedDate, creationDate, id }) => (
       <Token
         key={id}
-        id={id}
         name={name}
         creationDate={creationDate}
         lastUsedDate={lastUsedDate}
+        removeToken={() => removeApiTokenById(id)}
       />
     ));
   }

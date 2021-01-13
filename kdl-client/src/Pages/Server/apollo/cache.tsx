@@ -74,7 +74,13 @@ const cache = new InMemoryCache({
         openedProject: { read: () => openedProject() },
         userSettings: { read: () => userSettings() },
         projects: { merge: false },
+        apiTokens: { merge: false },
         users: { merge: false },
+      },
+    },
+    User: {
+      fields: {
+        apiTokens: { merge: false },
       },
     },
   },

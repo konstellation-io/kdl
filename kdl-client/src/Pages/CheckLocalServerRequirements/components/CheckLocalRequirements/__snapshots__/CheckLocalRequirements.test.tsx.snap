@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckLocalRequirements page Component match snapshot 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="checkList"
+  >
+    <ul>
+      <li
+        className="requirement pending"
+      >
+        Kubernetes installed
+      </li>
+      <li
+        className="requirement pending"
+      >
+        Minikube running
+      </li>
+      <li
+        className="requirement pending"
+      >
+        Helm available
+      </li>
+    </ul>
+  </div>
+</div>
+`;

@@ -1,4 +1,4 @@
-import { Button, Left, Right, SearchSelect } from 'kwc';
+import { Button, Left, Right, SearchSelect, SearchSelectTheme } from 'kwc';
 import useServers, { ServerType } from 'Hooks/useServers';
 
 import IconAdd from '@material-ui/icons/Add';
@@ -26,6 +26,7 @@ function ServersBar({ nServers, setValue }: Props) {
           onChange={(value: string) => setValue('serverSearch', value)}
           className={styles.formSearch}
           placeholder="Search"
+          theme={SearchSelectTheme.TRANSPARENT}
           showSearchIcon
           hideError
           hideLabel

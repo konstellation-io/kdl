@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectToRemoteServer page Component match snapshot 1`] = `
+<DefaultPage
+  actions={
+    Array [
+      <P
+        className="cancelButton"
+        label="CANCEL"
+        onClick={[Function]}
+      />,
+      <P
+        className="connectButton"
+        label="CONNECT"
+        onClick={[Function]}
+        primary={true}
+      />,
+    ]
+  }
+  subtitle="Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum."
+  title="Connect to a Remote Server"
+>
+  <div
+    className="container"
+  >
+    <p
+      className="title"
+    >
+      How to connect to a Server
+    </p>
+    <p
+      className="subtitle"
+    >
+      In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam vel iaculis mauris. Sed ullamcorper tellus erat, non ultrices sem tincidunt euismod. Fusce rhoncus porttitor velit, eu bibendum nibh aliquet vel. Fusce lorem leo, vehicula at nibh quis, facilisis accumsan turpis.
+    </p>
+    <div
+      className="formServerUrl"
+    >
+      <tt
+        Icon={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "compare": null,
+            "displayName": "LinkIcon",
+            "muiName": "SvgIcon",
+            "type": Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "render": [Function],
+            },
+          }
+        }
+        label="server url"
+        onChange={[Function]}
+        onEnterKeyPress={[Function]}
+        showClearButton={true}
+      />
+    </div>
+  </div>
+</DefaultPage>
+`;

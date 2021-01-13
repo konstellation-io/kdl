@@ -1,33 +1,20 @@
 import { ErrorMessage, SpinnerCircular } from 'kwc';
 import FAQBox, { BOX_THEME } from './components/FAQBox/FAQBox';
-import { useMutation, useQuery } from '@apollo/client';
 
 import { GetSSHKey } from 'Graphql/queries/types/GetSSHKey';
 import React from 'react';
-import { RegenerateSSHKey } from 'Graphql/mutations/types/RegenerateSSHKey';
 import SSHKey from './components/SSHKey/SSHKey';
-import { copyToClipboard } from 'Utils/clipboard';
+import { copyAndToast } from 'Utils/clipboard';
 import { loader } from 'graphql.macro';
 import styles from './UserSshKey.module.scss';
-import { toast } from 'react-toastify';
+import { useQuery } from '@apollo/client';
+import useSSHKey from 'Graphql/hooks/useSSHKey';
 
 const GetSSHKeys = loader('Graphql/queries/getSSHKey.graphql');
-const RegenerateSSHKeyMutation = loader(
-  'Graphql/mutations/regenerateSSHKey.graphql'
-);
 
 function UserSshKey() {
   const { data, loading, error } = useQuery<GetSSHKey>(GetSSHKeys);
-  const [regenerateSSHKey] = useMutation<RegenerateSSHKey>(
-    RegenerateSSHKeyMutation
-  );
-
-  function onCopyPrivateKey() {
-    copyToClipboard(data?.sshKey?.private || '');
-
-    toast.info('Copied to clipboard');
-    toast.clearWaitingQueue();
-  }
+  const { regenerateSSHKey } = useSSHKey();
 
   function getContent() {
     if (loading) return <SpinnerCircular />;
@@ -91,7 +78,7 @@ function UserSshKey() {
             theme={BOX_THEME.WARN}
             action={{
               label: 'COPY PRIVATE KEY',
-              onClick: onCopyPrivateKey,
+              onClick: () => copyAndToast(sshKey.private),
             }}
           />
         </div>

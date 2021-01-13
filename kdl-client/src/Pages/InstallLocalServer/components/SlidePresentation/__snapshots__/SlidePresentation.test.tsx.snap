@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation component Component match snapshot 1`] = `
+<div
+  className="navigation"
+>
+  <div
+    className="buttons"
+  >
+    <P
+      Icon={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "compare": null,
+          "displayName": "ChevronLeftIcon",
+          "muiName": "SvgIcon",
+          "type": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "render": [Function],
+          },
+        }
+      }
+      border={true}
+      className="button"
+      label=""
+      onClick={[MockFunction]}
+    />
+    <P
+      Icon={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "compare": null,
+          "displayName": "ChevronRightIcon",
+          "muiName": "SvgIcon",
+          "type": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "render": [Function],
+          },
+        }
+      }
+      border={true}
+      className="button"
+      label=""
+      onClick={[MockFunction]}
+    />
+  </div>
+  <div
+    className="dots"
+  >
+    <div
+      className="navDotContainer actual"
+      key="0"
+      onClick={[Function]}
+    >
+      <div
+        className="navDot"
+      />
+    </div>
+    <div
+      className="navDotContainer"
+      key="1"
+      onClick={[Function]}
+    >
+      <div
+        className="navDot"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Slide component Component match snapshot 1`] = `
+<div
+  className="slide"
+>
+  <img
+    alt="Slide img"
+    className="image"
+    src="image1"
+  />
+  <div
+    className="content"
+  >
+    <p
+      className="title"
+    >
+      title1
+    </p>
+    <p
+      className="description"
+      title="description1"
+    >
+      description1
+    </p>
+  </div>
+</div>
+`;
+
+exports[`SlidePresentation component Component match snapshot 1`] = `
+<div
+  className="container"
+>
+  <TransitionGroup
+    childFactory={[Function]}
+    className="pages next"
+    component="div"
+  >
+    <CSSTransition
+      classNames={
+        Object {
+          "enter": "enter",
+          "exit": "exit",
+        }
+      }
+      key="0"
+      timeout={500}
+    >
+      <Slide
+        description="description1"
+        img="image1"
+        nextStep={[Function]}
+        title="title1"
+      />
+    </CSSTransition>
+  </TransitionGroup>
+  <Navigation
+    actStep={0}
+    goToStep={[Function]}
+    nextStep={[Function]}
+    prevStep={[Function]}
+    totalSteps={2}
+  />
+</div>
+`;

@@ -132,7 +132,7 @@ function GenerateApiToken() {
               }}
             >
               <>
-                {dataAddToken && dataAddToken.addApiToken && (
+                {dataAddToken?.addApiToken && (
                   <div className={styles.resultWrapper}>
                     <p className={styles.infoMessage}>
                       API Token cannot be accessed after it has been generated,

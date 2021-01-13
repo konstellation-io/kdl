@@ -102,7 +102,7 @@ export default function useUser(onCompleteAddUser?: () => void) {
     }
   }
 
-  function addANewUser(newUser: NewUserParams) {
+  function addNewUser(newUser: NewUserParams) {
     mutationAddUser(mutationPayloadHelper(newUser));
   }
 
@@ -115,7 +115,7 @@ export default function useUser(onCompleteAddUser?: () => void) {
   }
 
   return {
-    addANewUser,
+    addNewUser,
     removeUsersById,
     updateUsersAccessLevel,
     add: { loading, error },

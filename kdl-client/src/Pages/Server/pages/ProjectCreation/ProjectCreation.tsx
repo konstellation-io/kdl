@@ -19,7 +19,7 @@ import { useQuery } from '@apollo/client';
 
 function ProjectCreation() {
   const {
-    addANewProject,
+    addNewProject,
     create: { data: dataCreateProject },
   } = useProject();
 
@@ -32,7 +32,7 @@ function ProjectCreation() {
       const type = repository.values.type || RepositoryType.EXTERNAL;
       const repoTypeDetails = data.newProject[repoTypeToStepName[type]];
 
-      addANewProject({
+      addNewProject({
         ...information.values,
         repository: {
           type,

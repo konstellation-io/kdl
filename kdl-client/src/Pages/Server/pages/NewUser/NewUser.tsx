@@ -55,7 +55,7 @@ function NewUser() {
     },
   });
   const {
-    addANewUser,
+    addNewUser,
     add: { loading, error: errorAddUser },
   } = useUser(() => history.push(ROUTE.SERVER_USERS));
 
@@ -89,7 +89,7 @@ function NewUser() {
       primary
       key="add"
       label="ADD"
-      onClick={handleSubmit(addANewUser)}
+      onClick={handleSubmit(addNewUser)}
       loading={loading}
       className={styles.buttonSave}
       tabIndex={0}
@@ -118,7 +118,7 @@ function NewUser() {
               clearErrors('email');
               setValue('email', value);
             }}
-            onEnterKeyPress={handleSubmit(addANewUser)}
+            onEnterKeyPress={handleSubmit(addNewUser)}
             autoFocus
           />
           <Select

@@ -75,7 +75,7 @@ export default function useProject() {
     }
   }
 
-  function addANewProject(newProject: NewProjectParams) {
+  function addNewProject(newProject: NewProjectParams) {
     mutationCreateProject(mutationPayloadHelper(newProject));
   }
 
@@ -88,7 +88,7 @@ export default function useProject() {
   }
 
   return {
-    addANewProject,
+    addNewProject,
     updateProjectName,
     updateProjectRepositoryUrl,
     create: { data },

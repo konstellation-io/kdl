@@ -20,11 +20,15 @@ type Props = {
   showRepoEdit: () => void;
   openMemberDetails: (member: GetProjectMembers_project_members | null) => void;
   memberDetails: GetProjectMembers_project_members | null;
+  settingsOpenedTab: number;
+  setSettingsOpenedTab: (index: number) => void;
 };
 function ProjectSettings({
   showRepoEdit,
   openMemberDetails,
   memberDetails,
+  settingsOpenedTab,
+  setSettingsOpenedTab,
 }: Props) {
   const { data: localData } = useQuery<GetOpenedProject>(GET_OPENED_PROJECT);
   const openedProject = localData?.openedProject;
@@ -36,7 +40,7 @@ function ProjectSettings({
       <div className={styles.info}>
         <ProjectInfo project={openedProject} />
       </div>
-      <Tabs>
+      <Tabs onSelect={setSettingsOpenedTab} selectedIndex={settingsOpenedTab}>
         <TabList>
           <Tab>INFO</Tab>
           <Tab>GIT</Tab>

@@ -2,14 +2,8 @@ import { NavLink, useParams } from 'react-router-dom';
 import ROUTE, { RouteProjectParams, buildRoute } from 'Constants/routes';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
-import IconAssets from '@material-ui/icons/LineStyle';
 import IconCollapse from '@material-ui/icons/KeyboardBackspace';
-import IconDocumentation from '@material-ui/icons/Description';
-import IconExperiments from '@material-ui/icons/TrackChanges';
-import IconGoals from '@material-ui/icons/Flag';
 import IconHome from '@material-ui/icons/Dashboard';
-import IconKG from '@material-ui/icons/BlurOn';
-import IconRuntimes from '@material-ui/icons/Games';
 import IconSettings from '@material-ui/icons/Settings';
 import IconTools from '@material-ui/icons/Build';
 import NavigationButton from './NavigationButton';
@@ -56,29 +50,11 @@ function ProjectNavigation({ toggleSettings }: Props) {
   return (
     <div className={cx(styles.container, { [styles.opened]: opened })}>
       <div className={styles.top}>
-        <NavButtonLink to={getRoute(ROUTE.PROJECT)}>
+        <NavButtonLink to={getRoute(ROUTE.PROJECT_OVERVIEW)}>
           <NavigationButton label="OVERVIEW" Icon={IconHome} />
         </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
+        <NavButtonLink to={getRoute(ROUTE.PROJECT_TOOLS)}>
           <NavigationButton label="TOOLS" Icon={IconTools} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
-          <NavigationButton label="KNOWLEDGE GRAPH" Icon={IconKG} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
-          <NavigationButton label="DOCUMENTATION" Icon={IconDocumentation} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
-          <NavigationButton label="ASSETS" Icon={IconAssets} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
-          <NavigationButton label="GOALS" Icon={IconGoals} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
-          <NavigationButton label="EXPERIMENTS" Icon={IconExperiments} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.HOME)}>
-          <NavigationButton label="RUNTIMES" Icon={IconRuntimes} />
         </NavButtonLink>
       </div>
       <div className={styles.bottom}>

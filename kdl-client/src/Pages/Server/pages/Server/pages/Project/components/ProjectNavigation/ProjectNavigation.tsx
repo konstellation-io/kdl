@@ -5,7 +5,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import IconCollapse from '@material-ui/icons/KeyboardBackspace';
 import IconHome from '@material-ui/icons/Dashboard';
 import IconSettings from '@material-ui/icons/Settings';
-import IconTools from '@material-ui/icons/Build';
+import IconTools from 'Components/Icons/HomeRepairService';
 import NavigationButton from './NavigationButton';
 import { SpinnerCircular } from 'kwc';
 import cx from 'classnames';

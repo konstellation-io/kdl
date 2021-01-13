@@ -17,20 +17,20 @@ function NewServer() {
       <div className={styles.content}>
         <h1>Add a Server</h1>
         <h3 className={styles.subtitle}>
-          Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras
-          ullamcorper bibendum bibendum.
+          Before working on a project, you must first connect to a local or
+          remote server.
         </h3>
         <div className={styles.servers}>
           <ServerOption
             title="Connect to a Remote Server"
-            subtitle="Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. "
+            subtitle="Remote servers are ready and might contain active projects. You need access privileges to the Server before connecting to it."
             actionLabel="CONNECT"
             to={ROUTE.CONNECT_TO_REMOTE_SERVER}
             Server={<Server direction={DIRECTION.UP} />}
           />
           <ServerOption
             title="Install a Local Server"
-            subtitle="Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae."
+            subtitle="You can work locally by installing a KDL Server in your machine. Only one local Server can be installed."
             actionLabel="INSTALL"
             to={ROUTE.CHECK_LOCAL_SERVER_REQUIREMENTS}
             Server={<Server direction={DIRECTION.DOWN} />}

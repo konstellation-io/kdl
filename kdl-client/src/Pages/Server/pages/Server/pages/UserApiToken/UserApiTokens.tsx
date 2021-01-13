@@ -40,8 +40,8 @@ function UserApiTokens() {
       <h1 className={styles.title}>API Tokens</h1>
       <div className={styles.infoContainer}>
         <p className={styles.infoMessage}>
-          These are you API Tokens, works lorem ipsum and for dolor amet. If you
-          want more information please lorem.
+          These are you API Tokens, use them to be authorized through API Token
+          auth.
         </p>
         <Button
           label="GENERATE"

@@ -9,10 +9,10 @@ import RepositoryOption from './components/RepositoryOption/RepositoryOption';
 import { RepositoryType } from 'Graphql/types/globalTypes';
 import RepositoryTypeComponent from './components/RepositoryTypeComponent/RepositoryTypeComponent';
 import { SpinnerCircular } from 'kwc';
+import cx from 'classnames';
 import styles from './Repository.module.scss';
 import useNewProject from 'Pages/Server/apollo/hooks/useNewProject';
 import { useQuery } from '@apollo/client';
-import cx from 'classnames';
 
 function Repository(params: any) {
   const { showErrors } = params;
@@ -34,7 +34,7 @@ function Repository(params: any) {
       >
         <RepositoryOption
           title="External Repository"
-          subtitle="Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis."
+          subtitle="You will connect to a version-control system located outside the Server. Make sure you can access the repository before trying to connect to and include your SSH key inside it."
           actionLabel="USE EXTERNAL"
           isSelected={type === RepositoryType.EXTERNAL}
           onSelect={() => {
@@ -45,7 +45,7 @@ function Repository(params: any) {
         />
         <RepositoryOption
           title="Internal Repository"
-          subtitle="Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae ullamcorper metus. Sed sollicitudin ipsum quis nunc sollicitudin ultrices."
+          subtitle="A new repository will be installed in the server. The version-control system used will be Gitea. Administrator right access will be granted to your repository account."
           actionLabel="USE INTERNAL"
           isSelected={type === RepositoryType.INTERNAL}
           onSelect={() => {

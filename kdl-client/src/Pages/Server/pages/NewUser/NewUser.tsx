@@ -99,20 +99,23 @@ function NewUser() {
   return (
     <DefaultPage
       title="Add a new user"
-      subtitle="In order to allow its access to the server"
+      subtitle="Added user will have access to the server. If a user not included in the server tries to access it, 
+        they will not receive the sign in email, instead an error will be returned."
       actions={actions}
     >
       <div className={styles.container}>
         <h2 className={styles.title}>Please introduce a new user</h2>
         <p className={styles.subtitle}>
-          In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam
-          volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam
-          vel iaculis mauris. Sed ullamcorper tellus.
+          Only an email address is required. By default, the new user will only
+          have VIEWER privileges and no changes will be allowed to be performed
+          by him, you can change this behavior by updating the USER TYPE
+          selector.
         </p>
         <div className={styles.content}>
           <TextInput
             whiteColor
             label="email"
+            placeholder="New user email"
             error={get(errors.email, 'message') as string}
             onChange={(value: string) => {
               clearErrors('email');
@@ -137,12 +140,9 @@ function NewUser() {
           >
             <p className={styles.disclaimerTitle}>Please be careful</p>
             <p className={styles.disclaimerDesc}>
-              Curabitur lobortis id lorem id bibendum. Ut id consectetur magna.
-              Quisque volutpat augue enim, pulvinar lobortis nibh lacinia at.
-              Vestibulum nec erat ut mi sollicitudin porttitor id sit amet
-              risus. Nam tempus vel odio vitae aliquam. In imperdiet eros id
-              lacus vestibulum vestibulum. Suspendisse fermentum sem sagittis
-              ante venenatis egestas quis vel justo
+              Depending on the users role, they might be able to create new
+              proyects, use server resources or change the server users list.
+              Make sure to add users with their expected role.
             </p>
             <div className={styles.formConfirmation}>
               <Check

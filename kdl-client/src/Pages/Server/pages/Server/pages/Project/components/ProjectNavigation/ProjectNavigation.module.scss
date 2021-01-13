@@ -6,7 +6,9 @@
 .container {
   @include shadow(4);
 
-  width: 5 * $grid-unit;
+  width: 25 * $grid-unit;
+
+  max-width: 5 * $grid-unit;
   background-color: palette(base, 900);
 
   flex-shrink: 0;
@@ -15,7 +17,7 @@
   justify-content: space-between;
   overflow: hidden;
 
-  transition: width ease 0.3s;
+  transition: max-width ease 0.3s;
 
   .bottom {
     background-color: palette(base, 600);
@@ -26,7 +28,7 @@
   }
 
   &.opened {
-    width: 25 * $grid-unit;
+    max-width: 25 * $grid-unit;
   }
 }
 

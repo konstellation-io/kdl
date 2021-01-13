@@ -53,6 +53,7 @@ function ConnectToRemoteServer() {
     register,
     errors,
     setError,
+    clearErrors,
   } = useForm<FormData>({ defaultValues: { serverUrl: '' } });
 
   const validateUrl = useCallback(
@@ -68,22 +69,10 @@ function ConnectToRemoteServer() {
     [servers]
   );
 
-  const validateName = useCallback(
-    (value: string) => {
-      const serverNames = servers.map((server) => server.name);
-
-      return CHECK.getValidationError([
-        CHECK.isFieldNotEmpty(value),
-        CHECK.isItemDuplicated(value, serverNames, 'server name'),
-      ]);
-    },
-    [servers]
-  );
-
   useEffect(() => {
     register('serverUrl', { validate: validateUrl });
     return () => unregister('serverUrl');
-  }, [register, unregister, setValue, validateUrl, validateName]);
+  }, [register, unregister, setValue, validateUrl]);
 
   useEffect(() => {
     const onConnectToRemoteServerReply = (
@@ -164,7 +153,7 @@ function ConnectToRemoteServer() {
           <TextInput
             label="server url"
             onChange={(value: string) => {
-              setError('serverUrl', {});
+              errors.serverUrl && clearErrors('serverUrl');
               setValue('serverUrl', value);
             }}
             onEnterKeyPress={handleSubmit(onSubmit)}

@@ -1,29 +1,45 @@
-import 'Chart.js/defaultProps';
+import {
+  AnimatedAreaSeries,
+  AnimatedAxis,
+  AnimatedGrid,
+  XYChart,
+} from '@visx/xychart';
+import { Bar, Line } from '@visx/shape';
+import React, { useCallback, useMemo } from 'react';
+import { TooltipWithBounds, useTooltip } from '@visx/tooltip';
+import { bisector, extent } from 'd3-array';
+import { scaleLinear, scaleTime } from '@visx/scale';
 
-import React, { useCallback, useEffect, useRef } from 'react';
-
-import Chart from 'chart.js';
-import { color as c } from 'd3-color';
-import { createCustomTooltip } from 'Chart.js/tooltip';
+import Legend from './Legend';
+import { Spring } from 'react-spring/renderprops';
+import TooltipContent from './TooltipContent';
+import cx from 'classnames';
+import { localPoint } from '@visx/event';
 import styles from './TimeSeriesChart.module.scss';
-
-function getRGB(color: string) {
-  return c(color)?.rgb() ?? { r: 0, g: 0, b: 0 };
-}
+import { useEffect } from 'react';
 
 export type D = {
   x: Date;
-  y: number | null;
+  y: number;
 };
+
+const x = (d: D) => d.x;
+const y = (d: D) => d.y;
+const bisectDate = bisector<D, Date>((d) => new Date(d.x)).left;
+
+const margin = { top: 10, right: 0, bottom: 0, left: 0 };
+const xyChartXScale: any = { type: 'time' };
+const gridLineProps = { stroke: '#313131' };
 
 type Props = {
   data: D[];
   unit: string;
   title: string;
+  width: number;
+  height: number;
   formatXAxis?: (value: string) => string;
   formatYAxis?: (value: number) => string;
   highlightLastValue?: boolean;
-  removed?: number;
   color?: string;
 };
 function TimeSeriesChart({
@@ -31,177 +47,188 @@ function TimeSeriesChart({
   unit,
   title,
   highlightLastValue,
-  removed = 0,
+  width,
+  height,
   color = '#f00',
   formatXAxis = (v) => v,
   formatYAxis = (v) => v.toString(),
 }: Props) {
-  const chart = useRef<Chart | null>(null);
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const { r, g, b } = getRGB(color);
-  const colorStyle = useRef({ color });
-  const bgColorStyle = useRef({ backgroundColor: color });
+  const {
+    showTooltip,
+    tooltipOpen,
+    hideTooltip,
+    tooltipData,
+    tooltipTop = 0,
+    tooltipLeft = 0,
+  } = useTooltip<D>();
 
-  const formatYWUnit = (v: number) => `${formatYAxis(v)}${unit}`;
-
-  // Initialize chart
   useEffect(() => {
-    const context2D = chartRef?.current?.getContext('2d');
-    if (context2D) {
-      chart.current = new Chart(context2D, {
-        type: 'timeLine',
-        data: {
-          labels: data.map((d) => d.x),
-          datasets: [
-            {
-              label: title,
-              lineTension: 0.2,
-              pointHitRadius: 20,
-              pointBackgroundColor: color,
-              pointRadius: 0,
-              data: data.map((d) => d.y),
-              backgroundColor: `rgba(${r}, ${g}, ${b}, 0.1)`,
-              borderColor: color,
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          tooltips: {
-            callbacks: {
-              label: (d) => formatYWUnit(d.value ? +d.value : 0),
-            },
-            custom: createCustomTooltip(formatXAxis, color, title),
-          },
-          scales: {
-            xAxes: [
-              {
-                type: 'time',
-                display: false,
-                time: {
-                  unit: 'minute',
-                },
-                ticks: {
-                  display: false,
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false,
-                },
-              },
-            ],
-            yAxes: [
-              {
-                display: false,
-                ticks: {
-                  display: false,
-                  mirror: true,
-                  maxTicksLimit: 6,
-                  fontStyle: 'bold',
-                  padding: -8,
-                  callback: formatYWUnit,
-                  beginAtZero: true,
-                },
-                gridLines: {
-                  display: false,
-                  color: '#000',
-                  drawTicks: false,
-                  z: -100,
-                  drawBorder: false,
-                },
-              },
-            ],
-          },
-        },
-      });
-    }
-    // We only want to execute this after mounting
+    hideTooltip();
+    // We want to close tooltip when chart gets updated
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
-  const updateScales = useCallback(() => {
-    if (chart?.current?.options.scales?.yAxes) {
-      chart.current.options.scales.yAxes = [
-        {
-          ...chart.current.options.scales.yAxes,
-          display: true,
-          ticks: {
-            ...chart.current.options.scales.yAxes[0].ticks,
-            display: true,
-          },
-          afterTickToLabelConversion: function (scaleInstance) {
-            scaleInstance.ticks[scaleInstance.ticks.length - 1] = null;
-            scaleInstance.ticksAsNumbers[
-              scaleInstance.ticksAsNumbers.length - 1
-            ] = null;
-          },
-          gridLines: {
-            ...chart.current.options.scales.yAxes[0].gridLines,
-            display: true,
-          },
-        },
-      ];
-    }
-  }, []);
+  const xScale = useMemo(
+    () =>
+      scaleTime({
+        range: [0, width],
+        domain: extent(data.map(x)) as [Date, Date],
+      }),
+    [data, width]
+  );
 
-  useEffect(() => {
-    updateScales();
-    chart.current && chart.current.update();
-  }, [updateScales]);
+  const yScale = useMemo(
+    () =>
+      scaleLinear({
+        range: [height, 0],
+        domain: [0, Math.max(...data.map(y)) * 1.7],
+        nice: true,
+      }),
+    [data, height]
+  );
 
-  useEffect(() => {
-    function getLabels() {
-      return chart.current?.data.labels || [];
-    }
-    function getDataset() {
-      return (
-        (chart.current?.data.datasets && chart.current.data.datasets[0].data) ||
-        []
-      );
-    }
-
-    function removeData(n: number) {
-      for (let i = 0; i < n; i++) {
-        getLabels().shift();
-        getDataset().shift();
+  const handleTooltip = useCallback(
+    (event: React.MouseEvent<SVGRectElement>) => {
+      const { x: localX } = localPoint(event) || { x: 0 };
+      const x0 = xScale.invert(localX);
+      const index = bisectDate(data, x0, 1);
+      const d0 = data[index - 1];
+      const d1 = data[index];
+      let d = d0;
+      if (d1 && x(d1)) {
+        d =
+          x0.valueOf() - x(d0).valueOf() > x(d1).valueOf() - x0.valueOf()
+            ? d1
+            : d0;
       }
-    }
 
-    function addData(newData: D[]) {
-      newData.forEach((d) => {
-        getLabels().push(d.x);
-        getDataset().push(d.y || 0);
-      });
-    }
+      const top = yScale(y(d) || 0);
+      const left = xScale(x(d));
 
-    if (data && chart.current) {
-      removeData(removed);
+      if (tooltipTop !== top || tooltipLeft !== left) {
+        showTooltip({
+          tooltipData: d,
+          tooltipLeft: left,
+          tooltipTop: top,
+        });
+      }
+    },
+    [showTooltip, yScale, xScale, data, tooltipTop, tooltipLeft]
+  );
 
-      const prevDataLenght = chart.current.data?.labels?.length || 0;
-      const dataToAdd = data.slice(prevDataLenght + removed);
-      addData(dataToAdd);
-
-      updateScales();
-
-      chart.current.update();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, removed]);
+  const xyChartYScale: any = useMemo(
+    () => ({ type: 'linear', domain: yScale.domain() }),
+    [yScale]
+  );
+  const lineProps = useMemo(() => ({ stroke: color, strokeWidth: 1 }), [color]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.topPannel}>
-        {highlightLastValue && (
-          <div className={styles.lastValue} style={colorStyle.current}>
-            {formatYWUnit(data.slice(-1)[0].y || 0)}
-          </div>
+      <Legend
+        highlightLastValue={highlightLastValue}
+        lastValue={`${formatYAxis(data.slice(-1)[0].y || 0)}${unit}`}
+        title={title}
+        color={color}
+      />
+      <XYChart
+        width={width}
+        height={height}
+        xScale={xyChartXScale}
+        yScale={xyChartYScale}
+        margin={margin}
+      >
+        <AnimatedGrid
+          columns={false}
+          numTicks={4}
+          lineStyle={gridLineProps}
+          animationTrajectory="max"
+        />
+        <AnimatedAxis
+          orientation="right"
+          left={0}
+          numTicks={4}
+          hideTicks
+          hideAxisLine
+          tickClassName={styles.label}
+          animationTrajectory="max"
+          tickFormat={formatYAxis}
+          hideZero
+        />
+        <AnimatedAreaSeries
+          dataKey="Line"
+          data={data}
+          xAccessor={x}
+          yAccessor={y}
+          fillOpacity={0.1}
+          // @ts-ignore
+          lineProps={lineProps}
+          fill={color}
+          horizOriginX={0}
+          offset={0}
+        />
+      </XYChart>
+      <svg width={width} height={height} className={styles.auxSvg}>
+        <Bar
+          x={0}
+          y={0}
+          width={width}
+          height={height}
+          fill="transparent"
+          rx={0}
+          onMouseMove={handleTooltip}
+          onMouseLeave={() => hideTooltip()}
+        />
+        {tooltipData && (
+          <g>
+            <Line
+              from={{ x: tooltipLeft, y: 0 }}
+              to={{ x: tooltipLeft, y: height }}
+              stroke={'white'}
+              strokeOpacity={0.3}
+              strokeWidth={1}
+              pointerEvents="none"
+            />
+            <circle
+              cx={tooltipLeft}
+              cy={tooltipTop}
+              r={5}
+              fill={color}
+              strokeWidth={2}
+              pointerEvents="none"
+            />
+          </g>
         )}
-        <div className={styles.legend}>
-          <div className={styles.legendCircle} style={bgColorStyle.current} />
-          {title}
+      </svg>
+      <div className={styles.tooltip}>
+        <div
+          className={cx(styles.tooltipWrapper, { [styles.open]: tooltipOpen })}
+        >
+          {tooltipOpen && tooltipData && (
+            <Spring
+              to={{
+                tooltipTop: tooltipTop,
+                tooltipLeft: tooltipLeft,
+              }}
+            >
+              {(props) => (
+                <TooltipWithBounds
+                  key={Math.random()}
+                  top={props.tooltipTop - 70}
+                  left={props.tooltipLeft}
+                  className={styles.tooltipContent}
+                >
+                  <TooltipContent
+                    xValue={formatXAxis(`${x(tooltipData)}`)}
+                    yValue={`${formatYAxis(y(tooltipData))}${unit}`}
+                    title={title}
+                    color={color}
+                  />
+                </TooltipWithBounds>
+              )}
+            </Spring>
+          )}
         </div>
       </div>
-      <canvas id="timeSeriesChart" ref={chartRef} />
     </div>
   );
 }

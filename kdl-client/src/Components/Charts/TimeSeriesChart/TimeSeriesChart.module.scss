@@ -54,3 +54,50 @@
     }
   }
 }
+
+.auxSvg {
+  position: absolute;
+  left: 0;
+}
+.tooltip {
+  pointer-events: none;
+  transition: top ease 0.3s, left ease 0.3s, right ease 0.3s;
+
+  .tooltipWrapper {
+    opacity: 0;
+
+    transition: opacity ease 0.6s;
+
+    &.open {
+      opacity: 1;
+    }
+  }
+
+  .tooltipContent {
+    @include font-small;
+    color: font-color(light);
+
+    background-color: palette(base, 900) !important;
+
+    transition: top ease 0.3s, left ease 0.3s, right ease 0.3s;
+
+    .head {
+      color: font-color(light);
+    }
+    .body {
+      font-weight: 400;
+      color: font-color(light);
+
+      margin-top: $grid-unit;
+
+      .value {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.label text {
+  @include font-small;
+  fill: font-color(regular);
+}

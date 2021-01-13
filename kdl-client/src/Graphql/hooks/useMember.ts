@@ -27,6 +27,7 @@ const AddMembersMutation = loader('Graphql/mutations/addMembers.graphql');
 
 type Options = {
   onCompleteAdd?: () => void;
+  onCompleteUpdate?: () => void;
 };
 
 export default function useMember(projectId: string, options?: Options) {
@@ -51,6 +52,7 @@ export default function useMember(projectId: string, options?: Options) {
     UpdateMember,
     UpdateMemberVariables
   >(UpdateMemberMutation, {
+    onCompleted: options && options.onCompleteUpdate,
     onError: (e) => console.error(`updateMember: ${e}`),
   });
 

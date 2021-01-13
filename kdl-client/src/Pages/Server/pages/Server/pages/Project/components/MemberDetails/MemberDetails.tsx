@@ -1,5 +1,5 @@
 import { Button, Select } from 'kwc';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AccessLevel } from 'Graphql/types/globalTypes';
 import ActionsBar from 'Components/Layout/ActionsBar/ActionsBar';
@@ -28,7 +28,10 @@ type Props = {
   close: () => void;
 };
 function MemberDetail({ member, projectId, close }: Props) {
-  const { removeMemberById, updateMemberAccessLevel } = useMember(projectId);
+  const [done, setDone] = useState(false);
+  const { removeMemberById, updateMemberAccessLevel } = useMember(projectId, {
+    onCompleteUpdate: () => setDone(true),
+  });
 
   const { handleSubmit, setValue, unregister, register, watch } = useForm<
     FormData
@@ -46,8 +49,12 @@ function MemberDetail({ member, projectId, close }: Props) {
     setValue('accessLevel', member.accessLevel);
   }, [member, setValue]);
 
+  const accessLevelChanged = member.accessLevel !== watch('accessLevel');
+
   function handleUpdateMember({ accessLevel }: FormData) {
-    updateMemberAccessLevel(member.id, accessLevel);
+    if (accessLevelChanged) {
+      updateMemberAccessLevel(member.id, accessLevel);
+    }
   }
   function handleRemoveMember() {
     removeMemberById(member.id);
@@ -85,7 +92,10 @@ function MemberDetail({ member, projectId, close }: Props) {
             options={Object.values(AccessLevel)}
             formSelectedOption={watch('accessLevel')}
             className={styles.formAccessLevel}
-            onChange={(value: AccessLevel) => setValue('accessLevel', value)}
+            onChange={(value: AccessLevel) => {
+              setDone(false);
+              setValue('accessLevel', value);
+            }}
             hideError
           />
           <div className={styles.removeButtonContainer}>
@@ -109,7 +119,8 @@ function MemberDetail({ member, projectId, close }: Props) {
         <Button
           label="SAVE"
           onClick={handleSubmit(handleUpdateMember)}
-          disabled={member.accessLevel === watch('accessLevel')}
+          disabled={!done && !accessLevelChanged}
+          success={done}
           primary
         />
         <Button label="CANCEL" onClick={close} />

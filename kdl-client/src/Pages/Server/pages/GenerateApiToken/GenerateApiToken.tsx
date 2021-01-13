@@ -1,29 +1,22 @@
-import {
-  AddApiToken,
-  AddApiTokenVariables,
-  AddApiToken_addApiToken,
-} from 'Graphql/mutations/types/AddApiToken';
 import { Button, TextInput } from 'kwc';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ROUTE, { RouteServerParams, buildRoute } from 'Constants/routes';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
 
 import { ActionButton } from 'Hooks/useStepper/useStepper';
 import CodeIcon from '@material-ui/icons/Code';
 import DefaultPage from 'Components/Layout/Page/DefaultPage/DefaultPage';
 import { GetMe } from 'Graphql/queries/types/GetMe';
-import { copyToClipboard } from 'Utils/clipboard';
+import { copyAndToast } from 'Utils/clipboard';
 import cx from 'classnames';
 import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import styles from './GenerateApiToken.module.scss';
-import { toast } from 'react-toastify';
+import useAPIToken from 'Graphql/hooks/useAPIToken';
 import { useForm } from 'react-hook-form';
+import { useQuery } from '@apollo/client';
 
 const GetMeQuery = loader('Graphql/queries/getMe.graphql');
-const AddApiTokenMutation = loader('Graphql/mutations/addApiToken.graphql');
 
 type FormData = {
   tokenName: string;
@@ -32,35 +25,15 @@ type FormData = {
 function GenerateApiToken() {
   const history = useHistory();
   const { serverId } = useParams<RouteServerParams>();
-  const [apiTokenCreated, setApiTokenCreated] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
-  const [token, setToken] = useState('');
 
   const { data: dataMe } = useQuery<GetMe>(GetMeQuery);
-  const [addApiToken, { loading }] = useMutation<
-    AddApiToken,
-    AddApiTokenVariables
-  >(AddApiTokenMutation, {
-    onCompleted: () => setApiTokenCreated(true),
-    onError: (e) => console.error(`addMembers: ${e}`),
-    update: (cache, { data }) => {
-      const newApiToken = data?.addApiToken as AddApiToken_addApiToken;
-      setToken(newApiToken.token);
 
-      if (dataMe) {
-        cache.writeQuery({
-          query: GetMeQuery,
-          data: {
-            me: {
-              ...dataMe.me,
-              apiTokens: [...dataMe.me.apiTokens, newApiToken],
-            },
-          },
-        });
-      }
-    },
-  });
+  const {
+    addTokenByName,
+    add: { data: dataAddToken, loading },
+  } = useAPIToken();
 
   const {
     handleSubmit,
@@ -69,7 +42,6 @@ function GenerateApiToken() {
     unregister,
     errors,
     watch,
-    getValues,
     clearErrors,
   } = useForm<FormData>();
 
@@ -80,23 +52,17 @@ function GenerateApiToken() {
     };
   }, [register, unregister, setValue]);
 
-  function submitNewToken() {
-    if (dataMe && !apiTokenCreated) {
-      addApiToken(
-        mutationPayloadHelper({
-          userId: dataMe.me.id,
-          name: getValues('tokenName'),
-        })
-      );
-    }
+  function onSubmit({ tokenName }: FormData) {
+    addTokenByName(dataMe?.me.id, tokenName);
   }
 
   function handleCopyButtonClick() {
-    copyToClipboard(token);
-    setShowCopyAlert(false);
-    setCopied(true);
-    toast.info('Copied to clipboard');
-    toast.clearWaitingQueue();
+    if (dataAddToken?.addApiToken?.token) {
+      setShowCopyAlert(false);
+      setCopied(true);
+
+      copyAndToast(dataAddToken.addApiToken.token);
+    }
   }
 
   function handleAcceptClick() {
@@ -127,7 +93,7 @@ function GenerateApiToken() {
           key="accept"
           label="ACCEPT"
           onClick={handleAcceptClick}
-          disabled={!apiTokenCreated}
+          disabled={!dataAddToken}
           primary
         />,
       ]}
@@ -142,7 +108,7 @@ function GenerateApiToken() {
               clearErrors('tokenName');
             }}
             error={errors.tokenName?.message || ''}
-            onEnterKeyPress={handleSubmit(submitNewToken)}
+            onEnterKeyPress={handleSubmit(onSubmit)}
             autoFocus
             showClearButton
           />
@@ -150,8 +116,8 @@ function GenerateApiToken() {
             label="GENERATE"
             Icon={CodeIcon}
             className={styles.generateButton}
-            onClick={handleSubmit(submitNewToken)}
-            disabled={!watch('tokenName') || apiTokenCreated}
+            onClick={handleSubmit(onSubmit)}
+            disabled={!watch('tokenName') || !!dataAddToken}
             loading={loading}
             primary
           />
@@ -160,13 +126,13 @@ function GenerateApiToken() {
           <TransitionGroup>
             <CSSTransition
               timeout={500}
-              key={`${apiTokenCreated}`}
+              key={`${dataAddToken?.addApiToken?.id}`}
               classNames={{
                 enter: styles.enter,
               }}
             >
               <>
-                {apiTokenCreated && (
+                {dataAddToken?.addApiToken && (
                   <div className={styles.resultWrapper}>
                     <p className={styles.infoMessage}>
                       API Token cannot be accessed after it has been generated,
@@ -183,7 +149,9 @@ function GenerateApiToken() {
                         {renderCopyMessage()}
                       </p>
                       <span className={styles.label}>YOUR NEW TOKEN</span>
-                      <div className={styles.tokenValue}>{token}</div>
+                      <div className={styles.tokenValue}>
+                        {dataAddToken.addApiToken.token}
+                      </div>
                       <Button
                         label="COPY YOUR TOKEN TO YOUR CLIPBOARD"
                         className={styles.copyButton}

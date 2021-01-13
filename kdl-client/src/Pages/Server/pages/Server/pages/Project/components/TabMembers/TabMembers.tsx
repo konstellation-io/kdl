@@ -1,9 +1,4 @@
 import {
-  AddMembers,
-  AddMembersVariables,
-  AddMembers_addMembers,
-} from 'Graphql/mutations/types/AddMembers';
-import {
   Button,
   ErrorMessage,
   SearchSelect,
@@ -16,17 +11,16 @@ import {
   GetProjectMembers_project_members,
 } from 'Graphql/queries/types/GetProjectMembers';
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
 
 import { GetUsers } from 'Graphql/queries/types/GetUsers';
 import Member from './components/Member/Member';
 import { loader } from 'graphql.macro';
-import { mutationPayloadHelper } from 'Utils/formUtils';
 import styles from './TabMembers.module.scss';
+import useMember from 'Graphql/hooks/useMember';
+import { useQuery } from '@apollo/client';
 
 const GetUsersQuery = loader('Graphql/queries/getUsers.graphql');
 const GetMembersQuery = loader('Graphql/queries/getProjectMembers.graphql');
-const AddMembersMutation = loader('Graphql/mutations/addMembers.graphql');
 
 type Props = {
   projectId: string;
@@ -37,39 +31,9 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
   const [memberSelection, setMemberSelection] = useState<string[]>([]);
   const [error, setError] = useState<string>('');
 
-  const [addMembers] = useMutation<AddMembers, AddMembersVariables>(
-    AddMembersMutation,
-    {
-      onCompleted: () => setMemberSelection([]),
-      onError: (e) => console.error(`addMembers: ${e}`),
-      update: (cache, { data }) => {
-        const newMembers = data?.addMembers as AddMembers_addMembers[];
-        const cacheResult = cache.readQuery<GetProjectMembers>({
-          variables: {
-            id: projectId,
-          },
-          query: GetMembersQuery,
-        });
-
-        if (cacheResult !== null) {
-          const { project } = cacheResult;
-
-          cache.writeQuery({
-            query: GetMembersQuery,
-            variables: {
-              id: projectId,
-            },
-            data: {
-              project: {
-                ...project,
-                members: [...project.members, ...newMembers],
-              },
-            },
-          });
-        }
-      },
-    }
-  );
+  const { addMembersById } = useMember(projectId, {
+    onCompleteAdd: () => setMemberSelection([]),
+  });
 
   const {
     data: dataUsers,
@@ -112,12 +76,7 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
       const emailToId = Object.fromEntries(
         dataUsers.users.map((user) => [user.email, user.id])
       );
-      addMembers(
-        mutationPayloadHelper({
-          projectId,
-          memberIds: memberSelection.map((member) => emailToId[member]),
-        })
-      );
+      addMembersById(memberSelection.map((member) => emailToId[member]));
     }
   }
 

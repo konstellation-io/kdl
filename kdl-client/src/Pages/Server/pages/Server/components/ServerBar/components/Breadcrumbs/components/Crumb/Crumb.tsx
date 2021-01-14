@@ -40,7 +40,7 @@ function Crumb({
       {RightIconComponent && (
         <RightIconComponent
           className={cx(styles.rightIcon, 'icon-regular', {
-            [styles.rightIconOpened]: showComponent,
+            [styles.opened]: showComponent,
           })}
         />
       )}

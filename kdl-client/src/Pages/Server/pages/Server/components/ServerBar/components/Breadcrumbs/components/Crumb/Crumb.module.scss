@@ -26,7 +26,7 @@
     margin-left: 2 * $grid-unit;
     transition: transform ease 0.3s;
   }
-  .rightIconOpened {
+  .opened {
     transform: scaleY(-1);
   }
 }

@@ -10,8 +10,12 @@ type Props = {
 
 const ArrowsNavigator: FC<Props> = ({ onBackClick, onForwardClick }) => (
   <div className={styles.container}>
-    <ArrowBack className="icon-small" onClick={onBackClick} />
-    <ArrowForward className="icon-small" onClick={onForwardClick} />
+    <div className={styles.arrowNavigator} onClick={onBackClick}>
+      <ArrowBack className="icon-small" />
+    </div>
+    <div className={styles.arrowNavigator} onClick={onForwardClick}>
+      <ArrowForward className="icon-small" />
+    </div>
   </div>
 );
 

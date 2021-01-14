@@ -1,0 +1,21 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.container {
+  z-index: 3;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    .project {
+      @include font-body;
+      color: font-color(lowlight);
+      padding: $grid-unit;
+      &.selectedProject {
+        background-color: palette(highlight);
+        color: font-color(grey);
+      }
+    }
+  }
+}

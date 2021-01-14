@@ -1,0 +1,7 @@
+@import 'Styles/variables';
+@import 'Styles/mixins';
+@import 'Styles/colors';
+
+.projectState {
+  @include make-project-icon(2 * $grid-unit, palette(success));
+}

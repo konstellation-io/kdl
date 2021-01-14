@@ -6,15 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  svg {
-    color: palette(lowlight, 200);
-    &:last-child {
-      margin-left: 2.5 * $grid-unit;
-    }
-    &:hover {
-      color: font-color(light);
-    }
-  }
   & > div {
     margin-left: 2 * $grid-unit;
     &:not(:last-child):after {

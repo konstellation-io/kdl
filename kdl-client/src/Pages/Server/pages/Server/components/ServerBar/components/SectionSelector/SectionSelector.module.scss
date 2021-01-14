@@ -8,9 +8,17 @@
     padding: 0;
     margin: 0;
     .section {
+      display: flex;
+      align-items: center;
       @include font-body;
       color: font-color(lowlight);
       padding: $grid-unit;
+      .icon {
+        margin-left: 0;
+      }
+      .label {
+        margin-left: $grid-unit;
+      }
       &.selectedSection {
         background-color: palette(highlight);
         color: font-color(grey);

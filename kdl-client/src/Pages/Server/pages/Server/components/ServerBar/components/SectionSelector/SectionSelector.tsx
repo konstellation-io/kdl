@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styles from './SectionSelector.module.scss';
-import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import { enhancedRouteConfiguration } from 'Hooks/useProjectNavigation';

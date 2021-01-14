@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Crumb.module.scss';
 import AnimateHeight from 'react-animate-height';
 import { useClickOutside } from 'kwc';
 import cx from 'classnames';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
-import { SvgIconTypeMap } from '@material-ui/core';
 
 export type CrumbProps = {
   crumbText: string;

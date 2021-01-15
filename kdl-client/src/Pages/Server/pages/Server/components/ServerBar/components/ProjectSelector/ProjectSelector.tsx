@@ -18,12 +18,11 @@ const ProjectSelector: FC<Props> = ({
   <div className={styles.container}>
     <ul>
       {options.map(({ id, name }: GetProjects_projects) => (
-        <Link to={buildRoute.project(ROUTE.PROJECT, serverId, id)}>
+        <Link to={buildRoute.project(ROUTE.PROJECT, serverId, id)} key={id}>
           <li
             className={cx(styles.project, {
               [styles.selectedProject]: id === selectedProjectId,
             })}
-            key={id}
           >
             {name}
           </li>

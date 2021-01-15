@@ -14,13 +14,12 @@ const SectionSelector: FC<Props> = ({ options, selectedSection }) => (
       {options.map((option: enhancedRouteConfiguration) => {
         const Icon = option.icon;
         return (
-          <Link to={option.to}>
+          <Link to={option.to} key={option.id}>
             <li
               className={cx(styles.section, {
                 [styles.selectedSection]:
                   option.label.toLowerCase() === selectedSection.toLowerCase(),
               })}
-              key={option.id}
             >
               <Icon className={cx('icon-regular', styles.icon)} />
               <span className={styles.label}>{option.label}</span>

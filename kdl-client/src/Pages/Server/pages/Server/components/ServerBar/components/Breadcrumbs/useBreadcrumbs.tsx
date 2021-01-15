@@ -80,8 +80,8 @@ function useBreadcrumbs() {
     const projectRoute: routeConfiguration | undefined = Object.values(
       projectRoutesConfiguration
     ).find(
-      (routeConfiguration) =>
-        routeConfiguration.label.toLowerCase() === lastParam.toLowerCase()
+      (configuration) =>
+        configuration.label.toLowerCase() === lastParam.toLowerCase()
     );
     if (projectRoute) {
       crumbs.push({

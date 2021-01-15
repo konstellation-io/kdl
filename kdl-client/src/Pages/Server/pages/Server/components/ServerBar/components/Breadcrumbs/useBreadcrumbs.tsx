@@ -79,10 +79,8 @@ function useBreadcrumbs() {
     const lastParam: string = location.pathname.split('/').pop() || '';
     const projectRoute: routeConfiguration | undefined = Object.values(
       projectRoutesConfiguration
-    ).find(
-      (configuration) =>
-        configuration.label.toLowerCase() === lastParam.toLowerCase()
-    );
+    ).find(({ label }) => label.toLowerCase() === lastParam.toLowerCase());
+
     if (projectRoute) {
       crumbs.push({
         crumbText: projectRoute.label,

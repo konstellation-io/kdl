@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectSelector component should render without crashing 1`] = `
+<div
+  className="container"
+>
+  <ul>
+    <Link
+      key="foo"
+      to="/server/bar/project/foo"
+    >
+      <li
+        className="project selectedProject"
+      >
+        bar
+      </li>
+    </Link>
+  </ul>
+</div>
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionSelector component should render without crashing 1`] = `
+<div
+  className="container"
+>
+  <ul>
+    <Link
+      key="foo"
+      to="bar"
+    >
+      <li
+        className="section"
+      >
+        <DashboardIcon
+          className="icon-regular icon"
+        />
+        <span
+          className="label"
+        >
+          foo
+        </span>
+      </li>
+    </Link>
+  </ul>
+</div>
+`;

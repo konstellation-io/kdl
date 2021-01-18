@@ -5,24 +5,4 @@
 .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  .arrowNavigator {
-    height: 100%;
-    width: 3 * $grid-unit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    &:last-child {
-      margin-left: $grid-unit;
-    }
-    &:hover {
-      & > svg {
-        color: font-color(light);
-      }
-    }
-    svg {
-      color: palette(lowlight, 200);
-    }
-  }
 }

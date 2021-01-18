@@ -16,9 +16,8 @@ import {
   GetOpenedProject,
 } from 'Graphql/client/queries/getOpenedProject.graphql';
 import useProjectNavigation, {
-  enhancedRouteConfiguration,
+  EnhancedRouteConfiguration,
   projectRoutesConfiguration,
-  routeConfiguration,
 } from 'Hooks/useProjectNavigation';
 import ProjectSelector from '../ProjectSelector/ProjectSelector';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
@@ -30,9 +29,22 @@ function useBreadcrumbs() {
   const crumbs: CrumbProps[] = [];
   const routeMatch = useRouteMatch(ROUTE.PROJECT);
   const location = useLocation();
-  const { data: projectsData } = useQuery<GetProjects>(GetProjectsQuery);
-  const { data: projectData } = useQuery<GetOpenedProject>(GET_OPENED_PROJECT);
-  const { data: serverData } = useQuery<GetOpenedServer>(GET_OPENED_SERVER);
+  const {
+    data: projectsData,
+    loading: projectsLoading,
+    error: projectsError,
+  } = useQuery<GetProjects>(GetProjectsQuery);
+  const {
+    data: projectData,
+    loading: projectLoading,
+    error: projectError,
+  } = useQuery<GetOpenedProject>(GET_OPENED_PROJECT);
+  const {
+    data: serverData,
+    loading: serverLoading,
+    error: serverError,
+  } = useQuery<GetOpenedServer>(GET_OPENED_SERVER);
+
   const {
     name: serverName,
     id: serverId,
@@ -46,7 +58,7 @@ function useBreadcrumbs() {
     id: '',
     name: '',
   };
-  const projectSections: enhancedRouteConfiguration[] = useProjectNavigation(
+  const projectSections: EnhancedRouteConfiguration[] = useProjectNavigation(
     serverId,
     openedProject.id
   );
@@ -55,7 +67,7 @@ function useBreadcrumbs() {
   crumbs.push({
     crumbText: serverName,
     LeftIconComponent: ServerIcon,
-    bottomComponent: (
+    BottomComponent: (
       <ServerMetrics serverUrl={serverUrl || ''} serverId={serverId} />
     ),
   });
@@ -66,7 +78,7 @@ function useBreadcrumbs() {
     crumbs.push({
       crumbText: openedProject.name,
       LeftIconComponent: ProjectIcon,
-      bottomComponent: (
+      BottomComponent: (
         <ProjectSelector
           options={projectsData?.projects || []}
           selectedProjectId={openedProject.id}
@@ -77,16 +89,16 @@ function useBreadcrumbs() {
 
     // Add crumb for the section
     const lastParam: string = location.pathname.split('/').pop() || '';
-    const projectRoute: routeConfiguration | undefined = Object.values(
-      projectRoutesConfiguration
-    ).find(({ label }) => label.toLowerCase() === lastParam.toLowerCase());
+    const projectRoute = Object.values(projectRoutesConfiguration).find(
+      ({ label }) => label.toLowerCase() === lastParam.toLowerCase()
+    );
 
     if (projectRoute) {
       crumbs.push({
         crumbText: projectRoute.label,
-        LeftIconComponent: projectRoute.icon,
+        LeftIconComponent: projectRoute.Icon,
         RightIconComponent: ExpandMoreIcon,
-        bottomComponent: (
+        BottomComponent: (
           <SectionSelector
             options={projectSections}
             selectedSection={lastParam}

@@ -48,9 +48,9 @@ function ProjectNavigation({ toggleSettings }: Props) {
   return (
     <div className={cx(styles.container, { [styles.opened]: opened })}>
       <div className={styles.top}>
-        {projectRoutes.map((route) => (
-          <NavButtonLink to={route.to} key={route.id}>
-            <NavigationButton label={route.label} Icon={route.icon} />
+        {projectRoutes.map(({ Icon, label, to }) => (
+          <NavButtonLink to={to} key={label}>
+            <NavigationButton label={label} Icon={Icon} />
           </NavButtonLink>
         ))}
       </div>

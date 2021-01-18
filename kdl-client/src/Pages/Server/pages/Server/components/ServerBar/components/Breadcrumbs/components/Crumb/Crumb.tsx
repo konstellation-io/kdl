@@ -8,24 +8,24 @@ export type CrumbProps = {
   crumbText: string;
   LeftIconComponent: any;
   RightIconComponent?: any;
-  bottomComponent: React.ReactElement;
+  BottomComponent: React.ReactElement;
 };
 
 function Crumb({
   crumbText,
   LeftIconComponent,
   RightIconComponent,
-  bottomComponent,
+  BottomComponent,
 }: CrumbProps) {
-  const crumbReference = useRef(null);
+  const crumbRef = useRef(null);
   const [showComponent, setShowComponent] = useState(false);
   const { addClickOutsideEvents, removeClickOutsideEvents } = useClickOutside({
-    componentRef: crumbReference,
+    componentRef: crumbRef,
     action: () => setShowComponent(false),
   });
 
   useEffect(() => {
-    if (crumbReference && showComponent) addClickOutsideEvents();
+    if (crumbRef && showComponent) addClickOutsideEvents();
     else removeClickOutsideEvents();
   }, [showComponent, addClickOutsideEvents, removeClickOutsideEvents]);
 
@@ -33,9 +33,9 @@ function Crumb({
     <div
       className={styles.container}
       onClick={() => setShowComponent(!showComponent)}
-      ref={crumbReference}
+      ref={crumbRef}
     >
-      <LeftIconComponent className={'icon-regular'} />
+      <LeftIconComponent className="icon-regular" />
       <span className={styles.crumbText}>{crumbText}</span>
       {RightIconComponent && (
         <RightIconComponent
@@ -49,7 +49,7 @@ function Crumb({
         duration={300}
         className={styles.content}
       >
-        {bottomComponent}
+        {BottomComponent}
       </AnimateHeight>
     </div>
   );

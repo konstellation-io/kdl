@@ -2,31 +2,28 @@ import React, { FC } from 'react';
 import styles from './SectionSelector.module.scss';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import { enhancedRouteConfiguration } from 'Hooks/useProjectNavigation';
+import { EnhancedRouteConfiguration } from 'Hooks/useProjectNavigation';
 
 type Props = {
-  options: enhancedRouteConfiguration[];
+  options: EnhancedRouteConfiguration[];
   selectedSection: string;
 };
 const SectionSelector: FC<Props> = ({ options, selectedSection }) => (
   <div className={styles.container}>
     <ul>
-      {options.map((option: enhancedRouteConfiguration) => {
-        const Icon = option.icon;
-        return (
-          <Link to={option.to} key={option.id}>
-            <li
-              className={cx(styles.section, {
-                [styles.selectedSection]:
-                  option.label.toLowerCase() === selectedSection.toLowerCase(),
-              })}
-            >
-              <Icon className={cx('icon-regular', styles.icon)} />
-              <span className={styles.label}>{option.label}</span>
-            </li>
-          </Link>
-        );
-      })}
+      {options.map(({ to, Icon, label }) => (
+        <Link to={to} key={label}>
+          <li
+            className={cx(styles.section, {
+              [styles.selectedSection]:
+                label.toLowerCase() === selectedSection.toLowerCase(),
+            })}
+          >
+            <Icon className={cx('icon-regular', styles.icon)} />
+            <span className={styles.label}>{label}</span>
+          </li>
+        </Link>
+      ))}
     </ul>
   </div>
 );

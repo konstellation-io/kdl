@@ -5,41 +5,38 @@ import IconSettings from '@material-ui/icons/Settings';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
 
-export interface routeConfiguration {
+export interface RouteConfiguration {
   label: string;
-  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
-}
-interface projectRouteConfiguration {
-  [key: string]: routeConfiguration;
+  Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
 }
 
-export const projectRoutesConfiguration: projectRouteConfiguration = {
+export const projectRoutesConfiguration: {
+  [key: string]: RouteConfiguration;
+} = {
   [ROUTE.PROJECT_OVERVIEW]: {
     label: 'Overview',
-    icon: IconHome,
+    Icon: IconHome,
   },
   [ROUTE.PROJECT_TOOLS]: {
     label: 'Tools',
-    icon: IconSettings,
+    Icon: IconSettings,
   },
 };
 
-export interface enhancedRouteConfiguration extends routeConfiguration {
+export interface EnhancedRouteConfiguration extends RouteConfiguration {
   to: string;
-  id: string;
 }
 
 function useProjectNavigation(serverId: string, projectId: string) {
-  const routesConfigurations: enhancedRouteConfiguration[] = useMemo(
+  const routesConfigurations: EnhancedRouteConfiguration[] = useMemo(
     () =>
       Object.entries(projectRoutesConfiguration).map(
-        ([routeString, routeConfiguration]) => {
+        ([routeString, { label, Icon }]) => {
           const route = routeString as ROUTE;
           return {
-            id: `${projectId}-${routeConfiguration.label}`,
             to: buildRoute.project(route, serverId, projectId),
-            label: routeConfiguration.label,
-            icon: routeConfiguration.icon,
+            label,
+            Icon,
           };
         }
       ),

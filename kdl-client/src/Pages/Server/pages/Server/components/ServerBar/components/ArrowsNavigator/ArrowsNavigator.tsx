@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styles from './ArrowsNavigator.module.scss';
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
 import ArrowForward from '@material-ui/icons/ArrowForwardIos';
+import { Button } from 'kwc';
 
 type Props = {
   onBackClick: () => void;
@@ -10,12 +11,8 @@ type Props = {
 
 const ArrowsNavigator: FC<Props> = ({ onBackClick, onForwardClick }) => (
   <div className={styles.container}>
-    <div className={styles.arrowNavigator} onClick={onBackClick}>
-      <ArrowBack className="icon-small" />
-    </div>
-    <div className={styles.arrowNavigator} onClick={onForwardClick}>
-      <ArrowForward className="icon-small" />
-    </div>
+    <Button label="" Icon={ArrowBack} onClick={onBackClick} />
+    <Button label="" Icon={ArrowForward} onClick={onForwardClick} />
   </div>
 );
 

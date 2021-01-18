@@ -8,13 +8,7 @@ function Breadcrumbs() {
   return (
     <div className={styles.container}>
       {crumbs.map((crumb, index) => (
-        <Crumb
-          key={index}
-          LeftIconComponent={crumb.LeftIconComponent}
-          RightIconComponent={crumb.RightIconComponent}
-          crumbText={crumb.crumbText}
-          bottomComponent={crumb.bottomComponent}
-        />
+        <Crumb {...crumb} key={index} />
       ))}
     </div>
   );

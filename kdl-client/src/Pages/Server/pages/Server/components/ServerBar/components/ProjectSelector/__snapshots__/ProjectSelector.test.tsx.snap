@@ -16,5 +16,22 @@ exports[`ProjectSelector component should render without crashing 1`] = `
       </li>
     </Link>
   </ul>
+  <P
+    Icon={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "compare": null,
+        "displayName": "AddIcon",
+        "muiName": "SvgIcon",
+        "type": Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+      }
+    }
+    className="addProjectButton"
+    label="NEW PROJECT"
+    to="/server/bar/new-project"
+  />
 </div>
 `;

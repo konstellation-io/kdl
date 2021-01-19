@@ -8,7 +8,7 @@ const BottomComponent = <div>bar</div>;
 const crumbProps: CrumbProps = {
   crumbText: 'foo',
   BottomComponent,
-  LeftIconComponent: IconHome,
+  LeftIconComponent: <IconHome />,
 };
 
 let component;
@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 
 describe('Crumb component', () => {
-  it('should render without crashing', function () {
+  it('should render without crashing', () => {
     expect(component).toMatchSnapshot();
   });
 

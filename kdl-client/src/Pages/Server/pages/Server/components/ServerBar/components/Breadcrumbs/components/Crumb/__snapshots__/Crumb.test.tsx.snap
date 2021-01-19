@@ -5,9 +5,7 @@ exports[`Crumb component should render without crashing 1`] = `
   className="container"
   onClick={[Function]}
 >
-  <DashboardIcon
-    className="icon-regular"
-  />
+  <DashboardIcon />
   <span
     className="crumbText"
   >

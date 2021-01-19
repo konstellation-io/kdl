@@ -18,7 +18,7 @@ exports[`CheckLocalServerRequirements page Component match snapshot 1`] = `
       />,
     ]
   }
-  subtitle="Konstellation Server is based on Kubernetes. Kubernetes can run in almost any platform. The local server installation is checking if everything is ready to start the installation."
+  subtitle="Intalling a local server allows the user to create fully functional KDL proyects. You can stop the server at any time to free up resources."
   title="Install local Server"
 >
   <div
@@ -32,7 +32,7 @@ exports[`CheckLocalServerRequirements page Component match snapshot 1`] = `
     <p
       className="description"
     >
-      In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit eget elit facilisis tristique. Nam vel iaculis mauris. Sed ullamcorper tellus.
+      Before installing the local Server in your machine, some checks must be done. Installation will be done within a Kubernetes environment and may require the installation of different tools.
     </p>
     <CheckLocalRequirements
       setChecksState={[Function]}

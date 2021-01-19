@@ -6,7 +6,7 @@ import cx from 'classnames';
 
 export type CrumbProps = {
   crumbText: string;
-  LeftIconComponent: any;
+  LeftIconComponent: React.ReactElement;
   RightIconComponent?: any;
   BottomComponent: React.ReactElement;
 };
@@ -35,7 +35,7 @@ function Crumb({
       onClick={() => setShowComponent(!showComponent)}
       ref={crumbRef}
     >
-      <LeftIconComponent className="icon-regular" />
+      {LeftIconComponent}
       <span className={styles.crumbText}>{crumbText}</span>
       {RightIconComponent && (
         <RightIconComponent

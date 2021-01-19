@@ -4,6 +4,8 @@ import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import ROUTE, { buildRoute } from 'Constants/routes';
+import { Button } from 'kwc';
+import IconAdd from '@material-ui/icons/Add';
 
 type Props = {
   options: GetProjects_projects[];
@@ -29,6 +31,12 @@ const ProjectSelector: FC<Props> = ({
         </Link>
       ))}
     </ul>
+    <Button
+      Icon={IconAdd}
+      label="NEW PROJECT"
+      className={styles.addProjectButton}
+      to={buildRoute.server(ROUTE.NEW_PROJECT, serverId)}
+    />
   </div>
 );
 export default ProjectSelector;

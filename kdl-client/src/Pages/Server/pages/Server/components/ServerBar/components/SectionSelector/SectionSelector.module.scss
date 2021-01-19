@@ -3,10 +3,14 @@
 @import 'Styles/colors';
 
 .container {
+  background-color: palette(base, 700);
+  border-bottom-left-radius: $grid-unit / 2;
+  border-bottom-right-radius: $grid-unit / 2;
+  padding: 0 $grid-unit / 2 $grid-unit / 2 $grid-unit / 2;
   ul {
     list-style-type: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     .section {
       display: flex;
       align-items: center;
@@ -20,8 +24,8 @@
         margin-left: $grid-unit;
       }
       &.selectedSection {
-        background-color: palette(highlight);
-        color: font-color(grey);
+        //background-color: palette(highlight);
+        //color: font-color(grey);
       }
     }
   }

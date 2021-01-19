@@ -7,7 +7,9 @@ import {
 } from 'Graphql/client/queries/getOpenedServer.graphql';
 import React from 'react';
 import ServerIcon from 'Components/Icons/ServerIcon/ServerIcon';
+import ServerIconStyle from 'Components/Icons/ServerIcon/ServerIcon.module.scss';
 import ProjectIcon from 'Components/Icons/ProjectIcon/ProjectIcon';
+import ProjectIconStyle from 'Components/Icons/ProjectIcon/ProjectIcon.module.scss';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ServerMetrics from 'Pages/Server/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
 import { CrumbProps } from 'Pages/Server/pages/Server/components/ServerBar/components/Breadcrumbs/components/Crumb/Crumb';
@@ -23,6 +25,7 @@ import ProjectSelector from '../ProjectSelector/ProjectSelector';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import { loader } from 'graphql.macro';
 import SectionSelector from '../SectionSelector/SectionSelector';
+import cx from 'classnames';
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
 function useBreadcrumbs() {
@@ -49,14 +52,17 @@ function useBreadcrumbs() {
     name: serverName,
     id: serverId,
     url: serverUrl,
+    state: serverState,
   } = serverData?.openedServer || {
     name: '',
     id: '',
     url: '',
+    state: '',
   };
   const openedProject = projectData?.openedProject || {
     id: '',
     name: '',
+    state: '',
   };
   const projectSections: EnhancedRouteConfiguration[] = useProjectNavigation(
     serverId,
@@ -66,7 +72,9 @@ function useBreadcrumbs() {
   // Add server crumb
   crumbs.push({
     crumbText: serverName,
-    LeftIconComponent: ServerIcon,
+    LeftIconComponent: (
+      <ServerIcon className={cx('icon-small', ServerIconStyle[serverState])} />
+    ),
     BottomComponent: (
       <ServerMetrics serverUrl={serverUrl || ''} serverId={serverId} />
     ),
@@ -77,7 +85,11 @@ function useBreadcrumbs() {
     // Add crumb for the project
     crumbs.push({
       crumbText: openedProject.name,
-      LeftIconComponent: ProjectIcon,
+      LeftIconComponent: (
+        <ProjectIcon
+          className={cx('icon-small', ProjectIconStyle[openedProject.state])}
+        />
+      ),
       BottomComponent: (
         <ProjectSelector
           options={projectsData?.projects || []}
@@ -94,9 +106,10 @@ function useBreadcrumbs() {
     );
 
     if (projectRoute) {
+      const { label: crumbText, Icon } = projectRoute;
       crumbs.push({
-        crumbText: projectRoute.label,
-        LeftIconComponent: projectRoute.Icon,
+        crumbText,
+        LeftIconComponent: <Icon className="icon-small" />,
         RightIconComponent: ExpandMoreIcon,
         BottomComponent: (
           <SectionSelector

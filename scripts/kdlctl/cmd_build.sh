@@ -2,6 +2,7 @@
 
 CLEAN_DOCKER=0
 SETUP_ENV=0
+BUILD_SERVER=0
 
 cmd_build() {
   # NOTE: Use this loop to capture multiple unsorted args
@@ -60,7 +61,7 @@ setup_env() {
 
 build_server() {
   setup_env
-  build_image admin-api kdl-server/admin-api
+  build_image kdl-admin-api kdl-server/admin-api
 }
 
 build_image() {

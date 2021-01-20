@@ -3,11 +3,13 @@ import styles from './Crumb.module.scss';
 import AnimateHeight from 'react-animate-height';
 import { useClickOutside } from 'kwc';
 import cx from 'classnames';
+import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+import { SvgIconTypeMap } from '@material-ui/core';
 
 export type CrumbProps = {
   crumbText: string;
   LeftIconComponent: React.ReactElement;
-  RightIconComponent?: any;
+  RightIconComponent?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
   BottomComponent: React.ReactElement;
 };
 

@@ -7,9 +7,7 @@ import {
 } from 'Graphql/client/queries/getOpenedServer.graphql';
 import React from 'react';
 import ServerIcon from 'Components/Icons/ServerIcon/ServerIcon';
-import ServerIconStyle from 'Components/Icons/ServerIcon/ServerIcon.module.scss';
 import ProjectIcon from 'Components/Icons/ProjectIcon/ProjectIcon';
-import ProjectIconStyle from 'Components/Icons/ProjectIcon/ProjectIcon.module.scss';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ServerMetrics from 'Pages/Server/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
 import { CrumbProps } from 'Pages/Server/pages/Server/components/ServerBar/components/Breadcrumbs/components/Crumb/Crumb';
@@ -48,52 +46,48 @@ function useBreadcrumbs() {
     error: serverError,
   } = useQuery<GetOpenedServer>(GET_OPENED_SERVER);
 
+  const projectSections: EnhancedRouteConfiguration[] = useProjectNavigation(
+    serverData?.openedServer?.id || '',
+    projectData?.openedProject?.id || ''
+  );
+
+  const loading = projectLoading || projectsLoading || serverLoading;
+  const error = projectError || projectsError || serverError;
+
+  if (loading || !projectsData || !serverData?.openedServer)
+    return { loading, crumbs };
+  if (error) throw Error('cannot retrieve data at useBreadcrumbs');
+
   const {
     name: serverName,
     id: serverId,
     url: serverUrl,
     state: serverState,
-  } = serverData?.openedServer || {
-    name: '',
-    id: '',
-    url: '',
-    state: '',
-  };
-  const openedProject = projectData?.openedProject || {
-    id: '',
-    name: '',
-    state: '',
-  };
-  const projectSections: EnhancedRouteConfiguration[] = useProjectNavigation(
-    serverId,
-    openedProject.id
-  );
+  } = serverData.openedServer;
+  const openedProject = projectData?.openedProject;
 
   // Add server crumb
   crumbs.push({
     crumbText: serverName,
     LeftIconComponent: (
-      <ServerIcon className={cx('icon-small', ServerIconStyle[serverState])} />
+      <ServerIcon className="icon-small" state={serverState} />
     ),
     BottomComponent: (
-      <ServerMetrics serverUrl={serverUrl || ''} serverId={serverId} />
+      <ServerMetrics serverUrl={serverUrl} serverId={serverId} />
     ),
   });
 
   // Check if we are in a project
   if (routeMatch && openedProject) {
     // Add crumb for the project
+    const { name, state, id } = openedProject;
     crumbs.push({
-      crumbText: openedProject.name,
-      LeftIconComponent: (
-        <ProjectIcon
-          className={cx('icon-small', ProjectIconStyle[openedProject.state])}
-        />
-      ),
+      crumbText: name,
+      LeftIconComponent: <ProjectIcon className="icon-small" state={state} />,
       BottomComponent: (
         <ProjectSelector
-          options={projectsData?.projects || []}
-          selectedProjectId={openedProject.id}
+          options={projectsData.projects}
+          selectedProjectId={id}
           serverId={serverId}
         />
       ),

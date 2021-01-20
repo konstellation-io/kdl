@@ -61,16 +61,18 @@ const metrics: Metric[] = [
 
 type Props = {
   serverId: string;
-  serverUrl: string;
+  serverUrl?: string;
 };
 
 const ServerMetrics: FC<Props> = ({ serverUrl, serverId }) => (
   <div className={styles.container}>
-    <div className={styles.serverUrl}>
-      <span className={styles.label}>SERVER URL</span>
-      <span className={styles.url}>{serverUrl}</span>
-      <CopyToClipboard>{serverUrl}</CopyToClipboard>
-    </div>
+    {serverUrl && (
+      <div className={styles.serverUrl}>
+        <span className={styles.label}>SERVER URL</span>
+        <span className={styles.url}>{serverUrl}</span>
+        <CopyToClipboard>{serverUrl}</CopyToClipboard>
+      </div>
+    )}
     <div className={styles.charts}>
       {metrics.map((metric) => (
         <MetricChart key={metric.label} {...metric} />

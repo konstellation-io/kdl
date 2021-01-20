@@ -31,14 +31,11 @@ function useProjectNavigation(serverId: string, projectId: string) {
   const routesConfigurations: EnhancedRouteConfiguration[] = useMemo(
     () =>
       Object.entries(projectRoutesConfiguration).map(
-        ([routeString, { label, Icon }]) => {
-          const route = routeString as ROUTE;
-          return {
-            to: buildRoute.project(route, serverId, projectId),
-            label,
-            Icon,
-          };
-        }
+        ([routeString, { label, Icon }]) => ({
+          to: buildRoute.project(routeString as ROUTE, serverId, projectId),
+          label,
+          Icon,
+        })
       ),
     [serverId, projectId]
   );

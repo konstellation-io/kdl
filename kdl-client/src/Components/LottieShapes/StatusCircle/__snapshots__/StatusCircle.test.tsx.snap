@@ -10,7 +10,7 @@ exports[`StatusCircle component Component match snapshot 1`] = `
     }
   }
 >
-  <w
+  <E
     forceSegments={true}
     height={40}
     options={

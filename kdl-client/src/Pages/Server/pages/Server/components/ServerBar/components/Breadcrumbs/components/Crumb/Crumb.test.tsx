@@ -41,9 +41,9 @@ describe('Crumb component', () => {
     it('should hide the bottom component when double click on crumb', () => {
       // Arrange.
       const heightBeforeClick = component.find(AnimateHeight).props().height;
-      component.find('.container').simulate('click');
 
       // Act.
+      component.find('.container').simulate('click');
       component.find('.container').simulate('click');
 
       // Assert.

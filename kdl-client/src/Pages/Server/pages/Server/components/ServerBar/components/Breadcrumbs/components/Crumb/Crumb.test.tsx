@@ -22,7 +22,7 @@ describe('Crumb component', () => {
   });
 
   describe('behavior', () => {
-    it('should show the bottom component if click on crumb', () => {
+    it('should show the bottom component when click on crumb', () => {
       // Arrange.
       const container = component.find('.container');
       const contentProps = component.find(AnimateHeight).props();
@@ -38,7 +38,7 @@ describe('Crumb component', () => {
       expect(heightAfterClick).toBe('auto');
     });
 
-    it('should hide the bottom component if double click on crumb', () => {
+    it('should hide the bottom component when double click on crumb', () => {
       // Arrange.
       const heightBeforeClick = component.find(AnimateHeight).props().height;
       component.find('.container').simulate('click');

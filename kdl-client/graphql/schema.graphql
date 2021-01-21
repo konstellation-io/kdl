@@ -25,7 +25,7 @@ type Mutation {
 }
 
 type QualityProjectDesc {
-  quality: Number
+  quality: Float
 }
 
 type KnowledgeGraph {
@@ -38,7 +38,7 @@ type KnowledgeGraphItem {
   title: String!
   abstract: String!
   authors: [String!]!
-  score: Number!
+  score: Float!
   date: String!
   url: String!
 

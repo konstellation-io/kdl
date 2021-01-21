@@ -1,5 +1,0 @@
-mutation RemoveMember($input: RemoveMemberInput!) {
-  removeMember(input: $input) {
-    id
-  }
-}

@@ -8,6 +8,7 @@ import { UserSelection, UserSettings } from './models/UserSettings';
 
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import { NewProject } from './models/NewProject';
+import { OpenedPanel } from './models/OpenedPanel';
 import { Server } from 'Hooks/useServers';
 
 export const initialProjectFilters: ProjectFilters = {
@@ -63,6 +64,8 @@ export const newProject = makeVar(initialNewProject);
 export const openedServer = makeVar<Server | null>(null);
 export const openedProject = makeVar<GetProjects_projects | null>(null);
 export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
+export const projectPrimaryPanel = makeVar<OpenedPanel | null>(null);
+export const projectSecondaryPanel = makeVar<OpenedPanel | null>(null);
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -73,6 +76,8 @@ const cache = new InMemoryCache({
         openedServer: { read: () => openedServer() },
         openedProject: { read: () => openedProject() },
         userSettings: { read: () => userSettings() },
+        projectPrimaryPanel: { read: () => projectPrimaryPanel() },
+        projectSecondaryPanel: { read: () => projectSecondaryPanel() },
         projects: { merge: false },
         apiTokens: { merge: false },
         users: { merge: false },

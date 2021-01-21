@@ -1,10 +1,12 @@
+import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import React from 'react';
+import { SvgIconTypeMap } from '@material-ui/core';
 import cx from 'classnames';
 import styles from './ProjectNavigation.module.scss';
 
 type Props = {
   label: string;
-  Icon: any;
+  Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
 };
 
 function NavigationButton({ label, Icon }: Props) {

@@ -7,8 +7,11 @@ import IconHome from '@material-ui/icons/Dashboard';
 import IconSettings from '@material-ui/icons/Settings';
 import IconTools from 'Components/Icons/HomeRepairService';
 import NavigationButton from './NavigationButton';
+import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SpinnerCircular } from 'kwc';
+import { SvgIconTypeMap } from '@material-ui/core';
 import cx from 'classnames';
+import extensions from 'extensions/extensions';
 import styles from './ProjectNavigation.module.scss';
 import useWorkspace from 'Hooks/useWorkspace';
 
@@ -17,6 +20,24 @@ const NavButtonLink: FC<any> = ({ children, ...props }) => (
     {children}
   </NavLink>
 );
+
+export type NavigationData = {
+  route: string;
+  label: string;
+  Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
+};
+const navigationData: NavigationData[] = [
+  {
+    route: ROUTE.PROJECT_OVERVIEW,
+    label: 'OVERVIEW',
+    Icon: IconHome,
+  },
+  {
+    route: ROUTE.PROJECT_TOOLS,
+    label: 'TOOLS',
+    Icon: IconTools,
+  },
+];
 
 type Props = {
   toggleSettings: () => void;
@@ -43,21 +64,22 @@ function ProjectNavigation({ toggleSettings }: Props) {
   }
 
   const getRoute = useCallback(
-    (route: ROUTE) => buildRoute.project(route, serverId, projectId),
+    (route: string) => buildRoute.project(route as ROUTE, serverId, projectId),
     [serverId, projectId]
   );
 
   if (loading || !workspace?.project) return <SpinnerCircular />;
 
+  const navElements = navigationData.concat(extensions.getNavigationElements());
+
   return (
     <div className={cx(styles.container, { [styles.opened]: opened })}>
       <div className={styles.top}>
-        <NavButtonLink to={getRoute(ROUTE.PROJECT_OVERVIEW)}>
-          <NavigationButton label="OVERVIEW" Icon={IconHome} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.PROJECT_TOOLS)}>
-          <NavigationButton label="TOOLS" Icon={IconTools} />
-        </NavButtonLink>
+        {navElements.map(({ route, label, Icon }) => (
+          <NavButtonLink key={label} to={getRoute(route)}>
+            <NavigationButton label={label} Icon={Icon} />
+          </NavButtonLink>
+        ))}
       </div>
       <div className={styles.bottom}>
         <div onClick={toggleSettings}>
@@ -75,5 +97,12 @@ function ProjectNavigation({ toggleSettings }: Props) {
     </div>
   );
 }
+
+enum Foo {
+  FOO = 'FOO',
+  BAR = 'BAR',
+}
+
+const obj: { [key in keyof typeof Foo]: string } = { [Foo.FOO]: 'bar' };
 
 export default ProjectNavigation;

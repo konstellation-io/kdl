@@ -49,7 +49,8 @@
     }
 
     .serverState {
-      @include make-triangle(2 * $grid-unit, palette(success));
+      // @include make-triangle(2 * $grid-unit, palette(success));
+      @include make-project-icon(2 * $grid-unit, palette(success));
 
       margin-right: $grid-unit;
     }

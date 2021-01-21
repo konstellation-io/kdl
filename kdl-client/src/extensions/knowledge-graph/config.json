@@ -1,0 +1,27 @@
+{
+  "id": "knowledge-graph",
+  "name": "Knowledge Graph",
+  "icon": "./resources/logo-light.svg",
+  "navigation": {
+    "name": "KNOWLEDGE GRAPH",
+    "title": "Knowledge Graph",
+    "icon": "./resources/logo-light.svg",
+    "to": "/knowledge-graph"
+  },
+  "panels": [
+    {
+      "id": "knowledge-graph-results",
+      "level": 1
+    },
+    {
+      "id": "knowledge-graph-results-detail",
+      "level": 2
+    }
+  ],
+  "pages": [
+    {
+      "id": "knowledge-graph-exploration",
+      "route": "/knowledge-graph"
+    }
+  ]
+}

@@ -1,21 +1,31 @@
 @import 'Styles/variables';
 @import 'Styles/mixins';
 @import 'Styles/colors';
+@import 'Styles/shadows';
 
 .container {
-  box-shadow: 0 2px 24px 0 #060606;
+  @include shadow(2);
   ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
     background-color: palette(lowlight, 900);
     .project {
-      @include font-body;
-      color: font-color(light);
-      padding: $grid-unit;
+      .projectName {
+        @include font-body;
+        color: font-color(base);
+        padding: $grid-unit 2 * $grid-unit;
+        &:hover {
+          @include glow(2);
+          color: palette(base);
+          background-color: palette(highlight);
+        }
+      }
       &.selectedProject {
-        background-color: palette(highlight);
-        color: font-color(grey);
+        .projectName {
+          color: palette(base);
+          background-color: palette(highlight);
+        }
       }
     }
   }

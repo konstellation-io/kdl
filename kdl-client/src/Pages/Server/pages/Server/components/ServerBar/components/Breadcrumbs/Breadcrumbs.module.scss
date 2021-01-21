@@ -7,7 +7,10 @@
   align-items: center;
   justify-content: space-between;
   & > div {
-    margin-left: 2 * $grid-unit;
+    cursor: pointer;
+    &:hover {
+      background-color: palette(base, 400);
+    }
     &:not(:last-child):after {
       content: '/';
       margin-left: 2 * $grid-unit;

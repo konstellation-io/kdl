@@ -1,28 +1,36 @@
 import React, { FC } from 'react';
 import styles from './SectionSelector.module.scss';
-import { Link } from 'react-router-dom';
-import cx from 'classnames';
+import { NavLink, useLocation } from 'react-router-dom';
 import { EnhancedRouteConfiguration } from 'Hooks/useProjectNavigation';
+import { BottomComponentProps } from '../Breadcrumbs/components/Crumb/Crumb';
+import NavigationButton, {
+  IconSize,
+} from '../../../../pages/Project/components/ProjectNavigation/NavigationButton';
 
 type Props = {
   options: EnhancedRouteConfiguration[];
-  selectedSection: string;
 };
-const SectionSelector: FC<Props> = ({ options, selectedSection }) => (
+
+const SectionSelector: FC<Props & BottomComponentProps> = ({
+  options,
+  closeComponent,
+}) => (
   <div className={styles.container}>
     <ul>
       {options.map(({ to, Icon, label }) => (
-        <Link to={to} key={label}>
-          <li
-            className={cx(styles.section, {
-              [styles.selectedSection]:
-                label.toLowerCase() === selectedSection.toLowerCase(),
-            })}
-          >
-            <Icon className={cx('icon-regular', styles.icon)} />
-            <span className={styles.label}>{label}</span>
-          </li>
-        </Link>
+        <NavLink
+          to={to}
+          key={label}
+          activeClassName={styles.selectedSection}
+          className={styles.section}
+          onClick={closeComponent}
+        >
+          <NavigationButton
+            label={label}
+            Icon={Icon}
+            iconSize={IconSize.SMALL}
+          />
+        </NavLink>
       ))}
     </ul>
   </div>

@@ -7,13 +7,20 @@
   display: flex;
   align-items: center;
   height: 100%;
-  .crumbText {
-    @include font-body;
-    color: font-color(light);
-    margin-left: 2 * $grid-unit;
-  }
-  .crumbBar {
-    margin-left: 2 * $grid-unit;
+  padding-left: 2 * $grid-unit;
+  .crumbContainer {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .crumbText {
+      @include font-body;
+      color: font-color(light);
+      margin-left: $grid-unit;
+    }
+    .crumbBar {
+      margin-left: 2 * $grid-unit;
+    }
   }
   .content {
     position: absolute;

@@ -10,7 +10,10 @@ import ServerIcon from 'Components/Icons/ServerIcon/ServerIcon';
 import ProjectIcon from 'Components/Icons/ProjectIcon/ProjectIcon';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ServerMetrics from 'Pages/Server/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
-import { CrumbProps } from 'Pages/Server/pages/Server/components/ServerBar/components/Breadcrumbs/components/Crumb/Crumb';
+import {
+  BottomComponentProps,
+  CrumbProps,
+} from 'Pages/Server/pages/Server/components/ServerBar/components/Breadcrumbs/components/Crumb/Crumb';
 import {
   GET_OPENED_PROJECT,
   GetOpenedProject,
@@ -23,7 +26,6 @@ import ProjectSelector from '../ProjectSelector/ProjectSelector';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import { loader } from 'graphql.macro';
 import SectionSelector from '../SectionSelector/SectionSelector';
-import cx from 'classnames';
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
 function useBreadcrumbs() {
@@ -70,25 +72,25 @@ function useBreadcrumbs() {
   crumbs.push({
     crumbText: serverName,
     LeftIconComponent: (
-      <ServerIcon className="icon-small" state={serverState} />
+      <ServerIcon className="icon-regular" state={serverState} />
     ),
-    BottomComponent: (
-      <ServerMetrics serverUrl={serverUrl} serverId={serverId} />
+    BottomComponent: (props: BottomComponentProps) => (
+      <ServerMetrics serverUrl={serverUrl} serverId={serverId} {...props} />
     ),
   });
 
   // Check if we are in a project
   if (routeMatch && openedProject) {
     // Add crumb for the project
-    const { name, state, id } = openedProject;
+    const { name, state } = openedProject;
     crumbs.push({
       crumbText: name,
-      LeftIconComponent: <ProjectIcon className="icon-small" state={state} />,
-      BottomComponent: (
+      LeftIconComponent: <ProjectIcon className="icon-regular" state={state} />,
+      BottomComponent: (props: BottomComponentProps) => (
         <ProjectSelector
           options={projectsData.projects}
-          selectedProjectId={id}
           serverId={serverId}
+          {...props}
         />
       ),
     });
@@ -105,11 +107,8 @@ function useBreadcrumbs() {
         crumbText,
         LeftIconComponent: <Icon className="icon-small" />,
         RightIconComponent: ExpandMoreIcon,
-        BottomComponent: (
-          <SectionSelector
-            options={projectSections}
-            selectedSection={lastParam}
-          />
+        BottomComponent: (props: BottomComponentProps) => (
+          <SectionSelector options={projectSections} {...props} />
         ),
       });
     }

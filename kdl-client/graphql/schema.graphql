@@ -4,6 +4,8 @@ type Query {
   project(id: ID!): Project!
   users: [User!]!
   sshKey: SSHKey!
+  qualityProjectDesc(description: String!): QualityProjectDesc!
+  knowledgeGraph(description: String!): KnowledgeGraph!
 }
 
 type Mutation {
@@ -18,6 +20,34 @@ type Mutation {
   updateMember(input: UpdateMemberInput!): Member!
   addApiToken(input: ApiTokenInput): ApiToken
   removeApiToken(input: RemoveApiTokenInput): ApiToken!
+  setStarredKGItem(input: SetBoolFieldInput!): KnowledgeGraphItem!
+  setDiscardedKGItem(input: SetBoolFieldInput!): KnowledgeGraphItem!
+}
+
+type QualityProjectDesc {
+  quality: Number
+}
+
+type KnowledgeGraph {
+  items: [KnowledgeGraphItem!]!
+}
+
+type KnowledgeGraphItem {
+  id: ID!
+  category: KnowledgeGraphItemCat!
+  title: String!
+  abstract: String!
+  authors: [String!]!
+  score: Number!
+  date: String!
+  url: String!
+
+  isStarred: Boolean!
+  isDiscarded: Boolean!
+
+  # optional fields
+  externalId: ID # for example: arxivId
+  framework: String
 }
 
 type SSHKey {
@@ -113,6 +143,11 @@ input CreateProjectInput {
   repository: RepositoryInput!
 }
 
+input SetBoolFieldInput {
+  id: ID!
+  value: Boolean!
+}
+
 type Project {
   id: ID!
   name: String!
@@ -147,4 +182,9 @@ enum ProjectState {
   STARTED
   STOPPED
   ARCHIVED
+}
+
+enum KnowledgeGraphItemCat {
+  Paper
+  Code
 }

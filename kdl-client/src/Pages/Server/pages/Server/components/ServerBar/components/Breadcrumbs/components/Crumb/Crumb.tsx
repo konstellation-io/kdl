@@ -32,24 +32,23 @@ function Crumb({
   }, [showComponent, addClickOutsideEvents, removeClickOutsideEvents]);
 
   return (
-    <div
-      className={styles.container}
-      onClick={() => setShowComponent(!showComponent)}
-      ref={crumbRef}
-    >
-      {LeftIconComponent}
-      <span className={styles.crumbText}>{crumbText}</span>
-      {RightIconComponent && (
-        <RightIconComponent
-          className={cx(styles.rightIcon, 'icon-regular', {
-            [styles.opened]: showComponent,
-          })}
-        />
-      )}
+    <div className={styles.container} ref={crumbRef}>
+      <div onClick={() => setShowComponent(!showComponent)}>
+        {LeftIconComponent}
+        <span className={styles.crumbText}>{crumbText}</span>
+        {RightIconComponent && (
+          <RightIconComponent
+            className={cx(styles.rightIcon, 'icon-regular', {
+              [styles.opened]: showComponent,
+            })}
+          />
+        )}
+      </div>
       <AnimateHeight
         height={showComponent ? 'auto' : 0}
         duration={300}
         className={styles.content}
+        onClick={(e) => e.stopPropagation()}
       >
         {BottomComponent}
       </AnimateHeight>

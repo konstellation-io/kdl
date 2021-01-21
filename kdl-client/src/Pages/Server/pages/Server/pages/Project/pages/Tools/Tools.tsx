@@ -1,6 +1,6 @@
 import { Button, HorizontalBar } from 'kwc';
 import Card, { CardState } from 'Components/Layout/Card/Card';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import DroneImg from './img/drone.png';
 import GiteaImg from './img/gitea.png';
@@ -16,15 +16,36 @@ import VSCodeImg from './img/vscode.png';
 import cx from 'classnames';
 import styles from './Tools.module.scss';
 import { useState } from 'react';
+import useBrowserWindows, { channelName } from './useBrowserWindows';
+
+export enum ToolTypes {
+  GITEA,
+  MINIO,
+  JUPYTER,
+  VSCODE,
+  DRONE,
+  MLFLOW,
+}
 
 type ToolProps = {
   img: string;
   title: string;
   description: string;
   disabled?: boolean;
+  onClick?: () => void;
 };
-const Tool: FC<ToolProps> = ({ img, title, description, disabled = false }) => (
-  <div className={cx(styles.cardContent, { [styles.disabled]: disabled })}>
+
+const Tool: FC<ToolProps> = ({
+  img,
+  title,
+  description,
+  disabled = false,
+  onClick = () => {},
+}) => (
+  <div
+    className={cx(styles.cardContent, { [styles.disabled]: disabled })}
+    onClick={() => (disabled ? () => {} : onClick())}
+  >
     <div className={styles.imgContainer}>
       <img className={styles.toolImg} src={img} alt={`${title}_img`} />
     </div>
@@ -32,12 +53,27 @@ const Tool: FC<ToolProps> = ({ img, title, description, disabled = false }) => (
     <p className={styles.toolDescription}>{description}</p>
   </div>
 );
+const { ipcMain } = require('electron').remote;
 
 function Tools() {
   const [active, setActive] = useState(false);
+  const { openWindow, removeAllListeners } = useBrowserWindows();
   function toggleActive() {
     setActive(!active);
   }
+
+  const onMessage = (event: any, args: any) => {
+    console.log(`Message received on the main window: ${args}`);
+  };
+
+  useEffect(() => {
+    ipcMain.on(channelName, onMessage);
+    return () => {
+      console.log('hola');
+      ipcMain.removeListener(channelName, onMessage);
+      removeAllListeners();
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -46,6 +82,13 @@ function Tools() {
           <ToolGroup title="Code repository">
             <Card>
               <Tool
+                onClick={() =>
+                  openWindow(
+                    'https://gitea.io/en-us/',
+                    ToolTypes.GITEA,
+                    GiteaImg
+                  )
+                }
                 img={GiteaImg}
                 title="Gitea"
                 description="Nam dapibus nisl vitae elit fringilla."
@@ -55,6 +98,9 @@ function Tools() {
           <ToolGroup title="Storage">
             <Card>
               <Tool
+                onClick={() =>
+                  openWindow('https://min.io/', ToolTypes.MINIO, MinioImg)
+                }
                 img={MinioImg}
                 title="Minio"
                 description="Nam dapibus nisl vitae elit fringilla."
@@ -64,6 +110,13 @@ function Tools() {
           <ToolGroup title="Analysis">
             <Card state={active ? CardState.OK : CardState.ALERT}>
               <Tool
+                onClick={() =>
+                  openWindow(
+                    'https://jupyter.org/',
+                    ToolTypes.JUPYTER,
+                    JupyterImg
+                  )
+                }
                 img={JupyterImg}
                 title="Jupyter"
                 description="Nam dapibus nisl vitae elit fringilla."
@@ -77,6 +130,13 @@ function Tools() {
             <div className={styles.multiCard}>
               <Card state={active ? CardState.OK : CardState.ALERT}>
                 <Tool
+                  onClick={() =>
+                    openWindow(
+                      'https://code.visualstudio.com/',
+                      ToolTypes.VSCODE,
+                      VSCodeImg
+                    )
+                  }
                   img={VSCodeImg}
                   title="VSCode"
                   description="Nam dapibus nisl vitae elit fringilla."
@@ -85,6 +145,13 @@ function Tools() {
               </Card>
               <Card>
                 <Tool
+                  onClick={() =>
+                    openWindow(
+                      'https://www.drone.io/',
+                      ToolTypes.DRONE,
+                      DroneImg
+                    )
+                  }
                   img={DroneImg}
                   title="Drone"
                   description="Nam dapibus nisl vitae elit fringilla."
@@ -95,6 +162,9 @@ function Tools() {
           <ToolGroup title="Results">
             <Card>
               <Tool
+                onClick={() =>
+                  openWindow('https://mlflow.org/', ToolTypes.MLFLOW, MlFlowImg)
+                }
                 img={MlFlowImg}
                 title="MlFlow"
                 description="Nam dapibus nisl vitae elit fringilla."

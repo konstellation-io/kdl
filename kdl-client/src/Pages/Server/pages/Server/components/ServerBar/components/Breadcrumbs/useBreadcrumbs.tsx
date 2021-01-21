@@ -23,7 +23,6 @@ import ProjectSelector from '../ProjectSelector/ProjectSelector';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import { loader } from 'graphql.macro';
 import SectionSelector from '../SectionSelector/SectionSelector';
-import cx from 'classnames';
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
 function useBreadcrumbs() {

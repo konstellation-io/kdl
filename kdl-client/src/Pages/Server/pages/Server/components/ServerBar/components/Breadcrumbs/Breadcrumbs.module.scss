@@ -3,11 +3,14 @@
 @import 'Styles/colors';
 
 .container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   > div:not(:last-child):after {
+    position: absolute;
+    right: -6px;
     content: '/';
-    margin-left: 2 * $grid-unit;
   }
 }

@@ -1,13 +1,14 @@
+import * as clipboard from 'Utils/clipboard';
+
 import CopyToClipboard from './CopyToClipboard';
 import React from 'react';
-import * as clipboard from 'Utils/clipboard';
 import { shallow } from 'enzyme';
 
 let component;
-const foo = 'foo';
+const textToCopy = 'foo';
 
 beforeEach(() => {
-  component = shallow(<CopyToClipboard>{foo}</CopyToClipboard>);
+  component = shallow(<CopyToClipboard>{textToCopy}</CopyToClipboard>);
 });
 describe('CopyToClipboard component', () => {
   test('Component match snapshot', () => {
@@ -24,6 +25,6 @@ describe('CopyToClipboard component', () => {
 
     // Assert.
     expect(mockCopyAndToast).toHaveBeenCalledTimes(1);
-    expect(mockCopyAndToast).toHaveBeenCalledWith(foo);
+    expect(mockCopyAndToast).toHaveBeenCalledWith(textToCopy);
   });
 });

@@ -2,26 +2,34 @@ import RepositoryTypeComponent, {
   LOCATION,
   SIZE,
 } from 'Pages/Server/pages/NewProject/pages/Repository/components/RepositoryTypeComponent/RepositoryTypeComponent';
+import usePanel, { PanelType } from 'Pages/Server/apollo/hooks/usePanel';
 
 import { Button } from 'kwc';
 import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
 import { GetProjects_projects_repository } from 'Graphql/queries/types/GetProjects';
 import IconEdit from '@material-ui/icons/Edit';
+import { PANEL_ID } from 'Pages/Server/apollo/models/Panel';
+import { PANEL_SIZE } from 'Components/Layout/Panel/Panel';
 import React from 'react';
 import { RepositoryType } from 'Graphql/types/globalTypes';
 import styles from './TabGit.module.scss';
 
 type Props = {
   repository: GetProjects_projects_repository;
-  showRepoEdit: () => void;
 };
-function TabGit({ repository, showRepoEdit }: Props) {
+function TabGit({ repository }: Props) {
   const isExternal = repository.type === RepositoryType.EXTERNAL;
+  const { openPanel } = usePanel(PanelType.SECONDARY, {
+    id: PANEL_ID.REPOSITORY_INFO,
+    title: 'Edit Repository Information',
+    isDark: true,
+    size: PANEL_SIZE.BIG,
+  });
 
   return (
     <div className={styles.container}>
       <div className={styles.edit}>
-        <Button label="" Icon={IconEdit} onClick={showRepoEdit} />
+        <Button label="" Icon={IconEdit} onClick={openPanel} />
       </div>
       <div className={styles.repoType}>
         <RepositoryTypeComponent

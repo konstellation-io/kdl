@@ -8,7 +8,6 @@ import ProjectPanels from './ProjectPanels';
 import { RouteProjectParams } from 'Constants/routes';
 import { loader } from 'graphql.macro';
 import styles from './Project.module.scss';
-import useBoolState from 'Hooks/useBoolState';
 import useOpenedProject from 'Pages/Server/apollo/hooks/useOpenedProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -19,12 +18,6 @@ function Project() {
   const { projectId } = useParams<RouteProjectParams>();
   const { data, error, loading } = useQuery<GetProjects>(GetProjectsQuery);
   const { updateOpenedProject } = useOpenedProject();
-
-  const {
-    value: isSettingsShown,
-    toggle: toggleSettings,
-    deactivate: hideSettings,
-  } = useBoolState(false);
 
   useEffect(() => {
     // const openedProject = data?.projects.find(p => p.id === projectId);
@@ -49,16 +42,12 @@ function Project() {
 
   return (
     <div className={styles.container}>
-      <ProjectNavigation toggleSettings={toggleSettings} />
+      <ProjectNavigation />
       <div className={styles.contentLayer}>
         <ProjectContentRoutes />
       </div>
       <div className={styles.panelLayer}>
-        <ProjectPanels
-          openedProject={project}
-          hideSettings={hideSettings}
-          isSettingsShown={isSettingsShown}
-        />
+        <ProjectPanels openedProject={project} />
       </div>
     </div>
   );

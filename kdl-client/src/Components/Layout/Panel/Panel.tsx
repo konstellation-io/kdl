@@ -21,10 +21,10 @@ type Props = {
   dark?: boolean;
 };
 const Panel: FC<Props> = ({
-  title,
   show,
   close,
   children,
+  title = '',
   size = PANEL_SIZE.DEFAULT,
   noShrink = false,
   dark = false,

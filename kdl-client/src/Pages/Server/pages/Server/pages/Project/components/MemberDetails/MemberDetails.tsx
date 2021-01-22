@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { AccessLevel } from 'Graphql/types/globalTypes';
 import ActionsBar from 'Components/Layout/ActionsBar/ActionsBar';
 import ConfirmAction from 'Components/Layout/ConfirmAction/ConfirmAction';
-import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import Gravatar from 'react-gravatar';
 import IconDate from '@material-ui/icons/Today';
 import IconRemove from '@material-ui/icons/Delete';
 import IconTime from '@material-ui/icons/Schedule';
+import { MemberDetails } from 'Pages/Server/apollo/models/MemberDetails';
 import { formatDate } from 'Utils/format';
 import styles from './MemberDetails.module.scss';
 import { useForm } from 'react-hook-form';
@@ -23,7 +23,7 @@ type FormData = {
 };
 
 type Props = {
-  member: GetProjectMembers_project_members;
+  member: MemberDetails;
   projectId: string;
   close: () => void;
 };

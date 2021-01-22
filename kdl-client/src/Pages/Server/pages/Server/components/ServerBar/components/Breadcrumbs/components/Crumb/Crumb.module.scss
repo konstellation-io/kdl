@@ -8,6 +8,10 @@
   align-items: center;
   height: 100%;
   padding-left: 2 * $grid-unit;
+  cursor: pointer;
+  &:hover {
+    background-color: palette(base, 400);
+  }
   .crumbContainer {
     display: flex;
     align-items: center;
@@ -28,6 +32,7 @@
     left: 0;
     z-index: 3;
     background-color: palette(base);
+    cursor: initial;
   }
   .rightIcon {
     margin-left: 2 * $grid-unit;

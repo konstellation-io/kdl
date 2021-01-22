@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styles from './SectionSelector.module.scss';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { EnhancedRouteConfiguration } from 'Hooks/useProjectNavigation';
 import { BottomComponentProps } from '../Breadcrumbs/components/Crumb/Crumb';
 import NavigationButton, {

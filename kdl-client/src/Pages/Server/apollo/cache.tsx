@@ -9,6 +9,7 @@ import { UserSelection, UserSettings } from './models/UserSettings';
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import { NewProject } from './models/NewProject';
 import { Server } from 'Hooks/useServers';
+import { BrowserWindow } from './models/BrowserWindow';
 
 export const initialProjectFilters: ProjectFilters = {
   name: '',
@@ -58,11 +59,16 @@ const initialStateUserSettings: UserSettings = {
   },
 };
 
+const initialStateBrowserWindows: BrowserWindow[] = [];
+
 export const projectFilters = makeVar(initialProjectFilters);
 export const newProject = makeVar(initialNewProject);
 export const openedServer = makeVar<Server | null>(null);
 export const openedProject = makeVar<GetProjects_projects | null>(null);
 export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
+export const browserWindows = makeVar<BrowserWindow[]>(
+  initialStateBrowserWindows
+);
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -73,6 +79,7 @@ const cache = new InMemoryCache({
         openedServer: { read: () => openedServer() },
         openedProject: { read: () => openedProject() },
         userSettings: { read: () => userSettings() },
+        browserWindows: { read: () => browserWindows() },
         projects: { merge: false },
         apiTokens: { merge: false },
         users: { merge: false },

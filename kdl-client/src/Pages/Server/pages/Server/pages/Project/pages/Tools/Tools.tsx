@@ -16,7 +16,11 @@ import VSCodeImg from './img/vscode.png';
 import cx from 'classnames';
 import styles from './Tools.module.scss';
 import { useState } from 'react';
-import useBrowserWindows, { channelName } from './useBrowserWindows';
+import useExternalBrowserWindows, {
+  channelName,
+} from './useExternalBrowserWindows';
+import { useParams } from 'react-router-dom';
+import { IpcMainEvent } from 'electron';
 
 export enum ToolTypes {
   GITEA,
@@ -56,22 +60,21 @@ const Tool: FC<ToolProps> = ({
 const { ipcMain } = require('electron').remote;
 
 function Tools() {
+  const { projectId } = useParams();
   const [active, setActive] = useState(false);
-  const { openWindow, removeAllListeners } = useBrowserWindows();
+  const { openWindow } = useExternalBrowserWindows();
   function toggleActive() {
     setActive(!active);
   }
 
-  const onMessage = (event: any, args: any) => {
+  const onMessage = (event: IpcMainEvent, args: any) => {
     console.log(`Message received on the main window: ${args}`);
   };
 
   useEffect(() => {
     ipcMain.on(channelName, onMessage);
     return () => {
-      console.log('hola');
       ipcMain.removeListener(channelName, onMessage);
-      removeAllListeners();
     };
   }, []);
 
@@ -85,7 +88,7 @@ function Tools() {
                 onClick={() =>
                   openWindow(
                     'https://gitea.io/en-us/',
-                    ToolTypes.GITEA,
+                    `${projectId}-${ToolTypes.GITEA}`,
                     GiteaImg
                   )
                 }
@@ -99,7 +102,12 @@ function Tools() {
             <Card>
               <Tool
                 onClick={() =>
-                  openWindow('https://min.io/', ToolTypes.MINIO, MinioImg)
+                  openWindow(
+                    'https://min.io/',
+
+                    `${projectId}-${ToolTypes.MINIO}`,
+                    MinioImg
+                  )
                 }
                 img={MinioImg}
                 title="Minio"
@@ -113,7 +121,8 @@ function Tools() {
                 onClick={() =>
                   openWindow(
                     'https://jupyter.org/',
-                    ToolTypes.JUPYTER,
+
+                    `${projectId}-${ToolTypes.JUPYTER}`,
                     JupyterImg
                   )
                 }
@@ -133,7 +142,8 @@ function Tools() {
                   onClick={() =>
                     openWindow(
                       'https://code.visualstudio.com/',
-                      ToolTypes.VSCODE,
+
+                      `${projectId}-${ToolTypes.VSCODE}`,
                       VSCodeImg
                     )
                   }
@@ -148,7 +158,8 @@ function Tools() {
                   onClick={() =>
                     openWindow(
                       'https://www.drone.io/',
-                      ToolTypes.DRONE,
+
+                      `${projectId}-${ToolTypes.DRONE}`,
                       DroneImg
                     )
                   }
@@ -163,7 +174,12 @@ function Tools() {
             <Card>
               <Tool
                 onClick={() =>
-                  openWindow('https://mlflow.org/', ToolTypes.MLFLOW, MlFlowImg)
+                  openWindow(
+                    'https://mlflow.org/',
+
+                    `${projectId}-${ToolTypes.MLFLOW}`,
+                    MlFlowImg
+                  )
                 }
                 img={MlFlowImg}
                 title="MlFlow"

@@ -27,9 +27,9 @@ function Project() {
   } = useBoolState(false);
 
   useEffect(() => {
-    // const openedProject = data?.projects.find(p => p.id === projectId);
+    const openedProject = data?.projects.find((p) => p.id === projectId);
     // FIXME: uncomment prev line and remove next line
-    const openedProject = data?.projects[0];
+    //const openedProject = data?.projects[0];
 
     openedProject && updateOpenedProject(openedProject);
   }, [data, projectId, updateOpenedProject]);

@@ -3,14 +3,18 @@
 exports[`Crumb component should render without crashing 1`] = `
 <div
   className="container"
-  onClick={[Function]}
 >
-  <DashboardIcon />
-  <span
-    className="crumbText"
+  <div
+    className="crumbContainer"
+    onClick={[Function]}
   >
-    foo
-  </span>
+    <DashboardIcon />
+    <span
+      className="crumbText"
+    >
+      foo
+    </span>
+  </div>
   <AnimateHeight
     animateOpacity={false}
     animationStateClasses={
@@ -35,9 +39,9 @@ exports[`Crumb component should render without crashing 1`] = `
     height={0}
     style={Object {}}
   >
-    <div>
-      bar
-    </div>
+    <BottomComponent
+      closeComponent={[Function]}
+    />
   </AnimateHeight>
 </div>
 `;

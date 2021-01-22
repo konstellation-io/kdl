@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import IconHome from '@material-ui/icons/Dashboard';
 import AnimateHeight from 'react-animate-height';
 
-const BottomComponent = <div>bar</div>;
+const BottomComponent = () => <div>bar</div>;
 const crumbProps: CrumbProps = {
   crumbText: 'foo',
   BottomComponent,
@@ -24,7 +24,7 @@ describe('Crumb component', () => {
   describe('behavior', () => {
     it('should show the bottom component when click on crumb', () => {
       // Arrange.
-      const container = component.find('.container');
+      const container = component.find('.crumbContainer');
       const contentProps = component.find(AnimateHeight).props();
       const heightBeforeClick = contentProps.height;
 

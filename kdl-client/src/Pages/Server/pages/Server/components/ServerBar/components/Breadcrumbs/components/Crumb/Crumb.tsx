@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styles from './Crumb.module.scss';
 import AnimateHeight from 'react-animate-height';
 import { useClickOutside } from 'kwc';
@@ -6,11 +6,14 @@ import cx from 'classnames';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
 
+export interface BottomComponentProps {
+  closeComponent: () => void;
+}
 export type CrumbProps = {
   crumbText: string;
   LeftIconComponent: React.ReactElement;
   RightIconComponent?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
-  BottomComponent: React.ReactElement;
+  BottomComponent: FC<BottomComponentProps>;
 };
 
 function Crumb({
@@ -33,7 +36,10 @@ function Crumb({
 
   return (
     <div className={styles.container} ref={crumbRef}>
-      <div onClick={() => setShowComponent(!showComponent)}>
+      <div
+        onClick={() => setShowComponent(!showComponent)}
+        className={styles.crumbContainer}
+      >
         {LeftIconComponent}
         <span className={styles.crumbText}>{crumbText}</span>
         {RightIconComponent && (
@@ -48,9 +54,8 @@ function Crumb({
         height={showComponent ? 'auto' : 0}
         duration={300}
         className={styles.content}
-        onClick={(e) => e.stopPropagation()}
       >
-        {BottomComponent}
+        <BottomComponent closeComponent={() => setShowComponent(false)} />
       </AnimateHeight>
     </div>
   );

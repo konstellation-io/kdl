@@ -5,4 +5,8 @@
 .container {
   display: flex;
   align-items: center;
+
+  > div {
+    border-right: 1px solid palette(base);
+  }
 }

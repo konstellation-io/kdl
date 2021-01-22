@@ -5,16 +5,19 @@ exports[`ProjectSelector component should render without crashing 1`] = `
   className="container"
 >
   <ul>
-    <Link
+    <NavLink
+      activeClassName="selectedProject"
+      className="project"
       key="foo"
+      onClick={[MockFunction]}
       to="/server/bar/project/foo"
     >
       <li
-        className="project selectedProject"
+        className="projectName"
       >
         bar
       </li>
-    </Link>
+    </NavLink>
   </ul>
   <P
     Icon={

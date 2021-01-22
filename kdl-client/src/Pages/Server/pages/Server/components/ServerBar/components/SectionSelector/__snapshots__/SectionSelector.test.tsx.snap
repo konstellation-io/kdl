@@ -5,23 +5,30 @@ exports[`SectionSelector component should render without crashing 1`] = `
   className="container"
 >
   <ul>
-    <Link
+    <NavLink
+      activeClassName="selectedSection"
+      className="section"
       key="foo"
+      onClick={[MockFunction]}
       to="bar"
     >
-      <li
-        className="section"
-      >
-        <DashboardIcon
-          className="icon-regular icon"
-        />
-        <span
-          className="label"
-        >
-          foo
-        </span>
-      </li>
-    </Link>
+      <NavigationButton
+        Icon={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "compare": null,
+            "displayName": "DashboardIcon",
+            "muiName": "SvgIcon",
+            "type": Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "render": [Function],
+            },
+          }
+        }
+        iconSize="icon-small"
+        label="foo"
+      />
+    </NavLink>
   </ul>
 </div>
 `;

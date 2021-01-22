@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   z-index: 3;
+  background-color: palette(base, 900);
   .charts {
     display: flex;
     overflow: hidden;

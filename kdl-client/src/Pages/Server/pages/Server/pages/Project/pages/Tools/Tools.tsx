@@ -73,9 +73,7 @@ function Tools() {
 
   useEffect(() => {
     ipcMain.on(channelName, onMessage);
-    return () => {
-      ipcMain.removeListener(channelName, onMessage);
-    };
+    return () => ipcMain.removeListener(channelName, onMessage);
   }, []);
 
   return (

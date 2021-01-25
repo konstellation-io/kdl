@@ -20,7 +20,7 @@ import useExternalBrowserWindows, {
   channelName,
 } from './useExternalBrowserWindows';
 import { useParams } from 'react-router-dom';
-import { IpcMainEvent } from 'electron';
+import { IpcMainEvent, remote } from 'electron';
 
 export enum ToolTypes {
   GITEA,
@@ -48,7 +48,7 @@ const Tool: FC<ToolProps> = ({
 }) => (
   <div
     className={cx(styles.cardContent, { [styles.disabled]: disabled })}
-    onClick={() => (disabled ? () => {} : onClick())}
+    onClick={() => disabled && onClick()}
   >
     <div className={styles.imgContainer}>
       <img className={styles.toolImg} src={img} alt={`${title}_img`} />
@@ -57,7 +57,7 @@ const Tool: FC<ToolProps> = ({
     <p className={styles.toolDescription}>{description}</p>
   </div>
 );
-const { ipcMain } = require('electron').remote;
+const { ipcMain } = remote;
 
 function Tools() {
   const { projectId } = useParams();
@@ -67,13 +67,15 @@ function Tools() {
     setActive(!active);
   }
 
-  const onMessage = (event: IpcMainEvent, args: any) => {
+  const onMessage = (_: IpcMainEvent, args: any) => {
     console.log(`Message received on the main window: ${args}`);
   };
 
   useEffect(() => {
     ipcMain.on(channelName, onMessage);
-    return () => ipcMain.removeListener(channelName, onMessage);
+    return () => {
+      ipcMain.removeListener(channelName, onMessage);
+    };
   }, []);
 
   return (

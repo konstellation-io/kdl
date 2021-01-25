@@ -59,16 +59,12 @@ const initialStateUserSettings: UserSettings = {
   },
 };
 
-const initialStateBrowserWindows: BrowserWindow[] = [];
-
 export const projectFilters = makeVar(initialProjectFilters);
 export const newProject = makeVar(initialNewProject);
 export const openedServer = makeVar<Server | null>(null);
 export const openedProject = makeVar<GetProjects_projects | null>(null);
 export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
-export const browserWindows = makeVar<BrowserWindow[]>(
-  initialStateBrowserWindows
-);
+export const browserWindows = makeVar<BrowserWindow[]>([]);
 
 const cache = new InMemoryCache({
   typePolicies: {

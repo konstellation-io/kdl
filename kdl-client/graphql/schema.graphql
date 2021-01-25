@@ -82,6 +82,21 @@ type Member {
   lastActivity: String
 }
 
+type Tool {
+  id: ID!
+  toolName: ToolName!
+  url: String!
+}
+
+enum ToolName {
+  GITEA,
+  MINIO,
+  JUPYTER,
+  VSCODE,
+  DRONE,
+  MLFLOW,
+}
+
 enum AccessLevel {
   VIEWER
   MANAGER
@@ -159,6 +174,8 @@ type Project {
   lastActivationDate: String!
   error: String
   members: [Member!]!
+  tools: [Tool!]!
+  areToolsActive: Boolean
 }
 
 input RepositoryInput {

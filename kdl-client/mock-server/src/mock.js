@@ -12,7 +12,6 @@ module.exports = {
     users: () => new MockList([20, 30]),
   }),
   Mutation: () => ({
-    createProject: this.Project,
     updateProject: (_, { input: { id, name } }) => ({
       id,
       name,
@@ -29,25 +28,28 @@ module.exports = {
     }),
     addMembers: () => new MockList([2, 4]),
     addApiToken: this.ApiToken,
-    updateAccessLevel: (_, { input: { userIds, accessLevel } }) => userIds.map(userId => ({
-      id: userId,
-      accessLevel
-    })),
-    removeUsers: (_, { input: { userIds } }) => userIds.map(userId => ({
-      id: userId
-    })),
+    updateAccessLevel: (_, { input: { userIds, accessLevel } }) =>
+      userIds.map((userId) => ({
+        id: userId,
+        accessLevel,
+      })),
+    removeUsers: (_, { input: { userIds } }) =>
+      userIds.map((userId) => ({
+        id: userId,
+      })),
     createProject: (_, { input }) => ({
       ...input,
       repository: {
         ...input.repository,
-        connected: false
+        connected: false,
       },
       id: 'some-new-id',
       favorite: false,
       state: 'STOPPED',
       creationDate: new Date().toUTCString(),
       lastActivationDate: new Date().toUTCString(),
-      members: []
+      members: [],
+      tools: [],
     }),
   }),
   ApiToken: () => ({
@@ -82,6 +84,38 @@ module.exports = {
     error: casual.random_element([null, casual.error]),
     state: casual.random_element(['STARTED', 'STOPPED', 'ARCHIVED']),
     members: () => new MockList([4, 6]),
+    tools: () => [
+      {
+        id: casual.uuid,
+        toolName: 'GITEA',
+        url: 'https://gitea.io/en-us/',
+      },
+      {
+        id: casual.uuid,
+        toolName: 'MINIO',
+        url: 'https://min.io/',
+      },
+      {
+        id: casual.uuid,
+        toolName: 'JUPYTER',
+        url: 'https://jupyter.org/',
+      },
+      {
+        id: casual.uuid,
+        toolName: 'VSCODE',
+        url: 'https://code.visualstudio.com/',
+      },
+      {
+        id: casual.uuid,
+        toolName: 'DRONE',
+        url: 'https://www.drone.io/',
+      },
+      {
+        id: casual.uuid,
+        toolName: 'MLFLOW',
+        url: 'https://mlflow.org/',
+      },
+    ],
   }),
   Repository: () => ({
     id: casual.uuid,

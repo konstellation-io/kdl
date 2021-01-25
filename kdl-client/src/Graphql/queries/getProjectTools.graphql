@@ -1,0 +1,10 @@
+query GetProjectTools($id: ID!) {
+  project(id: $id) {
+    tools {
+      id
+      toolName
+      url
+    }
+    areToolsActive
+  }
+}

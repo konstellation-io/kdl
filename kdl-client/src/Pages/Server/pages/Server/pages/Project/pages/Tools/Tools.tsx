@@ -21,6 +21,7 @@ import useExternalBrowserWindows, {
 } from './useExternalBrowserWindows';
 import { useParams } from 'react-router-dom';
 import { IpcMainEvent, remote } from 'electron';
+import { RouteProjectParams } from '../../../../../../../../Constants/routes';
 
 export enum ToolTypes {
   GITEA,
@@ -60,7 +61,7 @@ const Tool: FC<ToolProps> = ({
 const { ipcMain } = remote;
 
 function Tools() {
-  const { projectId } = useParams();
+  const { projectId } = useParams<RouteProjectParams>();
   const [active, setActive] = useState(false);
   const { openWindow } = useExternalBrowserWindows();
   function toggleActive() {

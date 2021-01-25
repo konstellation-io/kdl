@@ -86,8 +86,8 @@ function Tools() {
   } = data;
 
   const tools = mapTools(projectTools);
-  const firstRow = tools.filter((tool) => tool.row === 0);
-  const secondRow = tools.filter((tool) => tool.row === 1);
+  const firstRow = tools.filter(({ row }) => row === 0);
+  const secondRow = tools.filter(({ row }) => row === 1);
 
   return (
     <div className={styles.container}>

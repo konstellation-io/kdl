@@ -21,7 +21,7 @@ import {
   GetProjectTools,
   GetProjectToolsVariables,
 } from 'Graphql/queries/types/GetProjectTools';
-import { EnhancedTool, EnhancedToolGroups, toolsGroups } from './config';
+import { EnhancedTool, EnhancedToolGroups } from './config';
 import Tool from './components/Tool/Tool';
 import { mapTools } from './mappingFunctions';
 
@@ -70,10 +70,10 @@ function Tools() {
     );
   }
 
-  function renderGroup({ title, tools }: EnhancedToolGroups) {
+  function renderGroup({ title, tools: toolsCards }: EnhancedToolGroups) {
     return (
       <ToolGroup title={title} key={title}>
-        <div className={styles.multiCard}>{tools.map(renderCard)}</div>
+        <div className={styles.multiCard}>{toolsCards.map(renderCard)}</div>
       </ToolGroup>
     );
   }

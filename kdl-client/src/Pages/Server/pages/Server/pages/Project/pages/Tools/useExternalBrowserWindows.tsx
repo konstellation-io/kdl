@@ -42,11 +42,11 @@ function useExternalBrowserWindows() {
     addBrowserWindow({ id: win.id, key: type });
   }
 
-  const addTopBar = (componentAsString: string, channelName: string) => `
+  const addTopBar = (componentAsString: string, channel: string) => `
         document.body.innerHTML = '${componentAsString}' + document.body.innerHTML;
         const onButtonClick = (button) => {
           const { ipcRenderer } = require('electron')
-          ipcRenderer.send('${channelName}', 'Hi from ' + button + ' button!')
+          ipcRenderer.send('${channel}', 'Hi from ' + button + ' button!')
         }
         document.getElementById('sendFirstMessage').addEventListener('click', () => onButtonClick('first'))
         document.getElementById('sendSecondMessage').addEventListener('click', () => onButtonClick('second'))

@@ -14,7 +14,8 @@ import useExternalBrowserWindows, {
   channelName,
 } from './useExternalBrowserWindows';
 import { useParams } from 'react-router-dom';
-import { IpcMainEvent } from 'electron';
+import { IpcMainEvent, remote } from 'electron';
+import { RouteProjectParams } from '../../../../../../../../Constants/routes';
 import { useQuery } from '@apollo/client';
 import { loader } from 'graphql.macro';
 import {
@@ -29,7 +30,7 @@ const { ipcMain } = require('electron').remote;
 const GetProjectToolsQuery = loader('Graphql/queries/getProjectTools.graphql');
 
 function Tools() {
-  const { projectId } = useParams();
+  const { projectId } = useParams<RouteProjectParams>();
   const [active, setActive] = useState(false);
   const { data, loading, error } = useQuery<
     GetProjectTools,
@@ -52,7 +53,9 @@ function Tools() {
 
   useEffect(() => {
     ipcMain.on(channelName, onMessage);
-    return () => ipcMain.removeListener(channelName, onMessage);
+    return () => {
+      ipcMain.removeListener(channelName, onMessage);
+    };
   }, []);
 
   function renderCard(tool: EnhancedTool) {

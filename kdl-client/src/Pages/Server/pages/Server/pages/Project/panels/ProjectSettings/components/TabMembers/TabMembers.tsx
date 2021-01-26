@@ -6,17 +6,24 @@ import {
   SpinnerCircular,
 } from 'kwc';
 import {
+  GET_MEMBER_DETAILS,
+  GetMemberDetails,
+} from 'Graphql/client/queries/getMemberDetails.graphql';
+import {
   GetProjectMembers,
   GetProjectMembersVariables,
-  GetProjectMembers_project_members,
 } from 'Graphql/queries/types/GetProjectMembers';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import usePanel, { PanelType } from 'Pages/Server/apollo/hooks/usePanel';
 
 import { GetUsers } from 'Graphql/queries/types/GetUsers';
 import Member from './components/Member/Member';
+import { MemberDetails } from 'Pages/Server/apollo/models/MemberDetails';
+import { PANEL_ID } from 'Pages/Server/apollo/models/Panel';
 import { loader } from 'graphql.macro';
 import styles from './TabMembers.module.scss';
 import useMember from 'Graphql/hooks/useMember';
+import useMemberDetails from 'Pages/Server/apollo/hooks/useMemberDetails';
 import { useQuery } from '@apollo/client';
 
 const GetUsersQuery = loader('Graphql/queries/getUsers.graphql');
@@ -24,15 +31,21 @@ const GetMembersQuery = loader('Graphql/queries/getProjectMembers.graphql');
 
 type Props = {
   projectId: string;
-  openMemberDetails: (member: GetProjectMembers_project_members | null) => void;
-  memberDetails: GetProjectMembers_project_members | null;
 };
-function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
+function TabMembers({ projectId }: Props) {
   const [memberSelection, setMemberSelection] = useState<string[]>([]);
   const [error, setError] = useState<string>('');
 
   const { addMembersById } = useMember(projectId, {
     onCompleteAdd: () => setMemberSelection([]),
+  });
+
+  const { updateMemberDetails } = useMemberDetails();
+  const { openPanel } = usePanel(PanelType.SECONDARY, {
+    id: PANEL_ID.MEMBER_INFO,
+    title: 'Member details',
+    fixedWidth: true,
+    isDark: true,
   });
 
   const {
@@ -49,17 +62,30 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
       id: projectId,
     },
   });
+  const { data: memberDetailsData } = useQuery<GetMemberDetails>(
+    GET_MEMBER_DETAILS
+  );
+
+  const openDetails = useCallback(
+    (details: MemberDetails) => {
+      updateMemberDetails(details);
+      openPanel();
+    },
+    [updateMemberDetails, openPanel]
+  );
 
   // Update opened member details as data is updated
   useEffect(() => {
-    if (dataMembers && memberDetails) {
-      const selectedMembers = dataMembers.project.members.filter(
-        (m) => m.id === memberDetails.id
+    if (dataMembers && memberDetailsData) {
+      const selectedMember = dataMembers.project.members.find(
+        (m) => m.id === memberDetailsData.memberDetails?.id
       );
 
-      openMemberDetails(selectedMembers[0]);
+      if (selectedMember) updateMemberDetails(selectedMember);
     }
-  }, [dataMembers, openMemberDetails, memberDetails]);
+    // We want to execute this on when members get an update
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataMembers]);
 
   if (loadingMembers || loadingUsers) return <SpinnerCircular />;
   if (!dataMembers || !dataUsers || errorMembers || errorUsers)
@@ -117,7 +143,7 @@ function TabMembers({ projectId, openMemberDetails, memberDetails }: Props) {
       </div>
       <div className={styles.members}>
         {dataMembers.project.members.map((member) => (
-          <Member key={member.id} member={member} onOpen={openMemberDetails} />
+          <Member key={member.id} member={member} onOpen={openDetails} />
         ))}
       </div>
     </div>

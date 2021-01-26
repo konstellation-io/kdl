@@ -1,5 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 
+import KG from './pages/KG/KG';
 import Overview from './pages/Overview/Overview';
 import ROUTE from 'Constants/routes';
 import React from 'react';
@@ -10,6 +11,7 @@ function ProjectContentRoutes() {
     <Switch>
       <Route exact path={ROUTE.PROJECT_OVERVIEW} component={Overview} />
       <Route exact path={ROUTE.PROJECT_TOOLS} component={Tools} />
+      <Route exact path={ROUTE.PROJECT_KG} component={KG} />
     </Switch>
   );
 }

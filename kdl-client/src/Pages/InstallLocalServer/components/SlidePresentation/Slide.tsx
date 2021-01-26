@@ -22,7 +22,7 @@ function Slide({ img, title, description, nextStep }: Props) {
     return () => {
       clearInterval(nextSlideInterval);
     };
-    // We want to execute this on on component mount/unmount
+    // We want to execute this on component mount/unmount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

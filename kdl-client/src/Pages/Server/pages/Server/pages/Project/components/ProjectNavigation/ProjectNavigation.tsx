@@ -2,17 +2,15 @@ import { NavLink, useParams } from 'react-router-dom';
 import ROUTE, { RouteProjectParams, buildRoute } from 'Constants/routes';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import usePanel, { PanelType } from 'Pages/Server/apollo/hooks/usePanel';
-
 import IconCollapse from '@material-ui/icons/KeyboardBackspace';
-import IconHome from '@material-ui/icons/Dashboard';
 import IconSettings from '@material-ui/icons/Settings';
-import IconTools from 'Components/Icons/HomeRepairService';
 import NavigationButton from './NavigationButton';
 import { PANEL_ID } from 'Pages/Server/apollo/models/Panel';
 import { SpinnerCircular } from 'kwc';
 import cx from 'classnames';
 import styles from './ProjectNavigation.module.scss';
 import useWorkspace from 'Hooks/useWorkspace';
+import useProjectNavigation from 'Hooks/useProjectNavigation';
 
 const NavButtonLink: FC<any> = ({ children, ...props }) => (
   <NavLink {...props} activeClassName={styles.active} exact>
@@ -45,22 +43,18 @@ function ProjectNavigation() {
     toggleProjectNavOpened();
   }
 
-  const getRoute = useCallback(
-    (route: ROUTE) => buildRoute.project(route, serverId, projectId),
-    [serverId, projectId]
-  );
+  const projectRoutes = useProjectNavigation(serverId, projectId);
 
   if (loading || !workspace?.project) return <SpinnerCircular />;
 
   return (
     <div className={cx(styles.container, { [styles.opened]: opened })}>
       <div className={styles.top}>
-        <NavButtonLink to={getRoute(ROUTE.PROJECT_OVERVIEW)}>
-          <NavigationButton label="OVERVIEW" Icon={IconHome} />
-        </NavButtonLink>
-        <NavButtonLink to={getRoute(ROUTE.PROJECT_TOOLS)}>
-          <NavigationButton label="TOOLS" Icon={IconTools} />
-        </NavButtonLink>
+        {projectRoutes.map(({ Icon, label, to }) => (
+          <NavButtonLink to={to} key={label}>
+            <NavigationButton label={label} Icon={Icon} />
+          </NavButtonLink>
+        ))}
       </div>
       <div className={styles.bottom}>
         <div onClick={togglePanel}>

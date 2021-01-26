@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
 
-import { CSSTransition } from 'react-transition-group';
-import LastValue from './LastValue';
 import MetricChart from './MetricChart';
-import cx from 'classnames';
 import styles from './ServerMetrics.module.scss';
+import CopyToClipboard from '../../../../../../../../Components/CopyToClipboard/CopyToClipboard';
+import { Button, BUTTON_ALIGN } from 'kwc';
+import IconArrowForward from '@material-ui/icons/ArrowForward';
+import IconUsers from '@material-ui/icons/Person';
+import ROUTE, { buildRoute } from '../../../../../../../../Constants/routes';
+import { useHistory } from 'react-router';
+import { BottomComponentProps } from '../Breadcrumbs/components/Crumb/Crumb';
 
 export type MetricData = {
   x: Date;
@@ -57,43 +61,59 @@ const metrics: Metric[] = [
   },
 ];
 
-function ServerMetrics() {
-  const metricLastValues = metrics.map((metric) => (
-    <LastValue key={metric.label} {...metric} />
-  ));
-  const metricCharts = metrics.map((metric) => (
-    <MetricChart key={metric.label} {...metric} />
-  ));
-  const [opened, setOpened] = useState(false);
+type Props = {
+  serverId: string;
+  serverUrl?: string;
+};
 
-  function toggleOpened() {
-    setOpened(!opened);
-  }
+const ServerMetrics: FC<Props & BottomComponentProps> = ({
+  serverUrl,
+  serverId,
+  closeComponent = () => {},
+}) => {
+  const { push } = useHistory();
+  const handleUsersClick = () => {
+    closeComponent();
+    push(buildRoute.server(ROUTE.SERVER_USERS, serverId));
+  };
+
+  const handleProjectsClick = () => {
+    closeComponent();
+    push(buildRoute.server(ROUTE.SERVER, serverId));
+  };
 
   return (
     <div className={styles.container}>
-      <div
-        className={cx(styles.lastValues, { [styles.opened]: opened })}
-        onClick={toggleOpened}
-      >
-        {metricLastValues}
+      {serverUrl && (
+        <div className={styles.serverUrl}>
+          <span className={styles.label}>SERVER URL</span>
+          <span className={styles.url}>{serverUrl}</span>
+          <CopyToClipboard>{serverUrl}</CopyToClipboard>
+        </div>
+      )}
+      <div className={styles.charts}>
+        {metrics.map((metric) => (
+          <MetricChart key={metric.label} {...metric} />
+        ))}
       </div>
-      <CSSTransition
-        in={opened}
-        timeout={500}
-        classNames={{
-          enter: styles.enter,
-          enterActive: styles.enterActive,
-          exit: styles.exit,
-          exitDone: styles.exitDone,
-          enterDone: styles.enterDone,
-        }}
-        unmountOnExit
-      >
-        <div className={styles.charts}>{metricCharts}</div>
-      </CSSTransition>
+      <div className={styles.buttons}>
+        <Button
+          label="USERS"
+          Icon={IconUsers}
+          onClick={handleUsersClick}
+          className={styles.selectButton}
+          align={BUTTON_ALIGN.LEFT}
+        />
+        <Button
+          label="PROJECTS"
+          onClick={handleProjectsClick}
+          Icon={IconArrowForward}
+          className={styles.selectButton}
+          align={BUTTON_ALIGN.LEFT}
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default ServerMetrics;

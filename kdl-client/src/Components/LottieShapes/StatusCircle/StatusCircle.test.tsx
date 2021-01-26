@@ -9,7 +9,7 @@ const component = shallow(
 );
 
 describe('StatusCircle component', () => {
-  test('Component match snapshot', () => {
+  it('Component match snapshot', () => {
     expect(component).toMatchSnapshot();
   });
 

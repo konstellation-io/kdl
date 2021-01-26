@@ -14,7 +14,7 @@ import useExternalBrowserWindows, {
   channelName,
 } from './useExternalBrowserWindows';
 import { useParams } from 'react-router-dom';
-import { IpcMainEvent } from 'electron';
+import { IpcMainEvent, remote } from 'electron';
 import { RouteProjectParams } from '../../../../../../../../Constants/routes';
 import { useQuery } from '@apollo/client';
 import { loader } from 'graphql.macro';
@@ -26,7 +26,7 @@ import { EnhancedTool, EnhancedToolGroups } from './config';
 import Tool from './components/Tool/Tool';
 import { mapTools } from './mappingFunctions';
 
-const { ipcMain } = require('electron').remote;
+const { ipcMain } = remote;
 const GetProjectToolsQuery = loader('Graphql/queries/getProjectTools.graphql');
 
 function Tools() {
@@ -85,7 +85,7 @@ function Tools() {
   if (error) return <ErrorMessage />;
 
   const {
-    project: { tools: projectTools },
+    project: { tools: projectTools, areToolsActive },
   } = data;
 
   const tools = mapTools(projectTools);

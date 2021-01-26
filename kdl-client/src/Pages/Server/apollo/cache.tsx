@@ -11,6 +11,7 @@ import { MemberDetails } from './models/MemberDetails';
 import { NewProject } from './models/NewProject';
 import { PanelInfo } from './models/Panel';
 import { Server } from 'Hooks/useServers';
+import { BrowserWindow } from './models/BrowserWindow';
 
 export const initialProjectFilters: ProjectFilters = {
   name: '',
@@ -68,6 +69,7 @@ export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
 export const memberDetails = makeVar<MemberDetails | null>(null);
 export const primaryPanel = makeVar<PanelInfo | null>(null);
 export const secondaryPanel = makeVar<PanelInfo | null>(null);
+export const browserWindows = makeVar<BrowserWindow[]>([]);
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -81,6 +83,7 @@ const cache = new InMemoryCache({
         primaryPanel: { read: () => primaryPanel() },
         secondaryPanel: { read: () => secondaryPanel() },
         memberDetails: { read: () => memberDetails() },
+        browserWindows: { read: () => browserWindows() },
         projects: { merge: false },
         apiTokens: { merge: false },
         users: { merge: false },

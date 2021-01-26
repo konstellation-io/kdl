@@ -12,7 +12,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "outDir": "../build",
-    "module": "commonjs"
+    "module": "commonjs",
+    "downlevelIteration": true
   },
   "include": ["."]
 }

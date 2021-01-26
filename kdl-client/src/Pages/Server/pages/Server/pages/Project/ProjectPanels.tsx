@@ -15,11 +15,12 @@ import React, { useState } from 'react';
 import usePanel, { PanelType } from 'Pages/Server/apollo/hooks/usePanel';
 
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
-import MemberDetails from './components/MemberDetails/MemberDetails';
+import KGResults from './panels/KGResults/KGResults';
+import MemberDetails from './panels/MemberDetails/MemberDetails';
 import { PANEL_ID } from 'Pages/Server/apollo/models/Panel';
 import Panel from 'Components/Layout/Panel/Panel';
-import ProjectSettings from './components/ProjectSettings/ProjectSettings';
-import UpdateRepository from './components/UpdateRepository/UpdateRepository';
+import ProjectSettings from './panels/ProjectSettings/ProjectSettings';
+import UpdateRepository from './panels/UpdateRepository/UpdateRepository';
 import styles from './Project.module.scss';
 import useMemberDetails from 'Pages/Server/apollo/hooks/useMemberDetails';
 import { useQuery } from '@apollo/client';
@@ -86,6 +87,7 @@ function ProjectPanels({ openedProject }: Props) {
         projectId={openedProject.id}
       />
     ),
+    [PANEL_ID.KG_RESULTS]: <KGResults />,
   };
 
   return (

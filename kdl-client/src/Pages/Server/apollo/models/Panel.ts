@@ -12,4 +12,5 @@ export enum PANEL_ID {
   SETTINGS = 'settings',
   REPOSITORY_INFO = 'repositoryInfo',
   MEMBER_INFO = 'memberInfo',
+  KG_RESULTS = 'kgResults',
 }

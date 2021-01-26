@@ -1,15 +1,3 @@
-import { useRouteMatch, useLocation } from 'react-router-dom';
-import ROUTE from 'Constants/routes';
-import { useQuery } from '@apollo/client';
-import {
-  GET_OPENED_SERVER,
-  GetOpenedServer,
-} from 'Graphql/client/queries/getOpenedServer.graphql';
-import React from 'react';
-import ServerIcon from 'Components/Icons/ServerIcon/ServerIcon';
-import ProjectIcon from 'Components/Icons/ProjectIcon/ProjectIcon';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ServerMetrics from 'Pages/Server/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
 import {
   BottomComponentProps,
   CrumbProps,
@@ -18,14 +6,27 @@ import {
   GET_OPENED_PROJECT,
   GetOpenedProject,
 } from 'Graphql/client/queries/getOpenedProject.graphql';
+import {
+  GET_OPENED_SERVER,
+  GetOpenedServer,
+} from 'Graphql/client/queries/getOpenedServer.graphql';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 import useProjectNavigation, {
   EnhancedRouteConfiguration,
   projectRoutesConfiguration,
 } from 'Hooks/useProjectNavigation';
-import ProjectSelector from '../ProjectSelector/ProjectSelector';
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
-import { loader } from 'graphql.macro';
+import ProjectIcon from 'Components/Icons/ProjectIcon/ProjectIcon';
+import ProjectSelector from '../ProjectSelector/ProjectSelector';
+import ROUTE from 'Constants/routes';
+import React from 'react';
 import SectionSelector from '../SectionSelector/SectionSelector';
+import ServerIcon from 'Components/Icons/ServerIcon/ServerIcon';
+import ServerMetrics from 'Pages/Server/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
+import { loader } from 'graphql.macro';
+import { useQuery } from '@apollo/client';
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
 function useBreadcrumbs() {
@@ -98,7 +99,7 @@ function useBreadcrumbs() {
     // Add crumb for the section
     const lastParam: string = location.pathname.split('/').pop() || '';
     const projectRoute = Object.values(projectRoutesConfiguration).find(
-      ({ label }) => label.toLowerCase() === lastParam.toLowerCase()
+      ({ id }) => id === lastParam
     );
 
     if (projectRoute) {

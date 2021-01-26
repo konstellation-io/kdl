@@ -14,7 +14,7 @@ import useExternalBrowserWindows, {
   channelName,
 } from './useExternalBrowserWindows';
 import { useParams } from 'react-router-dom';
-import { IpcMainEvent, remote } from 'electron';
+import { IpcMainEvent } from 'electron';
 import { RouteProjectParams } from '../../../../../../../../Constants/routes';
 import { useQuery } from '@apollo/client';
 import { loader } from 'graphql.macro';

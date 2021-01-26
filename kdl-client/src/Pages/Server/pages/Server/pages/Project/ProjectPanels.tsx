@@ -65,8 +65,8 @@ function ProjectPanels({ openedProject }: Props) {
   if (panel1Error || panel2Error || memberDetailsError) return <ErrorMessage />;
 
   function closeMemberInfoPanel() {
-    unselectMemberDetails();
     panel2Close();
+    unselectMemberDetails();
   }
 
   const panels: { [key in PANEL_ID]: JSX.Element | null } = {

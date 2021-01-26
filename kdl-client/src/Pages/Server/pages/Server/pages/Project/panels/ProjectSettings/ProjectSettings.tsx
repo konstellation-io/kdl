@@ -5,31 +5,21 @@ import {
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
 import { ErrorMessage } from 'kwc';
-import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
-import ProjectInfo from '../ProjectInfo/ProjectInfo';
+import ProjectInfo from './components/ProjectInfo/ProjectInfo';
 import React from 'react';
-import TabDangerZone from '../TabDangerZone/TabDangerZone';
-import TabGit from '../TabGit/TabGit';
-import TabInfo from '../TabInfo/TabInfo';
-import TabMembers from '../TabMembers/TabMembers';
+import TabDangerZone from './components/TabDangerZone/TabDangerZone';
+import TabGit from './components/TabGit/TabGit';
+import TabInfo from './components/TabInfo/TabInfo';
+import TabMembers from './components/TabMembers/TabMembers';
 import cx from 'classnames';
 import styles from './ProjectSettings.module.scss';
 import { useQuery } from '@apollo/client';
 
 type Props = {
-  showRepoEdit: () => void;
-  openMemberDetails: (member: GetProjectMembers_project_members | null) => void;
-  memberDetails: GetProjectMembers_project_members | null;
   settingsOpenedTab: number;
   setSettingsOpenedTab: (index: number) => void;
 };
-function ProjectSettings({
-  showRepoEdit,
-  openMemberDetails,
-  memberDetails,
-  settingsOpenedTab,
-  setSettingsOpenedTab,
-}: Props) {
+function ProjectSettings({ settingsOpenedTab, setSettingsOpenedTab }: Props) {
   const { data: localData } = useQuery<GetOpenedProject>(GET_OPENED_PROJECT);
   const openedProject = localData?.openedProject;
 
@@ -53,17 +43,10 @@ function ProjectSettings({
             <TabInfo project={openedProject} />
           </TabPanel>
           <TabPanel>
-            <TabGit
-              repository={openedProject.repository}
-              showRepoEdit={showRepoEdit}
-            />
+            <TabGit repository={openedProject.repository} />
           </TabPanel>
           <TabPanel>
-            <TabMembers
-              projectId={openedProject.id}
-              openMemberDetails={openMemberDetails}
-              memberDetails={memberDetails}
-            />
+            <TabMembers projectId={openedProject.id} />
           </TabPanel>
           <TabPanel>
             <TabDangerZone />

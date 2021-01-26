@@ -1,97 +1,116 @@
-import Panel, { PANEL_SIZE } from 'Components/Layout/Panel/Panel';
-import React, { useEffect, useState } from 'react';
+import { ErrorMessage, SpinnerCircular } from 'kwc';
+import {
+  GET_MEMBER_DETAILS,
+  GetMemberDetails,
+} from 'Graphql/client/queries/getMemberDetails.graphql';
+import {
+  GET_PRIMARY_PANEL,
+  GetPrimaryPanel,
+} from 'Graphql/client/queries/getPrimaryPanel.graphql';
+import {
+  GET_SECONDARY_PANEL,
+  GetSecondaryPanel,
+} from 'Graphql/client/queries/getSecondaryPanel.graphql';
+import React, { useState } from 'react';
+import usePanel, { PanelType } from 'Pages/Server/apollo/hooks/usePanel';
 
-import { GetProjectMembers_project_members } from 'Graphql/queries/types/GetProjectMembers';
 import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
-import MemberDetails from './components/MemberDetails/MemberDetails';
-import ProjectSettings from './components/ProjectSettings/ProjectSettings';
-import UpdateRepository from './components/UpdateRepository/UpdateRepository';
+import KGResults from './panels/KGResults/KGResults';
+import MemberDetails from './panels/MemberDetails/MemberDetails';
+import { PANEL_ID } from 'Pages/Server/apollo/models/Panel';
+import Panel from 'Components/Layout/Panel/Panel';
+import ProjectSettings from './panels/ProjectSettings/ProjectSettings';
+import UpdateRepository from './panels/UpdateRepository/UpdateRepository';
 import styles from './Project.module.scss';
-import useBoolState from 'Hooks/useBoolState';
+import useMemberDetails from 'Pages/Server/apollo/hooks/useMemberDetails';
+import { useQuery } from '@apollo/client';
 
 type Props = {
   openedProject: GetProjects_projects;
-  hideSettings: () => void;
-  isSettingsShown: boolean;
 };
-function ProjectPanels({
-  openedProject,
-  hideSettings,
-  isSettingsShown,
-}: Props) {
+function ProjectPanels({ openedProject }: Props) {
   const {
-    value: isRepoEditShown,
-    activate: showRepoEdit,
-    deactivate: hideRepoEdit,
-  } = useBoolState(false);
+    data: panel1Data,
+    loading: panel1Loading,
+    error: panel1Error,
+  } = useQuery<GetPrimaryPanel>(GET_PRIMARY_PANEL);
+  const {
+    data: panel2Data,
+    loading: panel2Loading,
+    error: panel2Error,
+  } = useQuery<GetSecondaryPanel>(GET_SECONDARY_PANEL);
 
-  const [
-    memberDetails,
-    setMemberDetails,
-  ] = useState<GetProjectMembers_project_members | null>(null);
+  const {
+    data: memberDetailsData,
+    loading: memberDetailsLoading,
+    error: memberDetailsError,
+  } = useQuery<GetMemberDetails>(GET_MEMBER_DETAILS);
+
+  const { closePanel: panel1Close } = usePanel(PanelType.PRIMARY);
+  const { closePanel: panel2Close } = usePanel(PanelType.SECONDARY);
+  const { unselectMemberDetails } = useMemberDetails();
 
   // Stores last opened tab inside project settings panel. When you reopen
   // this panel, last opened tab will remain opened.
   const [settingsOpenedTab, setSettingsOpenedTab] = useState(0);
 
-  // When closing settings, close all panels
-  useEffect(() => {
-    if (!isSettingsShown) {
-      hideSettings();
-      hideRepoEdit();
-      setMemberDetails(null);
-    }
-  }, [isSettingsShown, hideRepoEdit, hideSettings]);
+  if (
+    panel1Loading ||
+    panel2Loading ||
+    memberDetailsLoading ||
+    !memberDetailsData ||
+    !panel1Data ||
+    !panel2Data
+  )
+    return <SpinnerCircular />;
+  if (panel1Error || panel2Error || memberDetailsError) return <ErrorMessage />;
 
-  // Only one secondary panel can be opened at a time
-  function onOpenRepoEdit() {
-    setMemberDetails(null);
-    showRepoEdit();
+  function closeMemberInfoPanel() {
+    panel2Close();
+    unselectMemberDetails();
   }
-  function onSetMemberDetails(value: GetProjectMembers_project_members | null) {
-    setMemberDetails(value);
-    hideRepoEdit();
-  }
+
+  const panels: { [key in PANEL_ID]: JSX.Element | null } = {
+    [PANEL_ID.SETTINGS]: (
+      <ProjectSettings
+        settingsOpenedTab={settingsOpenedTab}
+        setSettingsOpenedTab={setSettingsOpenedTab}
+      />
+    ),
+    [PANEL_ID.REPOSITORY_INFO]: (
+      <UpdateRepository project={openedProject} close={panel2Close} />
+    ),
+    [PANEL_ID.MEMBER_INFO]: (
+      <MemberDetails
+        member={memberDetailsData.memberDetails}
+        close={closeMemberInfoPanel}
+        projectId={openedProject.id}
+      />
+    ),
+    [PANEL_ID.KG_RESULTS]: <KGResults />,
+  };
 
   return (
     <div className={styles.panels}>
       <Panel
-        title="Settings"
-        show={isSettingsShown}
-        close={hideSettings}
-        noShrink
+        title={panel1Data.primaryPanel?.title}
+        show={!!panel1Data.primaryPanel}
+        close={panel1Close}
+        noShrink={!!panel1Data.primaryPanel?.fixedWidth}
+        dark={!!panel1Data.primaryPanel?.isDark}
+        size={panel1Data.primaryPanel?.size}
       >
-        <ProjectSettings
-          showRepoEdit={onOpenRepoEdit}
-          openMemberDetails={onSetMemberDetails}
-          memberDetails={memberDetails}
-          settingsOpenedTab={settingsOpenedTab}
-          setSettingsOpenedTab={setSettingsOpenedTab}
-        />
+        {panels[panel1Data.primaryPanel?.id]}
       </Panel>
       <Panel
-        title="Edit Repository Information"
-        show={isRepoEditShown}
-        close={hideRepoEdit}
-        size={PANEL_SIZE.BIG}
-        dark
+        title={panel2Data.secondaryPanel?.title}
+        show={!!panel2Data.secondaryPanel}
+        close={panel2Close}
+        noShrink={!!panel2Data.secondaryPanel?.fixedWidth}
+        dark={!!panel2Data.secondaryPanel?.isDark}
+        size={panel2Data.secondaryPanel?.size}
       >
-        <UpdateRepository project={openedProject} close={hideRepoEdit} />
-      </Panel>
-      <Panel
-        title="Member details"
-        show={memberDetails !== null}
-        close={() => setMemberDetails(null)}
-        noShrink
-        dark
-      >
-        {memberDetails && (
-          <MemberDetails
-            member={memberDetails}
-            close={() => setMemberDetails(null)}
-            projectId={openedProject.id}
-          />
-        )}
+        {panels[panel2Data.secondaryPanel?.id]}
       </Panel>
     </div>
   );

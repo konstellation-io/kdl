@@ -15,6 +15,7 @@ enum ROUTE {
   PROJECT = '/server/:serverId/project/:projectId',
   PROJECT_OVERVIEW = '/server/:serverId/project/:projectId/overview',
   PROJECT_TOOLS = '/server/:serverId/project/:projectId/tools',
+  PROJECT_KG = '/server/:serverId/project/:projectId/knowledge-graph',
   CREATION_PROJECT = '/server/:serverId/new-project/create',
 }
 

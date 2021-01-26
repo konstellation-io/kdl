@@ -19,7 +19,7 @@ const Tool: FC<ToolProps> = ({
 }) => (
   <div
     className={cx(styles.cardContent, { [styles.disabled]: disabled })}
-    onClick={() => (disabled ? () => {} : onClick())}
+    onClick={() => !disabled && onClick()}
   >
     <div className={styles.imgContainer}>
       <img className={styles.toolImg} src={img} alt={`${title}_img`} />

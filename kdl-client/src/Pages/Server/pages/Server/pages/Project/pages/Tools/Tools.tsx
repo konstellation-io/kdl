@@ -85,7 +85,7 @@ function Tools() {
   if (error) return <ErrorMessage />;
 
   const {
-    project: { tools: projectTools, areToolsActive },
+    project: { tools: projectTools },
   } = data;
 
   const tools = mapTools(projectTools);

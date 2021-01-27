@@ -72,6 +72,11 @@ export interface RepositoryInput {
   url: string;
 }
 
+export interface SetBoolFieldInput {
+  id: string;
+  value: boolean;
+}
+
 export interface UpdateAccessLevelInput {
   userIds: string[];
   accessLevel: AccessLevel;

@@ -24,6 +24,15 @@ export enum RepositoryType {
   INTERNAL = 'INTERNAL',
 }
 
+export enum ToolName {
+  DRONE = 'DRONE',
+  GITEA = 'GITEA',
+  JUPYTER = 'JUPYTER',
+  MINIO = 'MINIO',
+  MLFLOW = 'MLFLOW',
+  VSCODE = 'VSCODE',
+}
+
 export interface AddMembersInput {
   projectId: string;
   memberIds: string[];

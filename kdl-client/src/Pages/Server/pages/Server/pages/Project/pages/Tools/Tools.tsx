@@ -1,18 +1,12 @@
-import { Button, HorizontalBar } from 'kwc';
+import { Button, ErrorMessage, HorizontalBar, SpinnerCircular } from 'kwc';
 import Card, { CardState } from 'Components/Layout/Card/Card';
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import DroneImg from './img/drone.png';
-import GiteaImg from './img/gitea.png';
 import IconOk from '@material-ui/icons/Check';
 import IconStart from '@material-ui/icons/PlayArrow';
 import IconStop from '@material-ui/icons/Stop';
 import IconWarn from '@material-ui/icons/Warning';
-import JupyterImg from './img/jupyter.png';
-import MinioImg from './img/minio.png';
-import MlFlowImg from './img/mlflow.png';
 import ToolGroup from './ToolGroup';
-import VSCodeImg from './img/vscode.png';
 import cx from 'classnames';
 import styles from './Tools.module.scss';
 import { useState } from 'react';
@@ -22,53 +16,38 @@ import useExternalBrowserWindows, {
 import { useParams } from 'react-router-dom';
 import { IpcMainEvent, remote } from 'electron';
 import { RouteProjectParams } from '../../../../../../../../Constants/routes';
+import { useQuery } from '@apollo/client';
+import { loader } from 'graphql.macro';
+import {
+  GetProjectTools,
+  GetProjectToolsVariables,
+} from 'Graphql/queries/types/GetProjectTools';
+import { EnhancedTool, EnhancedToolGroups } from './config';
+import Tool from './components/Tool/Tool';
+import { mapTools } from './mappingFunctions';
 
-export enum ToolTypes {
-  GITEA,
-  MINIO,
-  JUPYTER,
-  VSCODE,
-  DRONE,
-  MLFLOW,
-}
-
-type ToolProps = {
-  img: string;
-  title: string;
-  description: string;
-  disabled?: boolean;
-  onClick?: () => void;
-};
-
-const Tool: FC<ToolProps> = ({
-  img,
-  title,
-  description,
-  disabled = false,
-  onClick = () => {},
-}) => (
-  <div
-    className={cx(styles.cardContent, { [styles.disabled]: disabled })}
-    onClick={() => !disabled && onClick()}
-  >
-    <div className={styles.imgContainer}>
-      <img className={styles.toolImg} src={img} alt={`${title}_img`} />
-    </div>
-    <p className={styles.toolTitle}>{title}</p>
-    <p className={styles.toolDescription}>{description}</p>
-  </div>
-);
 const { ipcMain } = remote;
+const GetProjectToolsQuery = loader('Graphql/queries/getProjectTools.graphql');
 
 function Tools() {
   const { projectId } = useParams<RouteProjectParams>();
   const [active, setActive] = useState(false);
+  const { data, loading, error } = useQuery<
+    GetProjectTools,
+    GetProjectToolsVariables
+  >(GetProjectToolsQuery, {
+    variables: { id: projectId },
+  });
   const { openWindow } = useExternalBrowserWindows();
   function toggleActive() {
     setActive(!active);
   }
 
-  const onMessage = (_: IpcMainEvent, args: any) => {
+  function handleToolClick({ url, toolName, img }: EnhancedTool) {
+    openWindow(url, `${projectId}-${toolName}`, img);
+  }
+
+  const onMessage = (event: IpcMainEvent, args: any) => {
     console.log(`Message received on the main window: ${args}`);
   };
 
@@ -79,116 +58,45 @@ function Tools() {
     };
   }, []);
 
+  function renderCard(tool: EnhancedTool) {
+    return (
+      <Card
+        key={tool.title}
+        state={tool.isUserLocalTool || active ? CardState.OK : CardState.ALERT}
+      >
+        <Tool
+          {...tool}
+          onClick={() => handleToolClick(tool)}
+          disabled={!tool.isUserLocalTool && !active}
+        />
+      </Card>
+    );
+  }
+
+  function renderGroup({ title, tools: toolsCards }: EnhancedToolGroups) {
+    return (
+      <ToolGroup title={title} key={title}>
+        <div className={styles.multiCard}>{toolsCards.map(renderCard)}</div>
+      </ToolGroup>
+    );
+  }
+
+  if (!data || loading) return <SpinnerCircular />;
+  if (error) return <ErrorMessage />;
+
+  const {
+    project: { tools: projectTools },
+  } = data;
+
+  const tools = mapTools(projectTools);
+  const firstRow = tools.filter(({ row }) => row === 0);
+  const secondRow = tools.filter(({ row }) => row === 1);
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.row}>
-          <ToolGroup title="Code repository">
-            <Card>
-              <Tool
-                onClick={() =>
-                  openWindow(
-                    'https://gitea.io/en-us/',
-                    `${projectId}-${ToolTypes.GITEA}`,
-                    GiteaImg
-                  )
-                }
-                img={GiteaImg}
-                title="Gitea"
-                description="Nam dapibus nisl vitae elit fringilla."
-              />
-            </Card>
-          </ToolGroup>
-          <ToolGroup title="Storage">
-            <Card>
-              <Tool
-                onClick={() =>
-                  openWindow(
-                    'https://min.io/',
-
-                    `${projectId}-${ToolTypes.MINIO}`,
-                    MinioImg
-                  )
-                }
-                img={MinioImg}
-                title="Minio"
-                description="Nam dapibus nisl vitae elit fringilla."
-              />
-            </Card>
-          </ToolGroup>
-          <ToolGroup title="Analysis">
-            <Card state={active ? CardState.OK : CardState.ALERT}>
-              <Tool
-                onClick={() =>
-                  openWindow(
-                    'https://jupyter.org/',
-
-                    `${projectId}-${ToolTypes.JUPYTER}`,
-                    JupyterImg
-                  )
-                }
-                img={JupyterImg}
-                title="Jupyter"
-                description="Nam dapibus nisl vitae elit fringilla."
-                disabled={!active}
-              />
-            </Card>
-          </ToolGroup>
-        </div>
-        <div className={styles.row}>
-          <ToolGroup title="Experiments">
-            <div className={styles.multiCard}>
-              <Card state={active ? CardState.OK : CardState.ALERT}>
-                <Tool
-                  onClick={() =>
-                    openWindow(
-                      'https://code.visualstudio.com/',
-
-                      `${projectId}-${ToolTypes.VSCODE}`,
-                      VSCodeImg
-                    )
-                  }
-                  img={VSCodeImg}
-                  title="VSCode"
-                  description="Nam dapibus nisl vitae elit fringilla."
-                  disabled={!active}
-                />
-              </Card>
-              <Card>
-                <Tool
-                  onClick={() =>
-                    openWindow(
-                      'https://www.drone.io/',
-
-                      `${projectId}-${ToolTypes.DRONE}`,
-                      DroneImg
-                    )
-                  }
-                  img={DroneImg}
-                  title="Drone"
-                  description="Nam dapibus nisl vitae elit fringilla."
-                />
-              </Card>
-            </div>
-          </ToolGroup>
-          <ToolGroup title="Results">
-            <Card>
-              <Tool
-                onClick={() =>
-                  openWindow(
-                    'https://mlflow.org/',
-
-                    `${projectId}-${ToolTypes.MLFLOW}`,
-                    MlFlowImg
-                  )
-                }
-                img={MlFlowImg}
-                title="MlFlow"
-                description="Nam dapibus nisl vitae elit fringilla."
-              />
-            </Card>
-          </ToolGroup>
-        </div>
+        <div className={styles.row}>{firstRow.map(renderGroup)}</div>
+        <div className={styles.row}>{secondRow.map(renderGroup)}</div>
       </div>
       <HorizontalBar className={styles.actions}>
         <div className={styles.actionsContent}>

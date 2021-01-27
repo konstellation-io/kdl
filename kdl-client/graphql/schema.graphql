@@ -22,6 +22,7 @@ type Mutation {
   removeApiToken(input: RemoveApiTokenInput): ApiToken!
   setStarredKGItem(input: SetBoolFieldInput!): KnowledgeGraphItem!
   setDiscardedKGItem(input: SetBoolFieldInput!): KnowledgeGraphItem!
+  setActiveProjectTools(input: SetBoolFieldInput!): Project!
 }
 
 type QualityProjectDesc {

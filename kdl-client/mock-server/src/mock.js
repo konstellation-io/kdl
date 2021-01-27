@@ -50,6 +50,10 @@ module.exports = {
       lastActivationDate: new Date().toUTCString(),
       members: [],
       tools: [],
+      areToolsActive: false,
+    }),
+    setActiveProjectTools: (_, { input }) => ({
+      areToolsActive: input.value,
     }),
   }),
   ApiToken: () => ({

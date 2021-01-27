@@ -9,7 +9,6 @@ import IconWarn from '@material-ui/icons/Warning';
 import ToolGroup from './ToolGroup';
 import cx from 'classnames';
 import styles from './Tools.module.scss';
-import { useState } from 'react';
 import useExternalBrowserWindows, {
   channelName,
 } from './useExternalBrowserWindows';
@@ -25,13 +24,13 @@ import {
 import { EnhancedTool, EnhancedToolGroups } from './config';
 import Tool from './components/Tool/Tool';
 import { mapTools } from './mappingFunctions';
+import useTool from 'Graphql/hooks/useTool';
 
 const { ipcMain } = remote;
 const GetProjectToolsQuery = loader('Graphql/queries/getProjectTools.graphql');
 
 function Tools() {
   const { projectId } = useParams<RouteProjectParams>();
-  const [active, setActive] = useState(false);
   const { data, loading, error } = useQuery<
     GetProjectTools,
     GetProjectToolsVariables
@@ -39,17 +38,10 @@ function Tools() {
     variables: { id: projectId },
   });
   const { openWindow } = useExternalBrowserWindows();
-  function toggleActive() {
-    setActive(!active);
-  }
-
-  function handleToolClick({ url, toolName, img }: EnhancedTool) {
-    openWindow(url, `${projectId}-${toolName}`, img);
-  }
-
-  const onMessage = (event: IpcMainEvent, args: any) => {
-    console.log(`Message received on the main window: ${args}`);
-  };
+  const {
+    updateProjectActiveTools,
+    projectActiveTools: { loading: toggleActiveProjectToolsLoading },
+  } = useTool(projectId);
 
   useEffect(() => {
     ipcMain.on(channelName, onMessage);
@@ -58,16 +50,39 @@ function Tools() {
     };
   }, []);
 
+  const onMessage = (event: IpcMainEvent, args: any) => {
+    console.log(`Message received on the main window: ${args}`);
+  };
+
+  if (!data || loading) return <SpinnerCircular />;
+  if (error) return <ErrorMessage />;
+
+  const {
+    project: { tools: projectTools, areToolsActive },
+  } = data;
+
+  function toggleActive() {
+    updateProjectActiveTools(!areToolsActive);
+  }
+
+  function handleToolClick({ url, toolName, img }: EnhancedTool) {
+    openWindow(url, `${projectId}-${toolName}`, img);
+  }
+
   function renderCard(tool: EnhancedTool) {
     return (
       <Card
         key={tool.title}
-        state={tool.isUserLocalTool || active ? CardState.OK : CardState.ALERT}
+        state={
+          tool.isUserLocalTool || areToolsActive
+            ? CardState.OK
+            : CardState.ALERT
+        }
       >
         <Tool
           {...tool}
           onClick={() => handleToolClick(tool)}
-          disabled={!tool.isUserLocalTool && !active}
+          disabled={!tool.isUserLocalTool && !areToolsActive}
         />
       </Card>
     );
@@ -80,13 +95,6 @@ function Tools() {
       </ToolGroup>
     );
   }
-
-  if (!data || loading) return <SpinnerCircular />;
-  if (error) return <ErrorMessage />;
-
-  const {
-    project: { tools: projectTools },
-  } = data;
 
   const tools = mapTools(projectTools);
   const firstRow = tools.filter(({ row }) => row === 0);
@@ -102,25 +110,31 @@ function Tools() {
         <div className={styles.actionsContent}>
           <div className={styles.left}>
             <div
-              className={cx(styles.toolsStatus, { [styles.active]: active })}
+              className={cx(styles.toolsStatus, {
+                [styles.active]: areToolsActive,
+              })}
             >
               {(() => {
-                const Icon = active ? IconOk : IconWarn;
+                const Icon = areToolsActive ? IconOk : IconWarn;
                 return <Icon className="icon-regular" />;
               })()}
               <span>
-                {`YOUR PRIVATE TOOLS ARE ${active ? 'RUNNING' : 'STOPPED'}`}
+                {`YOUR PRIVATE TOOLS ARE ${
+                  areToolsActive ? 'RUNNING' : 'STOPPED'
+                }`}
               </span>
             </div>
           </div>
           <div className={styles.right}>
             <span className={styles.actionMessage}>{`TO ${
-              active ? 'STOP' : 'START'
+              areToolsActive ? 'STOP' : 'START'
             } YOUR PRIVATE TOOLS, JUST`}</span>
             <Button
-              label={active ? 'STOP' : 'START'}
+              className={styles.toggleActiveButton}
+              loading={toggleActiveProjectToolsLoading}
+              label={areToolsActive ? 'STOP' : 'START'}
               onClick={toggleActive}
-              Icon={active ? IconStop : IconStart}
+              Icon={areToolsActive ? IconStop : IconStart}
               height={30}
               primary
             />

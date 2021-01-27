@@ -10,6 +10,10 @@ module.exports = {
     }),
     projects: () => new MockList([4, 8]),
     users: () => new MockList([20, 30]),
+    project: ({ project }, { id }) => ({
+      ...project,
+      id,
+    }),
   }),
   Mutation: () => ({
     updateProject: (_, { input: { id, name } }) => ({
@@ -50,6 +54,11 @@ module.exports = {
       lastActivationDate: new Date().toUTCString(),
       members: [],
       tools: [],
+      areToolsActive: false,
+    }),
+    setActiveProjectTools: (_, { input }) => ({
+      id: input.id,
+      areToolsActive: input.value,
     }),
   }),
   ApiToken: () => ({

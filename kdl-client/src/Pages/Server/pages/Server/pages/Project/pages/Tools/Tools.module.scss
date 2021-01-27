@@ -34,6 +34,10 @@
       align-items: center;
     }
 
+    .toggleActiveButton {
+      width: $grid-unit * 13;
+    }
+
     .toolsStatus {
       @include font-caption;
       color: palette(alert);

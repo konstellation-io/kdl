@@ -18,6 +18,7 @@ export interface GetProjectTools_project_tools {
 
 export interface GetProjectTools_project {
   __typename: 'Project';
+  id: string;
   tools: GetProjectTools_project_tools[];
   areToolsActive: boolean | null;
 }

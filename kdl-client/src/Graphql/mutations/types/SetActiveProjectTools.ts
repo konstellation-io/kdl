@@ -11,6 +11,7 @@ import { SetBoolFieldInput } from './../../types/globalTypes';
 
 export interface SetActiveProjectTools_setActiveProjectTools {
   __typename: 'Project';
+  id: string;
   areToolsActive: boolean | null;
 }
 

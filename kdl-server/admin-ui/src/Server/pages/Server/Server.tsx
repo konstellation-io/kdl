@@ -21,7 +21,6 @@ function Server() {
   const { updateOpenedServer } = useOpenedServer();
 
   useEffect(() => {
-    console.log('dentro', server);
     if (server) {
       updateOpenedServer(server);
       // titlebar.updateTitle(`Konstellation - ${server.name}`);

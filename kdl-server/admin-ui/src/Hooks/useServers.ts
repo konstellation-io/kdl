@@ -30,8 +30,6 @@ function useServers() {
   const [servers, setServers] = useState<Server[]>([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(servers);
-
   // useEffect(() => {
   //   function onStoreUpdate(_: unknown, { key, value }: StoreUpdate) {
   //     if (key === StoreKey.SERVERS) {

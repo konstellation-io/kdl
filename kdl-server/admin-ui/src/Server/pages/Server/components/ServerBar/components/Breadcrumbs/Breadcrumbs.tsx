@@ -5,7 +5,6 @@ import useBreadcrumbs from './useBreadcrumbs';
 
 function Breadcrumbs() {
   const { crumbs } = useBreadcrumbs();
-  console.log(crumbs);
   return (
     <div className={styles.container}>
       {crumbs.map((crumb, index) => (

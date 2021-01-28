@@ -58,12 +58,10 @@ function useBreadcrumbs() {
   const loading = projectLoading || projectsLoading || serverLoading;
   const error = projectError || projectsError || serverError;
 
-  console.log(loading, projectsData, serverData);
   if (loading || !projectsData || !serverData?.openedServer)
     return { loading, crumbs };
   if (error) throw Error('cannot retrieve data at useBreadcrumbs');
 
-  console.log('prova');
   const {
     name: serverName,
     id: serverId,

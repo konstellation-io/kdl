@@ -42,6 +42,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "SASS_PATH=src PORT=3001 & yarn start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

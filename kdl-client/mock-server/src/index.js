@@ -6,11 +6,8 @@ const { typeDefs } = require('./schema');
 const mocks = require('./mock');
 
 const app = express();
-
-app.use(
-  bodyParser.json(),
-  cors({ origin: 'http://localhost:3000', credentials: true })
-);
+const allowList = ['http://localhost:3000', 'http://localhost:3001'];
+app.use(bodyParser.json(), cors({ origin: allowList, credentials: true }));
 
 // # This endpoint is used to test unauthorized response
 // app.post('/graphql', (req, res) => {
@@ -26,4 +23,3 @@ const appServer = app.listen(4000, () => {
   const address = appServer.address();
   console.log(`🚀 Server ready at ${address.address}${address.port}`);
 });
-

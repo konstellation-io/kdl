@@ -8,19 +8,25 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "baseUrl": "src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "downlevelIteration": true,
+    "noImplicitThis": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "src/**/*.test.*"
   ]
 }

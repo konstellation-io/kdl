@@ -1,5 +1,5 @@
-import React from 'react';
-import ServerClient from 'Pages/Home/ServerClient';
+import React from "react";
+import ServerClient from "./Server/ServerClient";
 
 function App() {
   return <ServerClient />;

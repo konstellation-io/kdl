@@ -1,5 +1,4 @@
-import { StoreKey, StoreUpdate } from "types/store";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export type Workspace = {
   project: {

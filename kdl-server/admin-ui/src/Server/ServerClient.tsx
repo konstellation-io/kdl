@@ -1,3 +1,4 @@
+// FIXME: move this to pages and name this page as Home
 import { ApolloClient, ApolloProvider } from '@apollo/client';
 import React, { useEffect, useRef } from 'react';
 import { Route, Router, Switch } from 'react-router-dom';

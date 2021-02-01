@@ -1,5 +1,4 @@
 import ROUTE, { buildRoute } from 'Constants/routes';
-import { StoreKey, StoreUpdate } from 'types/store';
 import { useEffect, useState } from 'react';
 
 import { Action } from 'Pages/Servers/components/Server/Server';

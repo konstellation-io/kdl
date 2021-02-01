@@ -6,6 +6,7 @@ const { typeDefs } = require('./schema');
 const mocks = require('./mock');
 
 const app = express();
+// FIXME: remove http://localhost:3000 once the app have been decoupled
 const allowList = ['http://localhost:3000', 'http://localhost:3001'];
 app.use(bodyParser.json(), cors({ origin: allowList, credentials: true }));
 

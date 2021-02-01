@@ -1,3 +1,4 @@
+// FIXME: change the urls. Delete the server/
 enum ROUTE {
   HOME = '/',
   NEW_SERVER = '/new-server',

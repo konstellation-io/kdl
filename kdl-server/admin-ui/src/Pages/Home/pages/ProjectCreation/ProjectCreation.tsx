@@ -61,7 +61,7 @@ function ProjectCreation() {
           <Button
             label="GO TO SERVER"
             className={styles.button}
-            to={buildRoute.server(ROUTE.SERVER, serverId)}
+            to={buildRoute.server(ROUTE.HOME, serverId)}
           />
           <Button
             label="GO TO PROJECT"

@@ -70,7 +70,7 @@ function useServers() {
           {
             label: 'SIGN IN',
             Icon: IconStart,
-            to: buildRoute.server(ROUTE.SERVER_LOGIN, id),
+            to: '',
           },
         ];
         break;

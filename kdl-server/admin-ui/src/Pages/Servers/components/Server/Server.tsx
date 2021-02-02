@@ -1,6 +1,6 @@
-import LocalServer, { LocalServerStates } from './LocalServer';
+import { LocalServerStates } from './LocalServer';
 import React, { FunctionComponent } from 'react';
-import RemoteServer, { RemoteServerStates } from './RemoteServer';
+import { RemoteServerStates } from './RemoteServer';
 
 import ActionButton from './ActionButton';
 import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
@@ -86,5 +86,4 @@ function Server({
   );
 }
 
-export { LocalServer, RemoteServer };
 export default Server;

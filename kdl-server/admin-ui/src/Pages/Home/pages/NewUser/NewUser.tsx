@@ -57,7 +57,7 @@ function NewUser() {
   const {
     addNewUser,
     add: { loading, error: errorAddUser },
-  } = useUser(() => history.push(ROUTE.SERVER_USERS));
+  } = useUser(() => history.push(ROUTE.USERS));
 
   useEffect(() => {
     register('email', { validate: verifyEmail });
@@ -99,7 +99,7 @@ function NewUser() {
   return (
     <DefaultPage
       title="Add a new user"
-      subtitle="Added user will have access to the server. If a user not included in the server tries to access it, 
+      subtitle="Added user will have access to the server. If a user not included in the server tries to access it,
         they will not receive the sign in email, instead an error will be returned."
       actions={actions}
     >

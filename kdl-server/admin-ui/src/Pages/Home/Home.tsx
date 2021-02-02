@@ -33,19 +33,18 @@ function Home() {
     })
   );
 
+  const routesWithTopBar = [
+    ROUTE.USERS,
+    ROUTE.HOME,
+    ROUTE.PROJECT,
+    ROUTE.USER_SSH_KEY,
+    ROUTE.USER_API_TOKENS,
+  ];
+
   return (
     <ApolloProvider client={client.current}>
       <Router history={history}>
-        <Route
-          path={[
-            ROUTE.USERS,
-            ROUTE.HOME,
-            ROUTE.PROJECT,
-            ROUTE.USER_SSH_KEY,
-            ROUTE.USER_API_TOKENS,
-          ]}
-          component={ServerBar}
-        />
+        <Route path={routesWithTopBar} component={ServerBar} />
         <Switch>
           <Route exact path={ROUTE.NEW_PROJECT} component={NewProject} />
           <Route exact path={ROUTE.NEW_USER} component={NewUser} />

@@ -1,5 +1,5 @@
-import { PanelInfo } from "../../../Server/apollo/models/Panel";
-import { gql } from "@apollo/client";
+import { PanelInfo } from 'Pages/Home/apollo/models/Panel';
+import { gql } from '@apollo/client';
 
 export interface GetPrimaryPanel {
   primaryPanel: PanelInfo;

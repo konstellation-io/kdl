@@ -10,7 +10,6 @@ import styles from './InternalRepository.module.scss';
 import useNewProject from '../../../../../../apollo/hooks/useNewProject';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import useServers from 'Hooks/useServers';
 import IconLink from '@material-ui/icons/Link';
 
 function validateProjectSlug(value: string): string {
@@ -31,8 +30,6 @@ type Props = {
 };
 function InternalRepository({ showErrors }: Props) {
   const { data } = useQuery<GetNewProject>(GET_NEW_PROJECT);
-  const { serverId } = useParams<RouteServerParams>();
-  const { getServer } = useServers();
   const { updateValue, updateError, clearError } = useNewProject(
     'internalRepository'
   );
@@ -42,23 +39,25 @@ function InternalRepository({ showErrors }: Props) {
   const slug = values?.slug || '';
   const slugError = errors?.slug;
 
-  const server = getServer(serverId);
-
   useEffect(() => {
-    updateValue('url', `${server?.url}.${slug}`);
-  }, [updateValue, slug, server]);
+    // TODO: change server url
+    // updateValue('url', `${server?.url}.${slug}`);
+    updateValue('url', `slug`);
+  }, [updateValue, slug]);
 
   if (!data) return <SpinnerCircular />;
 
   const slugOk = validateProjectSlug(slug);
 
+  // TODO: change server url
   return (
     <div className={styles.repositoryInternal}>
       <div className={styles.url}>
         <p className={styles.urlTitle}>repository url</p>
         <div className={styles.serverUrlContainer}>
           <IconLink className="icon-regular" />
-          <span className={styles.urlContent}>{`${server?.url}/`}</span>
+          {/*<span className={styles.urlContent}>{`${server?.url}/`}</span>*/}
+          <span className={styles.urlContent}>{`/`}</span>
         </div>
       </div>
       <TextInput

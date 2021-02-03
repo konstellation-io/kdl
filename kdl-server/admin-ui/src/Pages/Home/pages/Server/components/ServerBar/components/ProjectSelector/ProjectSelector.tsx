@@ -9,18 +9,16 @@ import { BottomComponentProps } from '../Breadcrumbs/components/Crumb/Crumb';
 
 type Props = {
   options: GetProjects_projects[];
-  serverId: string;
 };
 const ProjectSelector: FC<Props & BottomComponentProps> = ({
   options,
-  serverId,
   closeComponent = () => {},
 }) => (
   <div className={styles.container}>
     <ul>
       {options.map(({ id, name }: GetProjects_projects) => (
         <NavLink
-          to={buildRoute.project(ROUTE.PROJECT, serverId, id)}
+          to={buildRoute.project(ROUTE.PROJECT, 'serverId', id)}
           key={id}
           onClick={closeComponent}
           activeClassName={styles.selectedProject}
@@ -34,7 +32,7 @@ const ProjectSelector: FC<Props & BottomComponentProps> = ({
       Icon={IconAdd}
       label="NEW PROJECT"
       className={styles.addProjectButton}
-      to={buildRoute.server(ROUTE.NEW_PROJECT, serverId)}
+      to={buildRoute.server(ROUTE.NEW_PROJECT, 'serverId')}
     />
   </div>
 );

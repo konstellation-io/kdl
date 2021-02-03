@@ -8,5 +8,11 @@ import 'Styles/react-toastify.scss';
 import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import fetchConfig from './fetchConfig';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+export let CONFIG: { [key: string]: string };
+
+fetchConfig.then((configJson) => {
+  CONFIG = configJson;
+  ReactDOM.render(<App />, document.getElementById('root'));
+});

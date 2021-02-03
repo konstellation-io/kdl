@@ -15,6 +15,7 @@ import Project from './pages/Server/pages/Project/Project';
 import UserSshKey from './pages/Server/pages/UserSshKey/UserSshKey';
 import UserApiTokens from './pages/Server/pages/UserApiToken/UserApiTokens';
 import ServerBar from './pages/Server/components/ServerBar/ServerBar';
+import { CONFIG } from 'index';
 
 function Home() {
   // Resets cache on exit client
@@ -27,7 +28,7 @@ function Home() {
 
   const client = useRef(
     new ApolloClient({
-      uri: 'http://localhost:4000/graphql',
+      uri: `${CONFIG.KDL_ADMIN_API_HOST}/graphql`,
       credentials: 'include',
       cache,
     })

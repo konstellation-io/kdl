@@ -10,7 +10,6 @@ import { GetProjects_projects } from 'Graphql/queries/types/GetProjects';
 import { MemberDetails } from './models/MemberDetails';
 import { NewProject } from './models/NewProject';
 import { PanelInfo } from './models/Panel';
-import { Server } from 'Hooks/useServers';
 import { BrowserWindow } from './models/BrowserWindow';
 
 export const initialProjectFilters: ProjectFilters = {
@@ -63,7 +62,6 @@ const initialStateUserSettings: UserSettings = {
 
 export const projectFilters = makeVar(initialProjectFilters);
 export const newProject = makeVar(initialNewProject);
-export const openedServer = makeVar<Server | null>(null);
 export const openedProject = makeVar<GetProjects_projects | null>(null);
 export const userSettings = makeVar<UserSettings>(initialStateUserSettings);
 export const memberDetails = makeVar<MemberDetails | null>(null);
@@ -77,7 +75,6 @@ const cache = new InMemoryCache({
       fields: {
         projectFilters: { read: () => projectFilters() },
         newProject: { read: () => newProject() },
-        openedServer: { read: () => openedServer() },
         openedProject: { read: () => openedProject() },
         userSettings: { read: () => userSettings() },
         primaryPanel: { read: () => primaryPanel() },

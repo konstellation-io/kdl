@@ -1,7 +1,4 @@
-const isDev = process.env.NODE_ENV === 'development';
-const configUrl = isDev ? '/config/config.json.tpl' : '/config/config.json';
-
-const config = fetch(configUrl).then((response) => {
+const config = fetch('/config.json').then((response) => {
   if (!response.ok) {
     throw new Error(
       `Unexpected status code: ${response.status} getting configuration file`

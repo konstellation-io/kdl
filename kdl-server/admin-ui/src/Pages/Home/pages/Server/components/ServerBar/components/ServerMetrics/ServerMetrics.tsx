@@ -62,24 +62,22 @@ const metrics: Metric[] = [
 ];
 
 type Props = {
-  serverId: string;
   serverUrl?: string;
 };
 
 const ServerMetrics: FC<Props & BottomComponentProps> = ({
   serverUrl,
-  serverId,
   closeComponent = () => {},
 }) => {
   const { push } = useHistory();
   const handleUsersClick = () => {
     closeComponent();
-    push(buildRoute.server(ROUTE.USERS, serverId));
+    push(buildRoute.server(ROUTE.USERS, 'serverId'));
   };
 
   const handleProjectsClick = () => {
     closeComponent();
-    push(buildRoute.server(ROUTE.HOME, serverId));
+    push(buildRoute.server(ROUTE.HOME, 'serverId'));
   };
 
   return (

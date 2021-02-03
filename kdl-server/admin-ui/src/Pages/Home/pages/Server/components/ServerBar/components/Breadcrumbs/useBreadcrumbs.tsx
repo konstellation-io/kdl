@@ -6,16 +6,11 @@ import {
   GET_OPENED_PROJECT,
   GetOpenedProject,
 } from 'Graphql/client/queries/getOpenedProject.graphql';
-import {
-  GET_OPENED_SERVER,
-  GetOpenedServer,
-} from 'Graphql/client/queries/getOpenedServer.graphql';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 import useProjectNavigation, {
   EnhancedRouteConfiguration,
   projectRoutesConfiguration,
 } from 'Hooks/useProjectNavigation';
-
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { GetProjects } from 'Graphql/queries/types/GetProjects';
 import ProjectIcon from 'Components/Icons/ProjectIcon/ProjectIcon';
@@ -23,10 +18,14 @@ import ProjectSelector from '../ProjectSelector/ProjectSelector';
 import ROUTE from 'Constants/routes';
 import React from 'react';
 import SectionSelector from '../SectionSelector/SectionSelector';
-import ServerIcon from 'Components/Icons/ServerIcon/ServerIcon';
+import ServerIcon, {
+  RemoteServerStates,
+} from 'Components/Icons/ServerIcon/ServerIcon';
 import ServerMetrics from 'Pages/Home/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
+import { SERVER_NAME, SERVER_URL } from '../../../../../../../../index';
+
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
 function useBreadcrumbs() {
@@ -44,40 +43,39 @@ function useBreadcrumbs() {
     loading: projectLoading,
     error: projectError,
   } = useQuery<GetOpenedProject>(GET_OPENED_PROJECT);
-  const {
-    data: serverData,
-    loading: serverLoading,
-    error: serverError,
-  } = useQuery<GetOpenedServer>(GET_OPENED_SERVER);
 
   const projectSections: EnhancedRouteConfiguration[] = useProjectNavigation(
-    serverData?.openedServer?.id || '',
+    '',
     projectData?.openedProject?.id || ''
   );
 
-  const loading = projectLoading || projectsLoading || serverLoading;
-  const error = projectError || projectsError || serverError;
+  const loading = projectLoading || projectsLoading;
+  const error = projectError || projectsError;
 
-  if (loading || !projectsData || !serverData?.openedServer)
-    return { loading, crumbs };
+  if (loading || !projectsData) return { loading, crumbs };
   if (error) throw Error('cannot retrieve data at useBreadcrumbs');
 
-  const {
-    name: serverName,
-    id: serverId,
-    url: serverUrl,
-    state: serverState,
-  } = serverData.openedServer;
+  // TODO: server env var
+  // const {
+  //   name: serverName,
+  //   id: serverId,
+  //   url: serverUrl,
+  //   state: serverState,
+  // } = serverData.openedServer;
+
   const openedProject = projectData?.openedProject;
 
   // Add server crumb
   crumbs.push({
-    crumbText: serverName,
+    crumbText: SERVER_NAME,
     LeftIconComponent: (
-      <ServerIcon className="icon-regular" state={serverState} />
+      <ServerIcon
+        className="icon-regular"
+        state={RemoteServerStates.SIGNED_IN}
+      />
     ),
     BottomComponent: (props: BottomComponentProps) => (
-      <ServerMetrics serverUrl={serverUrl} serverId={serverId} {...props} />
+      <ServerMetrics serverUrl={SERVER_URL} {...props} />
     ),
   });
 
@@ -89,11 +87,7 @@ function useBreadcrumbs() {
       crumbText: name,
       LeftIconComponent: <ProjectIcon className="icon-regular" state={state} />,
       BottomComponent: (props: BottomComponentProps) => (
-        <ProjectSelector
-          options={projectsData.projects}
-          serverId={serverId}
-          {...props}
-        />
+        <ProjectSelector options={projectsData.projects} {...props} />
       ),
     });
 

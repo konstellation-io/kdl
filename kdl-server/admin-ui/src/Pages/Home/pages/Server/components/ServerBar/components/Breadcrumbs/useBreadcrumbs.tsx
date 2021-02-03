@@ -24,7 +24,7 @@ import ServerIcon, {
 import ServerMetrics from 'Pages/Home/pages/Server/components/ServerBar/components/ServerMetrics/ServerMetrics';
 import { loader } from 'graphql.macro';
 import { useQuery } from '@apollo/client';
-import { SERVER_NAME, SERVER_URL } from '../../../../../../../../index';
+import { CONFIG } from 'index';
 
 const GetProjectsQuery = loader('Graphql/queries/getProjects.graphql');
 
@@ -67,7 +67,7 @@ function useBreadcrumbs() {
 
   // Add server crumb
   crumbs.push({
-    crumbText: SERVER_NAME,
+    crumbText: CONFIG.SERVER_NAME,
     LeftIconComponent: (
       <ServerIcon
         className="icon-regular"
@@ -75,7 +75,7 @@ function useBreadcrumbs() {
       />
     ),
     BottomComponent: (props: BottomComponentProps) => (
-      <ServerMetrics serverUrl={SERVER_URL} {...props} />
+      <ServerMetrics serverUrl={CONFIG.SERVER_URL} {...props} />
     ),
   });
 

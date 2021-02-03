@@ -1,4 +1,4 @@
-const config = fetch('/config.json').then((response) => {
+const fetchConfig = fetch('/config.json').then((response) => {
   if (!response.ok) {
     throw new Error(
       `Unexpected status code: ${response.status} getting configuration file`
@@ -7,4 +7,4 @@ const config = fetch('/config.json').then((response) => {
   return response.json();
 });
 
-export default config;
+export default fetchConfig;

@@ -4,6 +4,7 @@
 @import 'Styles/shadows';
 
 .container {
+  flex-grow: 1;
   position: relative;
   width: 100%;
   background-color: palette(base, 600);

@@ -8,15 +8,11 @@ import 'Styles/react-toastify.scss';
 import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import config from './config';
+import fetchConfig from './fetchConfig';
 
-export let SERVER_NAME: string;
-export let SERVER_URL: string;
-export let KDL_ADMIN_API_HOST: string;
+export let CONFIG: { [key: string]: string };
 
-config.then((configJson) => {
-  SERVER_NAME = configJson.SERVER_NAME;
-  SERVER_URL = configJson.SERVER_URL;
-  KDL_ADMIN_API_HOST = configJson.KDL_ADMIN_API_HOST;
+fetchConfig.then((configJson) => {
+  CONFIG = configJson;
   ReactDOM.render(<App />, document.getElementById('root'));
 });

@@ -19,7 +19,7 @@ const NavButtonLink: FC<any> = ({ children, ...props }) => (
 
 function ProjectNavigation() {
   const { serverId, projectId } = useParams<RouteProjectParams>();
-  // TODO: get the left navigation bar state from the local storage
+  // FIXME: get the left navigation bar state from the local storage
   const [opened, setOpened] = useState(false);
   const { togglePanel } = usePanel(PanelType.PRIMARY, {
     id: PANEL_ID.SETTINGS,

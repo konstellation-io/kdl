@@ -49,12 +49,15 @@ function SettingsMenu() {
   const closeModal = () => setShowModal(false);
 
   function doLogout() {
+    // TODO: what to do when logout?
     // TODO: impletent this will main process
     // ipcRenderer.send('serverLogout', serverId);
     history.push(ROUTE.HOME);
   }
 
   function doDisconnect() {
+    // TODO: what to do when disconnect?
+    // history.push(ROUTE.HOME);
     history.push(ROUTE.HOME);
   }
 

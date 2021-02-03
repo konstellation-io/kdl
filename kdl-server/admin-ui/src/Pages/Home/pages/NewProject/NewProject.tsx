@@ -73,7 +73,7 @@ function NewProject() {
 
   const { serverId } = useParams<RouteServerParams>();
   const { clearAll } = useNewProject('information');
-  const cancelRoute = buildRoute.server(ROUTE.SERVER, serverId);
+  const cancelRoute = buildRoute.server(ROUTE.HOME, serverId);
   const type = data?.newProject.repository.values.type || null;
 
   const stepsWithData: (

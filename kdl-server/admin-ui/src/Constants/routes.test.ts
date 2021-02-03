@@ -6,7 +6,7 @@ describe('route utils - buildRoute', () => {
     const serverId = 'someServer';
 
     const route1 = buildRoute.server(ROUTE.NEW_SERVER, serverId);
-    const route2 = buildRoute.server(ROUTE.SERVER_USERS, serverId);
+    const route2 = buildRoute.server(ROUTE.USERS, serverId);
 
     const expectedRoute1 = '/new-server';
     const expectedRoute2 = '/server/someServer/users';

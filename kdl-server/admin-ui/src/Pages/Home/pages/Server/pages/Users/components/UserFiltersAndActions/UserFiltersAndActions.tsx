@@ -22,7 +22,7 @@ function UserFiltersAndActions({ onDeleteUsers, onUpdateAccessLevel }: Props) {
         />
       </Left>
       <Right>
-        <Button label="NEW USER" to={ROUTE.NEW_SERVER_USER} border />
+        <Button label="NEW USER" to={ROUTE.NEW_USER} border />
       </Right>
     </div>
   );

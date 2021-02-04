@@ -37,6 +37,12 @@ function App() {
     };
   }, []);
 
+  // Inform main process about the height of the title bar
+  useEffect(() => {
+    const titleBar = document.getElementsByClassName('titlebar')[0];
+    ipcRenderer.send('setTitleBarHeight', titleBar?.clientHeight || 0);
+  }, []);
+
   if (loading) return <SpinnerCircular />;
 
   return (

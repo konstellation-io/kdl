@@ -9,6 +9,9 @@ import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// TODO: review https://github.com/apollographql/react-apollo/issues/3635
-//       in order to maintain React.StrictMode
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

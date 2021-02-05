@@ -1,4 +1,3 @@
-import ROUTE, { buildRoute } from 'Constants/routes';
 import { StoreKey, StoreUpdate } from 'types/store';
 import { useEffect, useState } from 'react';
 
@@ -72,7 +71,9 @@ function useServers() {
           {
             label: 'SIGN IN',
             Icon: IconStart,
-            to: buildRoute.server(ROUTE.SERVER_LOGIN, id),
+            // FIXME: Send the url of the admin-ui
+            onClick: () => ipcRenderer.send('loadServer'),
+            // to: buildRoute.server(ROUTE.SERVER_LOGIN, id),
           },
         ];
         break;

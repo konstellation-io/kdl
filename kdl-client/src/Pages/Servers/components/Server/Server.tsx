@@ -7,7 +7,6 @@ import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import cx from 'classnames';
 import styles from './Server.module.scss';
-import { ipcRenderer } from 'electron';
 
 export type Action = {
   label: string;
@@ -23,17 +22,15 @@ export interface ServerBaseProps {
 }
 
 type ServerProps = {
-  serverId: string;
   name: string;
   url?: string;
   warning?: boolean;
   state: LocalServerStates | RemoteServerStates;
   local?: boolean;
   actions: Action[];
-  onOpenUrl: string | null;
+  onOpenUrl: (() => void) | null;
 };
 function Server({
-  serverId,
   name,
   url,
   warning,
@@ -82,8 +79,7 @@ function Server({
   return onOpenUrl === null ? (
     <div className={styles.cannotOpen}>{server}</div>
   ) : (
-    // FIXME: pass the admin-ui url as arg in the send function
-    <div onClick={() => ipcRenderer.send('loadServer')}>{server}</div>
+    <div onClick={onOpenUrl}>{server}</div>
   );
 }
 

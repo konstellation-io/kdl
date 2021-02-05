@@ -82,6 +82,7 @@ function Server({
   return onOpenUrl === null ? (
     <div className={styles.cannotOpen}>{server}</div>
   ) : (
+    // FIXME: pass the admin-ui url as arg in the send function
     <div onClick={() => ipcRenderer.send('loadServer')}>{server}</div>
   );
 }

@@ -21,7 +21,7 @@ function ServerClient() {
 
   const client = useRef(
     new ApolloClient({
-      uri: 'http://localhost:4000/graphql',
+      uri: 'http://localhost:4000/api/v1/query',
       credentials: 'include',
       cache,
     })

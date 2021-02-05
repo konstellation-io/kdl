@@ -21,7 +21,7 @@ function ServerClient() {
 
   const client = useRef(
     new ApolloClient({
-      uri: 'http://localhost:4000/api/v1/query',
+      uri: 'http://localhost:4000/api/query',
       credentials: 'include',
       cache,
     })

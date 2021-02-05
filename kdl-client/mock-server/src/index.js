@@ -18,7 +18,7 @@ app.use(bodyParser.json(), cors({ origin: allowList, credentials: true }));
 
 const server = new ApolloServer({ typeDefs, mocks });
 
-server.applyMiddleware({ app, path: '/api/v1/query', cors: false });
+server.applyMiddleware({ app, path: '/api/query', cors: false });
 
 const appServer = app.listen(4000, () => {
   const address = appServer.address();

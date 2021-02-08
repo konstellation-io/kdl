@@ -6,7 +6,7 @@ import {
   remote,
   shell,
 } from 'electron';
-import ROUTE, { buildRoute } from 'Constants/routes';
+import ROUTE from 'Constants/routes';
 import { Server, ServerType } from 'Hooks/useServers';
 
 import history from 'browserHistory';
@@ -50,8 +50,10 @@ export const updateMenu = {
       serversSubMenu.push(
         {
           label: localServer.name,
-          click: () =>
-            history.push(buildRoute.server(ROUTE.SERVER, localServer.id)),
+          click: () => {
+            // FIXME: Change for the right url, probably the url of the local server.
+            // history.push(buildRoute.server(ROUTE.SERVER, localServer.id)),
+          },
         },
         {
           type: 'separator',
@@ -62,7 +64,10 @@ export const updateMenu = {
     remoteServers.forEach((server) => {
       serversSubMenu.push({
         label: server.name,
-        click: () => history.push(buildRoute.server(ROUTE.SERVER, server.id)),
+        click: () => {
+          // FIXME: Change for the right url, probably the url of the remote server.
+          // history.push(buildRoute.server(ROUTE.SERVER, server.id));
+        },
       });
     });
 

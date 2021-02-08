@@ -9,8 +9,6 @@ import ConnectToRemoteServer from 'Pages/ConnectToRemoteServer/ConnectToRemoteSe
 import InstallLocalServer from 'Pages/InstallLocalServer/InstallLocalServer';
 import NewServer from 'Pages/NewServer/NewServer';
 import ROUTE from 'Constants/routes';
-import ServerClient from 'Pages/Server/ServerClient';
-import ServerLogin from 'Pages/ServerLogin/ServerLogin';
 import Servers from 'Pages/Servers/Servers';
 import { SpinnerCircular } from 'kwc';
 import history from './browserHistory';
@@ -53,7 +51,6 @@ function App() {
             <Redirect exact from={ROUTE.HOME} to={ROUTE.NEW_SERVER} />
           )}
 
-          <Route path={ROUTE.SERVER} component={ServerClient} />
           <Route exact path={ROUTE.NEW_SERVER} component={NewServer} />
           <Route
             exact
@@ -70,7 +67,6 @@ function App() {
             path={ROUTE.CONNECT_TO_REMOTE_SERVER}
             component={ConnectToRemoteServer}
           />
-          <Route exact path={ROUTE.SERVER_LOGIN} component={ServerLogin} />
           <Route default path={ROUTE.HOME} component={Servers} />
         </Switch>
       </Router>

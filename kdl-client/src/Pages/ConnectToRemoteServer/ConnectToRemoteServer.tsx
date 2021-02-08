@@ -1,5 +1,4 @@
 import { Button, CHECK, TextInput } from 'kwc';
-import ROUTE, { buildRoute } from 'Constants/routes';
 import React, { useCallback, useEffect, useState } from 'react';
 import StatusCircle, {
   States,
@@ -83,7 +82,9 @@ function ConnectToRemoteServer() {
         setConnectionState(ConnectionState.OK);
 
         setTimeout(() => {
-          history.push(buildRoute.server(ROUTE.SERVER_LOGIN, serverId || ''));
+          // FIXME: pass the admin-ui url as arg in the send function
+          ipcRenderer.send('loadServer');
+          // history.push(buildRoute.server(ROUTE.SERVER_LOGIN, serverId || ''));
         }, 2000);
       } else {
         setConnectionState(ConnectionState.ERROR);

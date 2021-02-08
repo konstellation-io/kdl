@@ -15,6 +15,7 @@ const MAIL_SUBJECT = 'Contact';
 
 const { Menu } = remote;
 
+// FIXME: use Server page and useEffect to handle this logic.
 function handleOptionClick(route: ROUTE) {
   ipcRenderer.send('closeServer');
   history.push(route);

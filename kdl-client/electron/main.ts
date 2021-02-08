@@ -4,15 +4,21 @@ import './local_server_actions';
 import './local_server_installation';
 import './remote_server_actions';
 
-import { BrowserWindow, app, ipcMain } from 'electron';
+import {
+  app,
+  BrowserView,
+  BrowserViewConstructorOptions,
+  BrowserWindow,
+  ipcMain,
+} from 'electron';
 
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 import { join } from 'path';
 
 interface WindowSize {
-  width: number,
-  height: number,
+  width: number;
+  height: number;
 }
 
 const SPLASH_SCREEN_MIN_TIME = 2000;
@@ -31,12 +37,19 @@ const iconPath = isDev
   ? join(__dirname, '../../public/icons/64x64.png')
   : join(__dirname, '../icons/64x64.png');
 
+let titleBarHeight: number = 0;
+const serverViewOptions: BrowserViewConstructorOptions = {
+  webPreferences: {
+    nodeIntegration: true,
+  },
+};
+
 function showSplashScreen() {
   splashScreen = new BrowserWindow({
     ...SPLASH_SCREEN_SIZE,
     frame: false,
     backgroundColor: '#060606',
-    icon: iconPath
+    icon: iconPath,
   });
 
   splashScreen.loadURL(
@@ -59,12 +72,12 @@ function createMainWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
     },
     transparent: true,
     frame: false,
     titleBarStyle: 'hidden',
-    icon: iconPath
+    icon: iconPath,
   });
 
   mainWindow.loadURL(
@@ -143,3 +156,38 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('quitAndInstall', () => {
   autoUpdater.quitAndInstall();
 });
+
+ipcMain.once(
+  'setTitleBarHeight',
+  (_, payload: number) => (titleBarHeight = payload)
+);
+
+ipcMain.on('loadServer', (_, serverAdminURL = 'http://localhost:3001') => {
+  if (mainWindow) {
+    const serverView = new BrowserView(serverViewOptions);
+    mainWindow.addBrowserView(serverView);
+    configureServerView(serverView);
+    serverView.webContents.loadURL(serverAdminURL);
+
+    ipcMain.once('closeServer', () =>
+      mainWindow?.removeBrowserView(serverView)
+    );
+  }
+});
+
+function configureServerView(serverView: BrowserView) {
+  if (mainWindow) {
+    const [width, height] = mainWindow.getContentSize();
+    serverView.setBackgroundColor('#060606');
+    serverView.setBounds({
+      x: 0,
+      y: titleBarHeight,
+      height: height - titleBarHeight,
+      width,
+    });
+    serverView.setAutoResize({
+      horizontal: true,
+      vertical: true,
+    });
+  }
+}

@@ -4,10 +4,10 @@ import RemoteServer, { RemoteServerStates } from './RemoteServer';
 
 import ActionButton from './ActionButton';
 import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
-import { Link } from 'react-router-dom';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import cx from 'classnames';
 import styles from './Server.module.scss';
+import { ipcRenderer } from 'electron';
 
 export type Action = {
   label: string;
@@ -82,7 +82,8 @@ function Server({
   return onOpenUrl === null ? (
     <div className={styles.cannotOpen}>{server}</div>
   ) : (
-    <Link to={onOpenUrl}>{server}</Link>
+    // FIXME: pass the admin-ui url as arg in the send function
+    <div onClick={() => ipcRenderer.send('loadServer')}>{server}</div>
   );
 }
 

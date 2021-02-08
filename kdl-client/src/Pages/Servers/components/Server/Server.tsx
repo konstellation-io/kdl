@@ -4,7 +4,6 @@ import RemoteServer, { RemoteServerStates } from './RemoteServer';
 
 import ActionButton from './ActionButton';
 import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
-import { Link } from 'react-router-dom';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import cx from 'classnames';
 import styles from './Server.module.scss';
@@ -23,17 +22,15 @@ export interface ServerBaseProps {
 }
 
 type ServerProps = {
-  serverId: string;
   name: string;
   url?: string;
   warning?: boolean;
   state: LocalServerStates | RemoteServerStates;
   local?: boolean;
   actions: Action[];
-  onOpenUrl: string | null;
+  onOpenUrl: (() => void) | null;
 };
 function Server({
-  serverId,
   name,
   url,
   warning,
@@ -82,7 +79,7 @@ function Server({
   return onOpenUrl === null ? (
     <div className={styles.cannotOpen}>{server}</div>
   ) : (
-    <Link to={onOpenUrl}>{server}</Link>
+    <div onClick={onOpenUrl}>{server}</div>
   );
 }
 

@@ -1,7 +1,12 @@
 import * as LINK from 'Constants/konstellationLinks';
 
-import { MenuItemConstructorOptions, remote, shell } from 'electron';
-import ROUTE, { buildRoute } from 'Constants/routes';
+import {
+  ipcRenderer,
+  MenuItemConstructorOptions,
+  remote,
+  shell,
+} from 'electron';
+import ROUTE from 'Constants/routes';
 import { Server, ServerType } from 'Hooks/useServers';
 
 import history from 'browserHistory';
@@ -9,6 +14,12 @@ import history from 'browserHistory';
 const MAIL_SUBJECT = 'Contact';
 
 const { Menu } = remote;
+
+// FIXME: use Server page and useEffect to handle this logic.
+function handleOptionClick(route: ROUTE) {
+  ipcRenderer.send('closeServer');
+  history.push(route);
+}
 
 // TODO: fix typings
 
@@ -33,13 +44,16 @@ export const updateMenu = {
     if (localServer) {
       // @ts-ignore
       const addServerMenu: MenuItemConstructorOptions = template[0].submenu[0];
-      addServerMenu.click = () => history.push(ROUTE.CONNECT_TO_REMOTE_SERVER);
+      addServerMenu.click = () =>
+        handleOptionClick(ROUTE.CONNECT_TO_REMOTE_SERVER);
 
       serversSubMenu.push(
         {
           label: localServer.name,
-          click: () =>
-            history.push(buildRoute.server(ROUTE.SERVER, localServer.id)),
+          click: () => {
+            // FIXME: Change for the right url, probably the url of the local server.
+            // history.push(buildRoute.server(ROUTE.SERVER, localServer.id)),
+          },
         },
         {
           type: 'separator',
@@ -50,7 +64,10 @@ export const updateMenu = {
     remoteServers.forEach((server) => {
       serversSubMenu.push({
         label: server.name,
-        click: () => history.push(buildRoute.server(ROUTE.SERVER, server.id)),
+        click: () => {
+          // FIXME: Change for the right url, probably the url of the remote server.
+          // history.push(buildRoute.server(ROUTE.SERVER, server.id));
+        },
       });
     });
 
@@ -64,12 +81,12 @@ const template: MenuItemConstructorOptions[] = [
     submenu: [
       {
         label: 'Add Server',
-        click: () => history.push(ROUTE.NEW_SERVER),
+        click: () => handleOptionClick(ROUTE.CONNECT_TO_REMOTE_SERVER),
       },
       {
         label: 'View all Servers',
         enabled: false,
-        click: () => history.push(ROUTE.HOME),
+        click: () => handleOptionClick(ROUTE.HOME),
       },
       {
         label: 'Go to Server...',

@@ -85,7 +85,7 @@ ipcMain.on('checkRequirement', (event, requirement) => {
       request.reply([requirement, true]);
     })
     .catch(_ => {
-      // TODO: Remove next line and replace with l85
+      // TODO: Remove next line and replace with l90
       request.reply([requirement, true]);
       // request.reply([requirement, false]);
     });

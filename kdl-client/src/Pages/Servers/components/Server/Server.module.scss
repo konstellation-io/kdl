@@ -137,7 +137,6 @@ $label-height: 3 * $grid-unit;
 
   .state {
     @include make-triangle($small-triangle-base, palette(error));
-    // @include make-triangle($small-triangle-base, transparent);
     position: absolute;
     top: $small-triangle-base + 13px;
     left: -$small-triangle-base/2;
@@ -165,7 +164,6 @@ $label-height: 3 * $grid-unit;
 
   .stateBorder {
     @include make-triangle($small-triangle-base + 4px, palette(highlight));
-    // @include make-triangle($small-triangle-base, transparent);
     position: absolute;
     top: $small-triangle-base + 10px;
     left: -$small-triangle-base/2 - 2px;

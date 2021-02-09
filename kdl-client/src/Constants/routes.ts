@@ -4,7 +4,11 @@ enum ROUTE {
   CHECK_LOCAL_SERVER_REQUIREMENTS = '/check-local-server-requirements',
   INSTALL_LOCAL_SERVER = '/install-local-server',
   CONNECT_TO_REMOTE_SERVER = '/connect-to-remote-server',
+  SERVER = '/server/:serverId',
 }
+
+export const buildServerRoute = (route: ROUTE, serverId: string) =>
+  route.replace(':serverId', serverId);
 
 export type RouteServerParams = {
   serverId: string;

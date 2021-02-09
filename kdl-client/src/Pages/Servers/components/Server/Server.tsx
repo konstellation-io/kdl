@@ -1,12 +1,13 @@
 import LocalServer, { LocalServerStates } from './LocalServer';
 import React, { FunctionComponent } from 'react';
 import RemoteServer, { RemoteServerStates } from './RemoteServer';
-
+import { Link } from 'react-router-dom';
 import ActionButton from './ActionButton';
 import CopyToClipboard from 'Components/CopyToClipboard/CopyToClipboard';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import cx from 'classnames';
 import styles from './Server.module.scss';
+import ROUTE, { buildServerRoute } from 'Constants/routes';
 
 export type Action = {
   label: string;
@@ -22,6 +23,7 @@ export interface ServerBaseProps {
 }
 
 type ServerProps = {
+  serverId: string;
   name: string;
   url?: string;
   warning?: boolean;
@@ -31,6 +33,7 @@ type ServerProps = {
   onOpenUrl: (() => void) | null;
 };
 function Server({
+  serverId,
   name,
   url,
   warning,
@@ -79,7 +82,7 @@ function Server({
   return onOpenUrl === null ? (
     <div className={styles.cannotOpen}>{server}</div>
   ) : (
-    <div onClick={onOpenUrl}>{server}</div>
+    <Link to={buildServerRoute(ROUTE.SERVER, serverId)}>{server}</Link>
   );
 }
 

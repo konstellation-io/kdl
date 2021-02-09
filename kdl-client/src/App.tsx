@@ -15,6 +15,7 @@ import history from './browserHistory';
 import { ipcRenderer } from 'electron';
 import { toast } from 'react-toastify';
 import useServers from 'Hooks/useServers';
+import Server from './Pages/Server/Server';
 
 function onMainProcessError(_: unknown, message: string) {
   toast.error(message, {
@@ -67,6 +68,7 @@ function App() {
             path={ROUTE.CONNECT_TO_REMOTE_SERVER}
             component={ConnectToRemoteServer}
           />
+          <Route exact path={ROUTE.SERVER} component={Server} />
           <Route default path={ROUTE.HOME} component={Servers} />
         </Switch>
       </Router>

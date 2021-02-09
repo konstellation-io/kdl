@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
 import { RouteServerParams } from 'Constants/routes';
-import useServers from '../../Hooks/useServers';
-import React, { useEffect } from 'react';
 import { ipcRenderer } from 'electron';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import useServers from '../../Hooks/useServers';
 
 function Server() {
   const { serverId } = useParams<RouteServerParams>();
@@ -16,7 +16,7 @@ function Server() {
     console.log(server?.url);
     // FIXME: pass the admin-ui url as arg in the send function
     ipcRenderer.send('loadServer');
-  }, [serverId]);
+  }, [server]);
 
   return null;
 }

@@ -4,13 +4,6 @@ import Request from './Request';
 import fetch from 'node-fetch';
 import { ipcMain } from 'electron';
 
-// TODO: update commands
-const command = {
-  connect: 'ls',
-  signId: 'ls',
-  signOut: 'ls',
-};
-
 function getServerConfiguration(url: string) {
   return fetch(`${url}/config.json`)
     .then((response) => {
@@ -53,13 +46,6 @@ function createRemoteServer(request: Request, server: Server) {
 }
 
 ipcMain.on('connectToRemoteServer', (event, server) => {
-  const request = new Request(event, 'connectToRemoteServer', command.connect);
-
-  request.runCommand()
-    .then((_: unknown) => {
-      createRemoteServer(request, server);
-    })
-    .catch((_: unknown) => {
-      event.sender.send('mainProcessError', 'Cannot connect to Remote Server');
-    });
+  const request = new Request(event, 'connectToRemoteServer');
+  createRemoteServer(request, server);
 });

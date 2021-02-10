@@ -1,4 +1,5 @@
 import { Button, CHECK, TextInput } from 'kwc';
+import ROUTE, { buildServerRoute } from 'Constants/routes';
 import React, { useCallback, useEffect, useState } from 'react';
 import StatusCircle, {
   States,
@@ -61,7 +62,7 @@ function ConnectToRemoteServer() {
 
       return CHECK.getValidationError([
         CHECK.isFieldNotEmpty(value),
-        CHECK.isDomainValid(value),
+        CHECK.isUrlValid(value),
         CHECK.isItemDuplicated(value, serverUrls, 'server URL'),
       ]);
     },
@@ -74,17 +75,17 @@ function ConnectToRemoteServer() {
   }, [register, unregister, setValue, validateUrl]);
 
   useEffect(() => {
+    let redirectionTimeout: number;
+
     const onConnectToRemoteServerReply = (
       _: unknown,
       { error, success, serverId }: ConnectToRemoteServerResponse
     ) => {
       if (success && !error) {
         setConnectionState(ConnectionState.OK);
-
-        setTimeout(() => {
-          // FIXME: pass the admin-ui url as arg in the send function
-          ipcRenderer.send('loadServer');
-        }, 2000);
+        redirectionTimeout = window.setTimeout(() => {
+          history.push(buildServerRoute(ROUTE.SERVER, serverId || ''));
+        }, 1000);
       } else {
         setConnectionState(ConnectionState.ERROR);
         setError('serverUrl', { message: error });
@@ -94,6 +95,7 @@ function ConnectToRemoteServer() {
     ipcRenderer.on('connectToRemoteServerReply', onConnectToRemoteServerReply);
 
     return () => {
+      clearTimeout(redirectionTimeout);
       ipcRenderer.removeListener(
         'connectToRemoteServerReply',
         onConnectToRemoteServerReply

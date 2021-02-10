@@ -2,7 +2,6 @@ import Server, { ServerBaseProps } from './Server';
 
 import React from 'react';
 import useServers from 'Hooks/useServers';
-import { ipcRenderer } from 'electron';
 
 export enum LocalServerStates {
   STARTED = 'STARTED',
@@ -20,10 +19,9 @@ export function LocalServer(props: LocalServerProps) {
 
   const serverReady = props.state === LocalServerStates.STARTED;
 
-  // FIXME: pass the admin-ui url as arg in the send function
-  const onOpenUrl = serverReady ? () => ipcRenderer.send('loadServer') : null;
-
-  return <Server {...props} actions={actions} onOpenUrl={onOpenUrl} local />;
+  return (
+    <Server {...props} actions={actions} canRedirect={serverReady} local />
+  );
 }
 
 export default LocalServer;

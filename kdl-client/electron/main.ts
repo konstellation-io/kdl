@@ -5,10 +5,8 @@ import './local_server_installation';
 import './remote_server_actions';
 
 import {
-  app,
-  BrowserView,
-  BrowserViewConstructorOptions,
   BrowserWindow,
+  app,
   ipcMain,
 } from 'electron';
 
@@ -36,13 +34,6 @@ let splashScreen: BrowserWindow | null = null;
 const iconPath = isDev
   ? join(__dirname, '../../public/icons/64x64.png')
   : join(__dirname, '../icons/64x64.png');
-
-let titleBarHeight: number = 0;
-const serverViewOptions: BrowserViewConstructorOptions = {
-  webPreferences: {
-    nodeIntegration: true,
-  },
-};
 
 function showSplashScreen() {
   splashScreen = new BrowserWindow({
@@ -73,6 +64,7 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      webviewTag: true
     },
     transparent: true,
     frame: false,
@@ -156,38 +148,3 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('quitAndInstall', () => {
   autoUpdater.quitAndInstall();
 });
-
-ipcMain.once(
-  'setTitleBarHeight',
-  (_, payload: number) => (titleBarHeight = payload)
-);
-
-ipcMain.on('loadServer', (_, serverAdminURL = 'http://localhost:3001') => {
-  if (mainWindow) {
-    const serverView = new BrowserView(serverViewOptions);
-    mainWindow.addBrowserView(serverView);
-    configureServerView(serverView);
-    serverView.webContents.loadURL(serverAdminURL);
-
-    ipcMain.once('closeServer', () =>
-      mainWindow?.removeBrowserView(serverView)
-    );
-  }
-});
-
-function configureServerView(serverView: BrowserView) {
-  if (mainWindow) {
-    const [width, height] = mainWindow.getContentSize();
-    serverView.setBackgroundColor('#060606');
-    serverView.setBounds({
-      x: 0,
-      y: titleBarHeight,
-      height: height - titleBarHeight,
-      width,
-    });
-    serverView.setAutoResize({
-      horizontal: true,
-      vertical: true,
-    });
-  }
-}

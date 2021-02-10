@@ -66,26 +66,6 @@ function useServers() {
     let actions: Action[] = [];
 
     switch (state) {
-      case RemoteServerStates.SIGNED_OUT:
-        actions = [
-          {
-            label: 'SIGN IN',
-            Icon: IconStart,
-            // FIXME: pass the admin-ui url as arg in the send function
-            onClick: () => ipcRenderer.send('loadServer'),
-            // to: buildRoute.server(ROUTE.SERVER_LOGIN, id),
-          },
-        ];
-        break;
-      case RemoteServerStates.SIGNED_IN:
-        actions = [
-          {
-            label: 'SIGN OUT',
-            Icon: IconStop,
-            onClick: () => ipcRenderer.send('serverLogout', id),
-          },
-        ];
-        break;
       case LocalServerStates.STARTED:
         actions = [
           {

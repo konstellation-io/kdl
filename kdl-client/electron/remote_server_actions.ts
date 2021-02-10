@@ -1,22 +1,35 @@
-import { createServer, updateServer } from './server';
+import { Server, createServer } from './server';
 
 import Request from './Request';
+import fetch from 'node-fetch';
 import { ipcMain } from 'electron';
 
-// TODO: update commands
-const command = {
-  connect: 'ls',
-  signId: 'ls',
-  signOut: 'ls',
-};
+function getServerConfiguration(url: string) {
+  return fetch(`${url}/config.json`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Unexpected status code: ${response.status} getting configuration file`
+          );
+        }
+        return response.json();
+    });
+}
 
-ipcMain.on('connectToRemoteServer', (event, server) => {
-  const request = new Request(event, 'connectToRemoteServer', command.connect);
+function createRemoteServer(request: Request, server: Server) {
+  getServerConfiguration(server.url)
+    .then((configJson) => {
+      const serverName = configJson.SERVER_NAME;
 
-  request.runCommand()
-    .then(success => {
-      // TODO: Get server name from server
-      const serverName = 'Remote server';
+      // TODO: Add KDL check to make sure we are connecting to a KDL server.
+      if (!serverName) {
+        console.error(
+          `Server located at ${server.url} did not provide a correct config.json file`
+        );
+        throw new Error(
+          `Could not get Server configuration. Are you sure this is a KDL Server?`
+        );
+      }
 
       const serverId = createServer({
         ...server,
@@ -24,36 +37,15 @@ ipcMain.on('connectToRemoteServer', (event, server) => {
         state: 'SIGNED_OUT',
         type: 'remote'
       });
-
-      request.reply({ success, serverId });
+      request.reply({ success: true, serverId });
     })
-    .catch((_: unknown) => {
-      event.sender.send('mainProcessError', 'Could not connect to server');
+    .catch((e) => {
+      request.event.sender.send('mainProcessError', 'Cannot connect to Remote Server');
+      request.reply({ success: false, error: e.toString() });
     });
-});
+}
 
-ipcMain.on('serverLogin', (event, { serverId, email }) => {
-  const request = new Request(event, 'serverLogin', command.signId);
-
-  request.runCommand()
-    .then(success => {
-      success && updateServer(serverId, { state: 'SIGNED_IN' });
-      request.reply({ success });
-    })
-    .catch((_: unknown) => {
-      event.sender.send('mainProcessError', 'Could not sign in');
-    });
-});
-
-ipcMain.on('serverLogout', (event, serverId) => {
-  const request = new Request(event, 'serverLogout', command.signOut);
-
-  request.runCommand()
-    .then(success => {
-      success && updateServer(serverId, { state: 'SIGNED_OUT' })
-      request.reply({ success });
-    })
-    .catch((_: unknown) => {
-      event.sender.send('mainProcessError', 'Could not sign out');
-    });
+ipcMain.on('connectToRemoteServer', (event, server) => {
+  const request = new Request(event, 'connectToRemoteServer');
+  createRemoteServer(request, server);
 });

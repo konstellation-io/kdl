@@ -53,7 +53,6 @@ export const updateMenu = {
       serversSubMenu.push({
         label: server.name,
         click: () => {
-          // FIXME: Change for the right url, probably the url of the remote server.
           history.push(buildServerRoute(ROUTE.SERVER, server.id));
         },
       });

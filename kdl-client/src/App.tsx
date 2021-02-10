@@ -9,13 +9,13 @@ import ConnectToRemoteServer from 'Pages/ConnectToRemoteServer/ConnectToRemoteSe
 import InstallLocalServer from 'Pages/InstallLocalServer/InstallLocalServer';
 import NewServer from 'Pages/NewServer/NewServer';
 import ROUTE from 'Constants/routes';
+import Server from './Pages/Server/Server';
 import Servers from 'Pages/Servers/Servers';
 import { SpinnerCircular } from 'kwc';
 import history from './browserHistory';
 import { ipcRenderer } from 'electron';
 import { toast } from 'react-toastify';
 import useServers from 'Hooks/useServers';
-import Server from './Pages/Server/Server';
 
 function onMainProcessError(_: unknown, message: string) {
   toast.error(message, {
@@ -34,12 +34,6 @@ function App() {
     return () => {
       ipcRenderer.removeListener('mainProcessError', onMainProcessError);
     };
-  }, []);
-
-  // Inform main process about the height of the title bar
-  useEffect(() => {
-    const titleBar = document.getElementsByClassName('titlebar')[0];
-    ipcRenderer.send('setTitleBarHeight', titleBar?.clientHeight || 0);
   }, []);
 
   if (loading) return <SpinnerCircular />;

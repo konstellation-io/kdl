@@ -1,7 +1,7 @@
 import store from '../store/store';
 import { v4 } from 'uuid';
 
-type Server = {
+export type Server = {
   id: string;
   name: string;
   type: 'local' | 'remote';

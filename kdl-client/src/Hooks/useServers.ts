@@ -73,7 +73,6 @@ function useServers() {
             Icon: IconStart,
             // FIXME: pass the admin-ui url as arg in the send function
             onClick: () => ipcRenderer.send('loadServer'),
-            // to: buildRoute.server(ROUTE.SERVER_LOGIN, id),
           },
         ];
         break;

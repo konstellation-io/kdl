@@ -84,7 +84,6 @@ function ConnectToRemoteServer() {
         setTimeout(() => {
           // FIXME: pass the admin-ui url as arg in the send function
           ipcRenderer.send('loadServer');
-          // history.push(buildRoute.server(ROUTE.SERVER_LOGIN, serverId || ''));
         }, 2000);
       } else {
         setConnectionState(ConnectionState.ERROR);

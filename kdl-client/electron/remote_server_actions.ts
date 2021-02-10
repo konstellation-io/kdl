@@ -32,19 +32,6 @@ ipcMain.on('connectToRemoteServer', (event, server) => {
     });
 });
 
-ipcMain.on('serverLogin', (event, { serverId, email }) => {
-  const request = new Request(event, 'serverLogin', command.signId);
-
-  request.runCommand()
-    .then(success => {
-      success && updateServer(serverId, { state: 'SIGNED_IN' });
-      request.reply({ success });
-    })
-    .catch((_: unknown) => {
-      event.sender.send('mainProcessError', 'Could not sign in');
-    });
-});
-
 ipcMain.on('serverLogout', (event, serverId) => {
   const request = new Request(event, 'serverLogout', command.signOut);
 

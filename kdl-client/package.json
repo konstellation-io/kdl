@@ -20,7 +20,6 @@
     "kwc": "1.7.1",
     "lodash": "4.17.20",
     "moment-timezone": "0.5.32",
-    "node-fetch": "2.6.1",
     "node-sass": "4.14.1",
     "react": "16.13.1",
     "react-animate-height": "2.0.23",

@@ -1,19 +1,71 @@
 import { Server, createServer } from './server';
 
 import Request from './Request';
-import fetch from 'node-fetch';
 import { ipcMain } from 'electron';
+import fs from 'fs';
+import https from 'https'
 
-function getServerConfiguration(url: string) {
-  return fetch(`${url}/config.json`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Unexpected status code: ${response.status} getting configuration file`
-          );
+interface ServerConfig {
+  SERVER_URL: string
+  SERVER_NAME: string
+}
+
+// Depending on the SO this folder will be different:
+//  * OS X - '/Users/user/Library/Preferences'
+//  * Windows 8 - 'C:\Users\user\AppData\Roaming'
+//  * Windows XP - 'C:\Documents and Settings\user\Application Data'
+//  * Linux - '/home/user/.local/share'
+const appDataFolder = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
+const localCAPath = `${appDataFolder}/mkcert/rootCA.pem`
+
+// loadLocalCA loads our custom CA that is created by mkcert in the local deployment process.
+// This is necessary only if we want to add a local deployed kdl-server.
+// Move this to local installations. This is temp because we are adding local kdl-servers using the add remote servers process.
+function loadLocalCA() : Promise<void> {
+  return new Promise((resolve, reject) => {
+    console.log(`Loading local CA from "${localCAPath}"...`)
+
+    fs.stat(localCAPath, err => {
+      if (err) {
+        console.log("No local CA found")
+        resolve()
+        return
+      }
+
+      fs.readFile(localCAPath, (err, data) => {
+        if (err) {
+          reject(err)
+          return
         }
-        return response.json();
-    });
+
+        https.globalAgent.options.ca = [data];
+
+        console.log("Local CA loaded")
+        resolve()
+      })
+    })
+  })
+}
+
+function getServerConfiguration(url: string) : Promise<ServerConfig> {
+  return loadLocalCA()
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        https.get(`${url}/config.json`, (res) => {
+          if (res.statusCode != 200) {
+            reject("Unexpected status code loading the server config")
+            return
+          }
+
+          res.on('data', d => {
+            resolve(JSON.parse(d))
+          });
+
+        }).on('error', e => {
+          reject(e)
+        });
+      })
+    })
 }
 
 function createRemoteServer(request: Request, server: Server) {

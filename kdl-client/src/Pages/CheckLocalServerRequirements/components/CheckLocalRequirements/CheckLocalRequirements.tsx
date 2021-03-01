@@ -8,18 +8,20 @@ import { ipcRenderer } from 'electron';
 import styles from './CheckLocalRequirements.module.scss';
 
 enum CheckId {
-  k8s = 'k8s',
   minikube = 'minikube',
+  kubectl = 'kubectl',
   helm = 'helm',
+  docker = 'docker',
+  envsubst = 'envsubst',
 }
 
 const checkError = {
-  k8s: {
+  minikube: {
     title: 'Check 1 error',
     message: 'Check 1 message',
     docUrl: 'google.es',
   },
-  minikube: {
+  kubectl: {
     title: 'Check 2 error',
     message: 'Check 2 message',
     docUrl: 'google.es',
@@ -27,6 +29,16 @@ const checkError = {
   helm: {
     title: 'Check 3 error',
     message: 'Check 3 message',
+    docUrl: 'google.es',
+  },
+  docker: {
+    title: 'Check 4 error',
+    message: 'Check 4 message',
+    docUrl: 'google.es',
+  },
+  envsubst: {
+    title: 'Check 5 error',
+    message: 'Check 5 message',
     docUrl: 'google.es',
   },
 };
@@ -48,9 +60,11 @@ const generateInitialCheck = (id: CheckId, label: string) => ({
 });
 
 const initialCheckStatus: Check[] = [
-  generateInitialCheck(CheckId.k8s, 'Kubernetes installed'),
-  generateInitialCheck(CheckId.minikube, 'Minikube running'),
-  generateInitialCheck(CheckId.helm, 'Helm available'),
+  generateInitialCheck(CheckId.minikube, 'Minikube installed'),
+  generateInitialCheck(CheckId.kubectl, 'Kubernetes installed'),
+  generateInitialCheck(CheckId.helm, 'Helm installed'),
+  generateInitialCheck(CheckId.docker, 'Docker installed'),
+  generateInitialCheck(CheckId.envsubst, 'envsubst installed'),
 ];
 
 type Props = {

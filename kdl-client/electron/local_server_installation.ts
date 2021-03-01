@@ -1,77 +1,95 @@
 import Request from './Request';
 import { createServer } from './server';
 import { ipcMain } from 'electron';
-import settings from './settings.json';
 import { spawn } from 'child_process';
 
-const commands: { [k: string]: string } = {
-  k8s: "kubectl get nodes -o jsonpath='{.items[*].status.conditions[*].type}'",
-  minikube: 'minikube status',
-  helm: 'helm ls'
+const ENV_VARS = {
+  MINIKUBE_PROFILE: 'kdl-local',
+  MINIKUBE_MEMORY: '8192', // Mb
+  MINIKUBE_KUBERNETES_VERSION: '1.16.10',
+  MINIKUBE_CPUS: '4',
+  MINIKUBE_DISK_SIZE: '60g',
+  MINIKUBE_DRIVER: 'virtualbox',
 };
 
-function createNamespace(request: Request) {
-  return new Promise(resolve => {
-    const cmd = spawn('kubectl', ['create', 'ns', 'kst-local']);
+const commands: { [k: string]: string } = {
+  minikube: 'command -v minikube',
+  kubectl: 'command -v kubectl',
+  helm: 'command -v helm',
+  docker: 'command -v docker',
+  envsubst: 'command -v envsubst',
+};
 
-    // TODO: Remove this and include after successful installation
-    createServer({
-      name: 'Local Server',
-      state: 'STOPPED',
-      type: 'local',
-      warning: true
-    });
+// minikube start -p "$MINIKUBE_PROFILE" \
+//   --cpus="$MINIKUBE_CPUS" \
+//   --memory="$MINIKUBE_MEMORY" \
+//   --kubernetes-version="$MINIKUBE_KUBERNETES_VERSION" \
+//   --disk-size="$MINIKUBE_DISK_SIZE" \
+//   --driver="$MINIKUBE_DRIVER" \
+//   --extra-config=apiserver.authorization-mode=RBAC
 
-    cmd.stdout.on('data', data => request.onData(data));
-    cmd.stderr.on('data', data => request.onError(data));
-    cmd.on('close', code => resolve(request.onClose(code)));
+//       run minikube addons enable ingress -p "$MINIKUBE_PROFILE"
+//       run minikube addons enable registry -p "$MINIKUBE_PROFILE"
+//       run minikube addons enable storage-provisioner -p "$MINIKUBE_PROFILE"
+//       run minikube addons enable metrics-server -p "$MINIKUBE_PROFILE"
+
+const testCmd = `minikube delete -p kdl-local`;
+const startMkCmd = `PATH=$PATH:/usr/bin minikube start -p ${ENV_VARS.MINIKUBE_PROFILE} --cpus=${ENV_VARS.MINIKUBE_CPUS} --memory=${ENV_VARS.MINIKUBE_MEMORY} --kubernetes-version=${ENV_VARS.MINIKUBE_KUBERNETES_VERSION} --disk-size=${ENV_VARS.MINIKUBE_DISK_SIZE} --driver=${ENV_VARS.MINIKUBE_DRIVER} --extra-config=apiserver.authorization-mode=RBAC`;
+const mkAddonIngressCmd = `PATH=$PATH:/usr/bin minikube addons enable ingress -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const mkAddonRegistryCmd = `PATH=$PATH:/usr/bin minikube addons enable registry -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const mkAddonSProvisoner = `PATH=$PATH:/usr/bin minikube addons enable storage-provisioner -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const mkAddonMServer = `PATH=$PATH:/usr/bin minikube addons enable metrics-server -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+
+console.log('############################################', startMkCmd);
+
+function executeCmd(cmd: string, request: Request) {
+  const cmdArr = cmd.split(' ');
+  const [execCmd, ...params] = cmdArr;
+
+  const cmdExecution = spawn(execCmd, params, {
+    env: ENV_VARS,
+    shell: true,
   });
+
+  cmdExecution.stdout.on('data', (data) => request.onData(data));
+  cmdExecution.stderr.on('data', (data) => request.onError(data));
+
+  return cmdExecution;
 }
 
-function installComponents(request: Request) {
-  return new Promise((resolve, reject) => {
-    const cmd = spawn('helm', [
-      'upgrade',
-      '--install',
-      'kdl',
-      '--namespace',
-      'kdl',
-      '--wait',
-      settings.chartUrl,
-    ]);
+function deployLocalEnv(request: Request) {
+  return new Promise((resolve) => {
+    const startMk = executeCmd(testCmd, request);
 
-    cmd.stdout.on('data', data => request.onData(data));
-    cmd.stderr.on('data', data => request.onError(data));
-    cmd.on('close', code => {
-      const success = request.onClose(code);
+    startMk.on('close', (code) => {
+      if (code === 0) {
+        executeCmd(mkAddonIngressCmd, request);
+        executeCmd(mkAddonRegistryCmd, request);
+        executeCmd(mkAddonSProvisoner, request);
+        executeCmd(mkAddonMServer, request);
 
-      if (success) {
         createServer({
           name: 'Local Server',
           state: 'STOPPED',
-          // TODO: get and build local server url
+          type: 'local',
+          warning: true,
           url: 'local-server-url.local-server-domain',
-          type: 'local'
         });
-
-        resolve(success);
-      } else {
-        reject('Could not finish installation');
       }
+
+      resolve(request.onClose(code));
     });
   });
 }
 
-ipcMain.on('installLocalServer', event => {
+ipcMain.on('installLocalServer', (event) => {
   const request = new Request(event, 'installLocalServer');
 
-  createNamespace(request)
-    .then(success => {
-      if (success) {
-        return installComponents(request);
-      }
+  deployLocalEnv(request)
+    .then((success) => {
+      console.log('SUCCESS', success);
     })
-    .catch(error => {
+    .catch((error) => {
       event.sender.send('mainProcessError', error);
     });
 });
@@ -80,13 +98,12 @@ ipcMain.on('checkRequirement', (event, requirement) => {
   const command = commands[requirement];
   const request = new Request(event, 'checkRequirement', command);
 
-  request.runCommand()
-    .then(_ => {
+  request
+    .runCommand()
+    .then((_) => {
       request.reply([requirement, true]);
     })
-    .catch(_ => {
-      // TODO: Remove next line and replace with l90
-      request.reply([requirement, true]);
-      // request.reply([requirement, false]);
+    .catch((_) => {
+      request.reply([requirement, false]);
     });
 });

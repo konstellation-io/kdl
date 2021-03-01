@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
 import cx from 'classnames';
 import styles from './LogViewer.module.scss';
+import { useRef } from 'react';
 
 export type Log = {
   text: string;
@@ -12,6 +14,14 @@ interface Props {
 }
 
 function LogViewer({ logs }: Props) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current !== null) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [logs]);
+
   return (
     <div className={styles.wrapper}>
       {logs.map(({ text, isError = false }, idx) => (
@@ -19,6 +29,7 @@ function LogViewer({ logs }: Props) {
           {text}
         </p>
       ))}
+      <div ref={messagesEndRef} />
     </div>
   );
 }

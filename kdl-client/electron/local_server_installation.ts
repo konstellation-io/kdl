@@ -1,8 +1,10 @@
 import Request from './Request';
 import { createServer } from './server';
-import { ipcMain } from 'electron';
+import { ipcMain, app } from 'electron';
 import { spawn } from 'child_process';
+import { PersonAddOutlined } from '@material-ui/icons';
 
+console.log('----------------------------- APP: ', process.env.PATH)
 const ENV_VARS = {
   MINIKUBE_PROFILE: 'kdl-local',
   MINIKUBE_MEMORY: '8192', // Mb
@@ -10,6 +12,10 @@ const ENV_VARS = {
   MINIKUBE_CPUS: '4',
   MINIKUBE_DISK_SIZE: '60g',
   MINIKUBE_DRIVER: 'virtualbox',
+  HOME: `${app.getPath('home')}`,
+  PATH: process.env.PATH,
+  CA_CERTS_FOLDER: `${app.getPath('home')}/.kdl`,
+  TRUST_STORES: 'nss',
 };
 
 const commands: { [k: string]: string } = {
@@ -33,12 +39,34 @@ const commands: { [k: string]: string } = {
 //       run minikube addons enable storage-provisioner -p "$MINIKUBE_PROFILE"
 //       run minikube addons enable metrics-server -p "$MINIKUBE_PROFILE"
 
-const testCmd = `minikube delete -p kdl-local`;
-const startMkCmd = `PATH=$PATH:/usr/bin minikube start -p ${ENV_VARS.MINIKUBE_PROFILE} --cpus=${ENV_VARS.MINIKUBE_CPUS} --memory=${ENV_VARS.MINIKUBE_MEMORY} --kubernetes-version=${ENV_VARS.MINIKUBE_KUBERNETES_VERSION} --disk-size=${ENV_VARS.MINIKUBE_DISK_SIZE} --driver=${ENV_VARS.MINIKUBE_DRIVER} --extra-config=apiserver.authorization-mode=RBAC`;
-const mkAddonIngressCmd = `PATH=$PATH:/usr/bin minikube addons enable ingress -p ${ENV_VARS.MINIKUBE_PROFILE}`;
-const mkAddonRegistryCmd = `PATH=$PATH:/usr/bin minikube addons enable registry -p ${ENV_VARS.MINIKUBE_PROFILE}`;
-const mkAddonSProvisoner = `PATH=$PATH:/usr/bin minikube addons enable storage-provisioner -p ${ENV_VARS.MINIKUBE_PROFILE}`;
-const mkAddonMServer = `PATH=$PATH:/usr/bin minikube addons enable metrics-server -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const testCmd = `echo "Path of exec commands: $(pwd)"`;
+const startMkCmd = `minikube start -p ${ENV_VARS.MINIKUBE_PROFILE} --cpus=${ENV_VARS.MINIKUBE_CPUS} --memory=${ENV_VARS.MINIKUBE_MEMORY} --kubernetes-version=${ENV_VARS.MINIKUBE_KUBERNETES_VERSION} --disk-size=${ENV_VARS.MINIKUBE_DISK_SIZE} --driver=${ENV_VARS.MINIKUBE_DRIVER} --extra-config=apiserver.authorization-mode=RBAC`;
+const mkAddonIngressCmd = `minikube addons enable ingress -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const mkAddonRegistryCmd = `minikube addons enable registry -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const mkAddonSProvisoner = `minikube addons enable storage-provisioner -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const mkAddonMServer = `minikube addons enable metrics-server -p ${ENV_VARS.MINIKUBE_PROFILE}`;
+const k8sCreateNamesapce = `kubectl create ns kdl --dry-run -o yaml | kubectl apply -f -`;
+
+const createKDLFolder = `mkdir -p $HOME/.kdl`;
+const createCert = `mkcert --install  *.kdl.$(minikube -p $MINIKUBE_PROFILE ip).nip.io && mv _wildcard.* $CA_CERTS_FOLDER`;
+const k8sCreateCert = `kubectl -n kdl create secret tls kdl.$(minikube -p $MINIKUBE_PROFILE ip).nip.io-tls-secret --key=$CA_CERTS_FOLDER/_wildcard.kdl.$(minikube -p $MINIKUBE_PROFILE ip).nip.io-key.pem --cert=$CA_CERTS_FOLDER/_wildcard.kdl.$(minikube -p $MINIKUBE_PROFILE ip).nip.io.pem --dry-run -o yaml | kubectl apply -f -`;
+
+const helmRepoStable = `helm repo add stable https://charts.helm.sh/stable`;
+const helmRepoKDL = `helm repo add kdl https://kdl.konstellation.io`;
+const helmRepoUpdate = `helm repo update`;
+const helmInstallKDL = `helm upgrade \
+                          --wait \
+                          --version v0.1.0 \
+                          --install kdl \
+                          --namespace kdl \
+                          --set domain=kdl.$(minikube -p $MINIKUBE_PROFILE ip).nip.io \
+                          --set science-toolkit.domain=kdl.$(minikube -p $MINIKUBE_PROFILE ip).nip.io \
+                          --set science-toolkit.tls.enabled=true \
+                          --set science-toolkit.minio.securityContext.runAsUser=0 \
+                          --set science-toolkit.gitea.admin.username=kdl \
+                          --set science-toolkit.gitea.admin.password=kdl123 \
+                          --timeout 60m \
+                          kdl/kdl-server`;
 
 console.log('############################################', startMkCmd);
 
@@ -57,28 +85,62 @@ function executeCmd(cmd: string, request: Request) {
   return cmdExecution;
 }
 
+const commandsList = [
+  startMkCmd,
+  mkAddonIngressCmd,
+  mkAddonRegistryCmd,
+  mkAddonSProvisoner,
+  mkAddonMServer,
+  k8sCreateNamesapce,
+  createKDLFolder,
+  createCert,
+  k8sCreateCert,
+  helmRepoStable,
+  helmRepoKDL,
+  helmRepoUpdate,
+  helmInstallKDL];
+
+function executeCommands(pendingsCommands: string[], request: Request) {
+  if (pendingsCommands.length === 0) return;
+  const act = pendingsCommands.shift()
+  const commandExec = executeCmd(act || "", request);
+
+  commandExec.on('close', (code) => {
+    if (code === 0) {
+      executeCommands(pendingsCommands, request)
+    }
+  });
+}
+
 function deployLocalEnv(request: Request) {
   return new Promise((resolve) => {
-    const startMk = executeCmd(testCmd, request);
+    executeCommands(commandsList, request)
 
-    startMk.on('close', (code) => {
-      if (code === 0) {
-        executeCmd(mkAddonIngressCmd, request);
-        executeCmd(mkAddonRegistryCmd, request);
-        executeCmd(mkAddonSProvisoner, request);
-        executeCmd(mkAddonMServer, request);
+    // const startMk = executeCmd(startMkCmd, request);
 
-        createServer({
-          name: 'Local Server',
-          state: 'STOPPED',
-          type: 'local',
-          warning: true,
-          url: 'local-server-url.local-server-domain',
-        });
-      }
+    // startMk.on('close', (code) => {
+    //   if (code === 0) {
+    //     executeCmd(mkAddonIngressCmd, request);
+    //     executeCmd(mkAddonRegistryCmd, request);
+    //     executeCmd(mkAddonSProvisoner, request);
+    //     executeCmd(mkAddonMServer, request);
+    //     executeCmd(k8sCreateNamesapce, request);
+    //     executeCmd(helmRepoStable, request);
+    //     executeCmd(helmRepoKDL, request);
+    //     executeCmd(helmRepoUpdate, request);
+    //     executeCmd(helmInstallKDL, request);
 
-      resolve(request.onClose(code));
-    });
+    //     createServer({
+    //       name: 'Local Server',
+    //       state: 'STOPPED',
+    //       type: 'local',
+    //       warning: true,
+    //       url: 'local-server-url.local-server-domain',
+    //     });
+    //   }
+
+    //   resolve(request.onClose(code));
+    // });
   });
 }
 

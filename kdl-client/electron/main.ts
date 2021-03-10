@@ -1,7 +1,7 @@
 // Add IPC listeners
 import './store';
 import './local_server_actions';
-import './local_server_installation';
+import { registerLocalServerEvents } from './local_server';
 import './remote_server_actions';
 
 import {
@@ -148,3 +148,5 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('quitAndInstall', () => {
   autoUpdater.quitAndInstall();
 });
+
+registerLocalServerEvents()

@@ -13,6 +13,7 @@ enum CheckId {
   helm = 'helm',
   docker = 'docker',
   envsubst = 'envsubst',
+  mkcert = 'mkcert',
 }
 
 const checkError = {
@@ -41,6 +42,11 @@ const checkError = {
     message: 'Check 5 message',
     docUrl: 'google.es',
   },
+  mkcert: {
+    title: 'Check 6 error',
+    message: 'Check 6 message',
+    docUrl: 'google.es',
+  },
 };
 
 type CheckRequirementResponse = [CheckId, boolean];
@@ -65,6 +71,7 @@ const initialCheckStatus: Check[] = [
   generateInitialCheck(CheckId.helm, 'Helm installed'),
   generateInitialCheck(CheckId.docker, 'Docker installed'),
   generateInitialCheck(CheckId.envsubst, 'envsubst installed'),
+  generateInitialCheck(CheckId.mkcert, 'mkcert installed'),
 ];
 
 type Props = {

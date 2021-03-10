@@ -92,7 +92,7 @@ function createRemoteServer(request: Request, server: Server) {
       request.reply({ success: true, serverId });
     })
     .catch((e) => {
-      request.event.sender.send('mainProcessError', 'Cannot connect to Remote Server');
+      request.notifyError('Cannot connect to Remote Server');
       request.reply({ success: false, error: e.toString() });
     });
 }

@@ -9,12 +9,12 @@ import * as fs from "fs";
 function executeCmd(cmd: string, request: Request): Promise<void> {
   return spawnCommand(
     cmd
-    , (data:string) =>{
+    , (data: Buffer) =>{
       request.reply({
         finished: false,
         text: String(data),
       })
-    }, (data: string) =>{
+    }, (data: Buffer) =>{
       request.reply({
         finished: false,
         text: String(data),
@@ -40,7 +40,6 @@ async function deployLocalEnv(request: Request): Promise<void> {
   }
 
   request.reply({
-    success: true,
     finished: true,
     isError: false,
     text: `All commands executed correctly. Done.`,
@@ -76,7 +75,11 @@ export function registerInstallLocalServerEvent() {
       await deployLocalEnv(request);
       await saveLocalServerInDB();
     } catch (err) {
-      request.notifyError(err);
+      request.reply({
+        finished: true,
+        isError: true,
+        text: err,
+      })
     }
   });
 }

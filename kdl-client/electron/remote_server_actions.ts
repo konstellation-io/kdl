@@ -3,11 +3,11 @@ import { Server, createServer } from './server';
 import Request from './Request';
 import { ipcMain } from 'electron';
 import fs from 'fs';
-import https from 'https'
+import https from 'https';
 
 interface ServerConfig {
-  SERVER_URL: string
-  SERVER_NAME: string
+  SERVER_URL: string;
+  SERVER_NAME: string;
 }
 
 // Depending on the SO this folder will be different:
@@ -15,57 +15,63 @@ interface ServerConfig {
 //  * Windows 8 - 'C:\Users\user\AppData\Roaming'
 //  * Windows XP - 'C:\Documents and Settings\user\Application Data'
 //  * Linux - '/home/user/.local/share'
-const appDataFolder = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
-const localCAPath = `${appDataFolder}/mkcert/rootCA.pem`
+const appDataFolder =
+  process.env.APPDATA ||
+  (process.platform == 'darwin'
+    ? process.env.HOME + '/Library/Preferences'
+    : process.env.HOME + '/.local/share');
+const localCAPath = `${appDataFolder}/mkcert/rootCA.pem`;
 
 // loadLocalCA loads our custom CA that is created by mkcert in the local deployment process.
 // This is necessary only if we want to add a local deployed kdl-server.
 // Move this to local installations. This is temp because we are adding local kdl-servers using the add remote servers process.
-function loadLocalCA() : Promise<void> {
+function loadLocalCA(): Promise<void> {
   return new Promise((resolve, reject) => {
-    console.log(`Loading local CA from "${localCAPath}"...`)
+    console.log(`Loading local CA from "${localCAPath}"...`);
 
-    fs.stat(localCAPath, err => {
+    fs.stat(localCAPath, (err) => {
       if (err) {
-        console.log("No local CA found")
-        resolve()
-        return
+        console.log('No local CA found');
+        resolve();
+        return;
       }
 
       fs.readFile(localCAPath, (err, data) => {
         if (err) {
-          reject(err)
-          return
+          reject(err);
+          return;
         }
 
         https.globalAgent.options.ca = [data];
 
-        console.log("Local CA loaded")
-        resolve()
-      })
-    })
-  })
+        console.log('Local CA loaded');
+        resolve();
+      });
+    });
+  });
 }
 
-function getServerConfiguration(url: string) : Promise<ServerConfig> {
-  return loadLocalCA()
-    .then(() => {
-      return new Promise((resolve, reject) => {
-        https.get(`${url}/config.json`, (res) => {
+function getServerConfiguration(url: string): Promise<ServerConfig> {
+  return loadLocalCA().then(() => {
+    return new Promise((resolve, reject) => {
+      const configUrl = new URL(url);
+      configUrl.pathname = 'config.json';
+      https
+        .get(`${configUrl.toString()}`, (res) => {
           if (res.statusCode != 200) {
-            reject("Unexpected status code loading the server config")
-            return
+            reject('Unexpected status code loading the server config');
+            return;
           }
 
-          res.on('data', d => {
-            resolve(JSON.parse(d))
+          res.on('data', (d) => {
+            resolve(JSON.parse(d));
           });
-
-        }).on('error', e => {
-          reject(e)
+        })
+        .on('error', (e) => {
+          reject(e);
         });
-      })
-    })
+    });
+  });
 }
 
 function createRemoteServer(request: Request, server: Server) {
@@ -87,7 +93,7 @@ function createRemoteServer(request: Request, server: Server) {
         ...server,
         name: serverName,
         state: 'SIGNED_OUT',
-        type: 'remote'
+        type: 'remote',
       });
       request.reply({ success: true, serverId });
     })

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import cx from 'classnames';
 import styles from './LogViewer.module.scss';
-import { useRef } from 'react';
 
 export type Log = {
   text: string;

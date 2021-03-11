@@ -18,34 +18,34 @@ enum CheckId {
 
 const checkError = {
   minikube: {
-    title: 'Check 1 error',
-    message: 'Check 1 message',
-    docUrl: 'google.es',
+    title: 'minikube executable not found',
+    message: 'minikube must be installed in your system.',
+    docUrl: 'https://minikube.sigs.k8s.io/docs/start/',
   },
   kubectl: {
-    title: 'Check 2 error',
-    message: 'Check 2 message',
-    docUrl: 'google.es',
+    title: 'kubectl executable not found',
+    message: 'kubectl must be installed in your system.',
+    docUrl: 'https://kubernetes.io/docs/tasks/tools/',
   },
   helm: {
-    title: 'Check 3 error',
-    message: 'Check 3 message',
-    docUrl: 'google.es',
+    title: 'helm executable not found',
+    message: 'helm must be installed in your system.',
+    docUrl: 'https://helm.sh/docs/intro/install/',
   },
   docker: {
-    title: 'Check 4 error',
-    message: 'Check 4 message',
-    docUrl: 'google.es',
+    title: 'docker executable not found',
+    message: 'docker must be installed in your system.',
+    docUrl: 'https://docs.docker.com/get-docker/',
   },
   envsubst: {
-    title: 'Check 5 error',
-    message: 'Check 5 message',
-    docUrl: 'google.es',
+    title: 'envsubst executable not found',
+    message: 'envsubst must be installed in your system.',
+    docUrl: 'https://www.gnu.org/software/gettext/',
   },
   mkcert: {
-    title: 'Check 6 error',
-    message: 'Check 6 message',
-    docUrl: 'google.es',
+    title: 'mkcert executable not found',
+    message: 'mkcert must be installed in your system.',
+    docUrl: 'https://github.com/FiloSottile/mkcert',
   },
 };
 

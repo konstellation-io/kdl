@@ -1,6 +1,6 @@
-import {ipcMain} from "electron";
-import Request from "../Request";
-import {execCommand} from "./helper";
+import { ipcMain } from 'electron';
+import Request from '../Request';
+import { execCommand } from './helper';
 
 const commands: { [k: string]: string } = {
   minikube: 'command -v minikube',
@@ -17,9 +17,9 @@ export function registerCheckRequirementEvent() {
     const request = new Request(event, 'checkRequirement');
 
     try {
-      await execCommand(command)
+      await execCommand(command);
       request.reply([requirement, true]);
-    } catch(err) {
+    } catch (err) {
       request.reply([requirement, false]);
     }
   });

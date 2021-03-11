@@ -1,6 +1,6 @@
-import {app} from "electron";
+import { app } from 'electron';
 
-const homePath = app.getPath('home')
+const homePath = app.getPath('home');
 
 export const deployLocalEnvVars = {
   MINIKUBE_PROFILE: 'kdl-local',

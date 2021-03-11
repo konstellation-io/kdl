@@ -37,5 +37,5 @@ export const deployLocalCommands = [
   helmRepoStable,
   helmRepoKDL,
   helmRepoUpdate,
-  helmInstallKDL
+  helmInstallKDL,
 ];

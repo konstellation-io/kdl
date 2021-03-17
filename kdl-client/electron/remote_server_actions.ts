@@ -18,7 +18,7 @@ interface ServerConfig {
 const appDataFolder =
   process.env.APPDATA ||
   (process.platform == 'darwin'
-    ? process.env.HOME + '/Library/Preferences'
+    ? process.env.HOME + '/Library/Application Support'
     : process.env.HOME + '/.local/share');
 const localCAPath = `${appDataFolder}/mkcert/rootCA.pem`;
 

@@ -1,18 +1,13 @@
 // Add IPC listeners
 import './store';
 import './local_server_actions';
-import './local_server_installation';
-import './remote_server_actions';
 
-import {
-  BrowserWindow,
-  app,
-  ipcMain,
-} from 'electron';
+import { BrowserWindow, app, ipcMain } from 'electron';
 
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 import { join } from 'path';
+import { registerRemoteServerEvents } from './remote_server';
 
 interface WindowSize {
   width: number;
@@ -64,7 +59,7 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      webviewTag: true
+      webviewTag: true,
     },
     transparent: true,
     frame: false,
@@ -148,3 +143,5 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('quitAndInstall', () => {
   autoUpdater.quitAndInstall();
 });
+
+registerRemoteServerEvents();

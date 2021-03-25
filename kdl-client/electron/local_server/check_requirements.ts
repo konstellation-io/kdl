@@ -3,12 +3,11 @@ import Request from '../Request';
 import { execCommand } from './helper';
 
 const commands: { [k: string]: string } = {
-  minikube: 'command -v minikube',
-  kubectl: 'command -v kubectl',
-  helm: 'command -v helm',
-  docker: 'command -v docker',
-  envsubst: 'command -v envsubst',
-  mkcert: 'command -v mkcert',
+  minikube: 'minikube version',
+  kubectl: 'kubectl version --client',
+  helm: 'helm version',
+  docker: 'docker version',
+  mkcert: 'mkcert --version',
 };
 
 export function registerCheckRequirementEvent() {

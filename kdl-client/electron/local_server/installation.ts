@@ -2,7 +2,7 @@ import Request from '../Request';
 import { createServer } from '../server';
 import { ipcMain } from 'electron';
 import { execCommand, spawnCommand } from './helper';
-import { deployLocalCommands } from './commands';
+import { deployLocalCommands, startMinikubeCommands } from './commands';
 import { deployLocalEnvVars } from './env_vars';
 import * as fs from 'fs';
 
@@ -33,10 +33,24 @@ function createKdlDir() {
   }
 }
 
-async function deployLocalEnv(request: Request): Promise<void> {
+async function getMinikubeIP() {
+  const { stdout } = await execCommand('minikube -p kdl-local ip');
+  return stdout.replace(/\r?\n|\r/g, "");
+}
+
+async function deployLocalEnv(request: Request): Promise<string> {
   createKdlDir();
 
-  for (let cmd of deployLocalCommands) {
+  // First of all the minikube must start
+  for (let cmd of startMinikubeCommands) {
+    await executeCmd(cmd, request);
+  }
+
+  // The installation requires the minikube IP to continue with the installation
+  const minikubeIP = await getMinikubeIP()
+  const deployCommands = deployLocalCommands(minikubeIP)
+
+  for (let cmd of deployCommands) {
     await executeCmd(cmd, request);
   }
 
@@ -45,20 +59,16 @@ async function deployLocalEnv(request: Request): Promise<void> {
     isError: false,
     text: `All commands executed correctly. Done.`,
   });
+
+  return minikubeIP
 }
 
-async function getMinikubeIP() {
-  const { stdout } = await execCommand('minikube -p kdl-local ip');
-  return stdout;
-}
-
-async function getServerURL() {
-  const minikubeIP = await getMinikubeIP();
+async function getServerURL(minikubeIP: string) {
   return `https://kdlapp.kdl.${minikubeIP}.nip.io`;
 }
 
-async function saveLocalServerInDB() {
-  const serverUrl = await getServerURL();
+async function saveLocalServerInDB(minikubeIP: string) {
+  const serverUrl = await getServerURL(minikubeIP);
   createServer({
     name: 'Local Server',
     state: 'STARTED',
@@ -73,8 +83,8 @@ export function registerInstallLocalServerEvent() {
     const request = new Request(event, 'installLocalServer');
 
     try {
-      await deployLocalEnv(request);
-      await saveLocalServerInDB();
+      const minikubeIP = await deployLocalEnv(request);
+      await saveLocalServerInDB(minikubeIP);
     } catch (err) {
       request.reply({
         finished: true,

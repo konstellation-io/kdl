@@ -12,7 +12,6 @@ enum CheckId {
   kubectl = 'kubectl',
   helm = 'helm',
   docker = 'docker',
-  envsubst = 'envsubst',
   mkcert = 'mkcert',
 }
 
@@ -36,11 +35,6 @@ const checkError = {
     title: 'docker executable not found',
     message: 'docker must be installed in your system.',
     docUrl: 'https://docs.docker.com/get-docker/',
-  },
-  envsubst: {
-    title: 'envsubst executable not found',
-    message: 'envsubst must be installed in your system.',
-    docUrl: 'https://www.gnu.org/software/gettext/',
   },
   mkcert: {
     title: 'mkcert executable not found',
@@ -70,7 +64,6 @@ const initialCheckStatus: Check[] = [
   generateInitialCheck(CheckId.kubectl, 'Kubernetes installed'),
   generateInitialCheck(CheckId.helm, 'Helm installed'),
   generateInitialCheck(CheckId.docker, 'Docker installed'),
-  generateInitialCheck(CheckId.envsubst, 'envsubst installed'),
   generateInitialCheck(CheckId.mkcert, 'mkcert installed'),
 ];
 

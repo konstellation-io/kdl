@@ -35,7 +35,7 @@ function createKdlDir() {
 
 async function getMinikubeIP() {
   const { stdout } = await execCommand('minikube -p kdl-local ip');
-  return stdout.replace(/\r?\n|\r/g, "");
+  return stdout.replace(/\r?\n|\r/g, '');
 }
 
 async function deployLocalEnv(request: Request): Promise<string> {
@@ -47,8 +47,8 @@ async function deployLocalEnv(request: Request): Promise<string> {
   }
 
   // The installation requires the minikube IP to continue with the installation
-  const minikubeIP = await getMinikubeIP()
-  const deployCommands = deployLocalCommands(minikubeIP)
+  const minikubeIP = await getMinikubeIP();
+  const deployCommands = deployLocalCommands(minikubeIP);
 
   for (let cmd of deployCommands) {
     await executeCmd(cmd, request);
@@ -60,7 +60,7 @@ async function deployLocalEnv(request: Request): Promise<string> {
     text: `All commands executed correctly. Done.`,
   });
 
-  return minikubeIP
+  return minikubeIP;
 }
 
 async function getServerURL(minikubeIP: string) {

@@ -1,4 +1,4 @@
-import {deployLocalEnvVars as env} from './env_vars'
+import { deployLocalEnvVars as env } from './env_vars';
 
 const startMkCmd = `minikube start -p ${env.MINIKUBE_PROFILE} \
  --cpus=${env.MINIKUBE_CPUS} \
@@ -13,7 +13,6 @@ const mkAddonRegistryCmd = `minikube addons enable registry -p ${env.MINIKUBE_PR
 const mkAddonSProvisioner = `minikube addons enable storage-provisioner -p ${env.MINIKUBE_PROFILE}`;
 const mkAddonMServer = `minikube addons enable metrics-server -p ${env.MINIKUBE_PROFILE}`;
 
-
 export const startMinikubeCommands = [
   startMkCmd,
   mkAddonIngressCmd,
@@ -23,12 +22,12 @@ export const startMinikubeCommands = [
 ];
 
 export function deployLocalCommands(minikubeIP: string) {
-  const isWin = process.platform === "win32";
+  const isWin = process.platform === 'win32';
 
   const k8sCreateNamesapce = `kubectl create ns kdl --dry-run -o yaml | kubectl apply -f -`;
 
   const createCert = `mkcert --install *.kdl.${minikubeIP}.nip.io`;
-  const mvCert = `${isWin ? "move": "mv"} _wildcard.* ${env.CA_CERTS_FOLDER}`
+  const mvCert = `${isWin ? 'move' : 'mv'} _wildcard.* ${env.CA_CERTS_FOLDER}`;
 
   const k8sCreateCert = `kubectl -n kdl create secret tls kdl.${minikubeIP}.nip.io-tls-secret \
   --key=${env.CA_CERTS_FOLDER}/_wildcard.kdl.${minikubeIP}.nip.io-key.pem \

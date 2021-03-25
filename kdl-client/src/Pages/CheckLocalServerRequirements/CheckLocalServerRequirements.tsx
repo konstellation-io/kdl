@@ -36,7 +36,7 @@ function CheckLocalServerRequirements() {
   return (
     <DefaultPage
       title="Install local Server"
-      subtitle="Intalling a local server allows the user to create fully functional KDL proyects. You can stop the server at any time to free up resources."
+      subtitle="Installing a local server allows the user to create fully functional KDL projects. You can stop the server at any time to free up resources."
       actions={actions}
     >
       <div className={styles.container}>

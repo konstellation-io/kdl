@@ -1,12 +1,11 @@
-// Add IPC listeners
-import './store';
-import './local_server_actions';
-
+import { join } from 'path';
 import { BrowserWindow, app, ipcMain } from 'electron';
-
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
-import { join } from 'path';
+
+import './store';
+import './local_server_actions';
+import { registerLocalServerEvents } from './local_server';
 import { registerRemoteServerEvents } from './remote_server';
 
 interface WindowSize {
@@ -144,4 +143,6 @@ ipcMain.on('quitAndInstall', () => {
   autoUpdater.quitAndInstall();
 });
 
+// Add IPC listeners
 registerRemoteServerEvents();
+registerLocalServerEvents()

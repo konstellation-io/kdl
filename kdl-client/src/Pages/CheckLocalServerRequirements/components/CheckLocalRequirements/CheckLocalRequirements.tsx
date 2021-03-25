@@ -8,26 +8,38 @@ import { ipcRenderer } from 'electron';
 import styles from './CheckLocalRequirements.module.scss';
 
 enum CheckId {
-  k8s = 'k8s',
   minikube = 'minikube',
+  kubectl = 'kubectl',
   helm = 'helm',
+  docker = 'docker',
+  mkcert = 'mkcert',
 }
 
 const checkError = {
-  k8s: {
-    title: 'Check 1 error',
-    message: 'Check 1 message',
-    docUrl: 'google.es',
-  },
   minikube: {
-    title: 'Check 2 error',
-    message: 'Check 2 message',
-    docUrl: 'google.es',
+    title: 'minikube executable not found',
+    message: 'minikube must be installed in your system.',
+    docUrl: 'https://minikube.sigs.k8s.io/docs/start/',
+  },
+  kubectl: {
+    title: 'kubectl executable not found',
+    message: 'kubectl must be installed in your system.',
+    docUrl: 'https://kubernetes.io/docs/tasks/tools/',
   },
   helm: {
-    title: 'Check 3 error',
-    message: 'Check 3 message',
-    docUrl: 'google.es',
+    title: 'helm executable not found',
+    message: 'helm must be installed in your system.',
+    docUrl: 'https://helm.sh/docs/intro/install/',
+  },
+  docker: {
+    title: 'docker executable not found',
+    message: 'docker must be installed in your system.',
+    docUrl: 'https://docs.docker.com/get-docker/',
+  },
+  mkcert: {
+    title: 'mkcert executable not found',
+    message: 'mkcert must be installed in your system.',
+    docUrl: 'https://github.com/FiloSottile/mkcert',
   },
 };
 
@@ -48,9 +60,11 @@ const generateInitialCheck = (id: CheckId, label: string) => ({
 });
 
 const initialCheckStatus: Check[] = [
-  generateInitialCheck(CheckId.k8s, 'Kubernetes installed'),
-  generateInitialCheck(CheckId.minikube, 'Minikube running'),
-  generateInitialCheck(CheckId.helm, 'Helm available'),
+  generateInitialCheck(CheckId.minikube, 'Minikube installed'),
+  generateInitialCheck(CheckId.kubectl, 'Kubernetes installed'),
+  generateInitialCheck(CheckId.helm, 'Helm installed'),
+  generateInitialCheck(CheckId.docker, 'Docker installed'),
+  generateInitialCheck(CheckId.mkcert, 'mkcert installed'),
 ];
 
 type Props = {

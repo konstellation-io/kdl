@@ -1,4 +1,4 @@
-import { Button, CHECK, TextInput } from 'kwc';
+import { Button, TextInput } from 'kwc';
 import ROUTE, { buildServerRoute } from 'Constants/routes';
 import React, { useCallback, useEffect, useState } from 'react';
 import StatusCircle, {

@@ -62,7 +62,7 @@ function ConnectToRemoteServer() {
       const serverUrls = servers.map((server) => server.url || '');
       return validateServerUrl(value, serverUrls);
     },
-    [servers, validateServerUrl]
+    [servers]
   );
 
   useEffect(() => {
@@ -119,7 +119,7 @@ function ConnectToRemoteServer() {
         label="CANCEL"
         className={styles.cancelButton}
         key="button-2"
-        onClick={() => history.goBack()}
+        onClick={history.goBack}
       />,
       <Button
         label="CONNECT"

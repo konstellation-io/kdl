@@ -62,7 +62,7 @@ function ConnectToRemoteServer() {
       const serverUrls = servers.map((server) => server.url || '');
       return validateServerUrl(value, serverUrls);
     },
-    [servers]
+    [servers, validateServerUrl]
   );
 
   useEffect(() => {

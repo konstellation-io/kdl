@@ -5,6 +5,7 @@ import React from 'react';
 import SidebarBottom from 'Components/Layout/Page/DefaultPage/SidebarBottom';
 import { ipcRenderer } from 'electron';
 import { shallow } from 'enzyme';
+import { validateServerUrl } from './ConnectToRemoteServerUtils';
 
 const mockGoBack = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -56,5 +57,28 @@ describe('ConnectToRemoteServer page', () => {
     expect(
       component.find(DefaultPage).dive().find(Button).isEmptyRender()
     ).toBeTruthy();
+  });
+});
+
+describe('ConnectToRemoteServerUtils', () => {
+  describe('validateServerUrl', () => {
+    it.each`
+      url                         | usedUrls                      | expected
+      ${''}                       | ${[]}                         | ${'This field cannot be empty'}
+      ${'www.google'}             | ${[]}                         | ${'Invalid url format'}
+      ${'www.google.com'}         | ${[]}                         | ${'Invalid url format'}
+      ${'https://www.google.com'} | ${['https://www.google.com']} | ${'Duplicated server URL'}
+      ${'http://www.google.com'}  | ${[]}                         | ${true}
+      ${'https://www.google.com'} | ${[]}                         | ${true}
+    `(
+      'should return $expected when url is $url and used urls are $usedUrls',
+      ({ url, usedUrls, expected }) => {
+        // Arrange.
+        // Act.
+        const result = validateServerUrl(url, usedUrls);
+        // Assert.
+        expect(result).toBe(expected);
+      }
+    );
   });
 });

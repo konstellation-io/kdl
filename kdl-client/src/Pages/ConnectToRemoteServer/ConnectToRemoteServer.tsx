@@ -13,6 +13,7 @@ import styles from './ConnectToRemoteServer.module.scss';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import useServers from 'Hooks/useServers';
+import { validateServerUrl } from './ConnectToRemoteServerUtils';
 
 type ConnectToRemoteServerResponse = {
   serverId?: string;
@@ -59,12 +60,7 @@ function ConnectToRemoteServer() {
   const validateUrl = useCallback(
     (value: string) => {
       const serverUrls = servers.map((server) => server.url || '');
-
-      return CHECK.getValidationError([
-        CHECK.isFieldNotEmpty(value),
-        CHECK.isUrlValid(value),
-        CHECK.isItemDuplicated(value, serverUrls, 'server URL'),
-      ]);
+      return validateServerUrl(value, serverUrls);
     },
     [servers]
   );
@@ -146,7 +142,7 @@ function ConnectToRemoteServer() {
         <p className={styles.subtitle}>
           Before trying to connect to a Server, make sure you have access
           privileges. A Server administrator must add you account to the users
-          list. You can add a Remote Server without access provileges but you
+          list. You can add a Remote Server without access privileges but you
           will not be able to sign in or work with projects.
         </p>
         <div className={styles.formServerUrl}>

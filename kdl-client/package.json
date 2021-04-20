@@ -71,7 +71,6 @@
   "build": {
     "appId": "org.konstellation.KdlClient",
     "extends": null,
-    "name": "Konstellation Dev Lab",
     "productName": "KDL",
     "copyright": "Copyright © 2021 Konstellation",
     "artifactName": "${productName}-v${version}.${ext}",

@@ -69,7 +69,6 @@
     "wait-on": "5.2.0"
   },
   "build": {
-    "name": "KDL",
     "appId": "org.konstellation.KdlClient",
     "extends": null,
     "productName": "KDL",

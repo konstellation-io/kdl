@@ -71,8 +71,10 @@
   "build": {
     "appId": "org.konstellation.KdlClient",
     "extends": null,
+    "name": "Konstellation Dev Lab",
     "productName": "KDL",
-    "copyright": "Copyright © 2020 Konstellation",
+    "copyright": "Copyright © 2021 Konstellation",
+    "artifactName": "${productName}-v${version}.${ext}",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -104,7 +106,8 @@
         "NSIS",
         "msi"
       ],
-      "publisherName": "Konstellation IO"
+      "publisherName": "Konstellation IO",
+      "artifactName": "${productName}-v${version}.${ext}"
     },
     "nsis": {
       "oneClick": true,

@@ -18,7 +18,7 @@
     "electron-store": "6.0.1",
     "electron-updater": "4.3.5",
     "kwc": "1.8.1",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "moment-timezone": "0.5.32",
     "node-sass": "4.14.1",
     "react": "16.13.1",

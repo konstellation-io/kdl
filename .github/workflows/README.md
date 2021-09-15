@@ -11,6 +11,7 @@ These are the workflows defined in the repository, in logical order of execution
 Checks the code against Sonar Cloud.
 
 Conditions:
+
 - Runs on pull requests
 
 ## Release
@@ -18,13 +19,14 @@ Conditions:
 Generates a new release tag and releases notes with semantic release.
 
 Conditions:
-- only on `main`
-- only on files changed in `kdl-client/**`
+
+- Only on `main` branch when changes are made inside `kdl-client/` folder
 
 ## Publish Desktop App
 
 Build and publish the desktop app for all platforms (linux, windows and mac).
 
 Conditions:
+
 - Manual 
 - On success execution of a release workflow

@@ -64,7 +64,7 @@
     "lint-staged": "10.4.0",
     "mutationobserver-shim": "0.3.7",
     "prettier": "2.1.2",
-    "semantic-release": "17.2.3",
+    "semantic-release": "19.0.3",
     "typescript": "3.9.7",
     "wait-on": "5.2.0"
   },
